@@ -12,7 +12,7 @@ namespace SistemaMecanica.Repositories
     public class ClientesRepository
     {
         private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        public bool SalvarCliente(Clientes clientes, Profissionais profissionais, Servicos servicos, Produtos produtos)
+        public bool SalvarCliente(Clientes clientes,string nomeCliente, string cpfCliente, string telefoneCliente, string enderecoCliente, string veiculoCliente, string placaVeiculoCliente, string corVeiculoCliente)
         {
             int IdPessoaCriada = -1;
             try
@@ -36,9 +36,9 @@ namespace SistemaMecanica.Repositories
                     IdPessoaCriada = (int)command.ExecuteScalar();
                 }
 
-                SalvarProfissionais(profissionais, IdPessoaCriada);
-                SalvarServicos(servicos, IdPessoaCriada);
-                SalvarProduto(produtos, IdPessoaCriada);
+                //SalvarProfissionais(profissionais, IdPessoaCriada);
+                //SalvarServicos(servicos, IdPessoaCriada);
+                //SalvarProduto(produtos, IdPessoaCriada);
 
                 Console.WriteLine("Cliente cadastrado com sucesso!");
                 return true;
@@ -49,6 +49,7 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
+
         private void SalvarProfissionais(Profissionais profissionais, int IdCliente)
         {
             try

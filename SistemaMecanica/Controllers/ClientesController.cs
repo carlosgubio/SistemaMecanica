@@ -26,19 +26,30 @@ namespace SistemaMecanica.Controllers
             if (salvarPessoaViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (salvarPessoaViewModel.Clientes == null)
+            if (salvarPessoaViewModel.NomeCliente == null)
                 return Ok("Dados da pessoa não informados.");
 
-            if (salvarPessoaViewModel.Profissionais == null)
-                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.Profissionais)} vazio ou nulo.");
+            if (salvarPessoaViewModel.CpfCliente == null)
+                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.CpfCliente)} vazio ou nulo.");
 
-            if (salvarPessoaViewModel.Servicos == null)
-                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.Servicos)} vazio ou nulo.");
+            if (salvarPessoaViewModel.TelefoneCliente == null)
+                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.TelefoneCliente)} vazio ou nulo.");
 
-            if (salvarPessoaViewModel.Produtos == null)
-                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.Produtos)} vazio ou nulo.");
+            if (salvarPessoaViewModel.EnderecoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.EnderecoCliente)} vazio ou nulo.");
 
-            var resultado = _ClientesRepository.SalvarCliente(salvarPessoaViewModel.Clientes, salvarPessoaViewModel.Profissionais, salvarPessoaViewModel.Servicos, salvarPessoaViewModel.Produtos);
+            if (salvarPessoaViewModel.VeiculoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.VeiculoCliente)} vazio ou nulo.");
+
+            if (salvarPessoaViewModel.PlacaVeiculoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
+
+            if (salvarPessoaViewModel.CorVeiculoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.CorVeiculoCliente)} vazio ou nulo.");
+
+            var resultado = _ClientesRepository.SalvarCliente(salvarPessoaViewModel.NomeCliente, salvarPessoaViewModel.CpfCliente, salvarPessoaViewModel.TelefoneCliente, 
+                                                              salvarPessoaViewModel.EnderecoCliente, salvarPessoaViewModel.VeiculoCliente, salvarPessoaViewModel.PlacaVeiculoCliente,
+                                                              salvarPessoaViewModel.CorVeiculoCliente);
 
             if (resultado) return Ok("Pessoa cadastrada com sucesso.");
 
