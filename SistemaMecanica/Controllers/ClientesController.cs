@@ -47,7 +47,7 @@ namespace SistemaMecanica.Controllers
             if (salvarPessoaViewModel.CorVeiculoCliente == null)
                 throw new ArgumentNullException($"campo {nameof(salvarPessoaViewModel.CorVeiculoCliente)} vazio ou nulo.");
 
-            var resultado = _ClientesRepository.SalvarCliente(salvarPessoaViewModel.NomeCliente, salvarPessoaViewModel.CpfCliente, salvarPessoaViewModel.TelefoneCliente, 
+            var resultado = _ClientesRepository.SalvarCliente(salvarPessoaViewModel.NomeCliente, salvarPessoaViewModel.CpfCliente, salvarPessoaViewModel.TelefoneCliente,
                                                               salvarPessoaViewModel.EnderecoCliente, salvarPessoaViewModel.VeiculoCliente, salvarPessoaViewModel.PlacaVeiculoCliente,
                                                               salvarPessoaViewModel.CorVeiculoCliente);
 
