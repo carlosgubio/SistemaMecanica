@@ -13,9 +13,9 @@ namespace SistemaMecanica.Repositories
     {
         private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        public bool SalvarOrdemServico(SalvarOrdemServicoViewModel SalvarOrdemServicoViewModel)
+        public bool SalvarOrdemServico(CadastrarOrdemServicoViewModel SalvarOrdemServicoViewModel)
         {
-            int IdOrdemServicoCriada = -1;
+            //int IdOrdemServicoCriada = -1;
 
             try
             {
@@ -32,9 +32,9 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@idServico", SalvarOrdemServicoViewModel.IdServico);
                     command.Parameters.AddWithValue("@idPeca", SalvarOrdemServicoViewModel.IdPeca);
                     command.Parameters.AddWithValue("@totalGeral", SalvarOrdemServicoViewModel.TotalGeral);
-
                     command.Connection.Open();
-                    IdOrdemServicoCriada = (int)command.ExecuteScalar();
+                    command.ExecuteNonQuery();
+                    //IdOrdemServicoCriada = (int)command.ExecuteScalar();
                 }
 
                 //SalvarProfissionais(profissionais, IdPessoaCriada);
@@ -51,9 +51,9 @@ namespace SistemaMecanica.Repositories
             }
         }
 
-        private OrdemServicoDto BuscarOrdemServico(int idclientes)
+        public List<OrdemServicoDto> BuscarOrdemServico(string nomeVeiculoCliente)
         {
-
+            List<OrdemServicoDto> OrdensServicoEncontrados;
             try
             {
                 var query = @"SELECT * FROM OrdemServico
@@ -63,9 +63,10 @@ namespace SistemaMecanica.Repositories
                 {
                     var parametros = new
                     {
-                        idclientes
+                        nomeVeiculoCliente
                     };
-                    return connection.QueryFirstOrDefault<OrdemServicoDto>(query, parametros);
+                    OrdensServicoEncontrados = connection.Query<OrdemServicoDto>(query, parametros).ToList();
+                    return OrdensServicoEncontrados;
                 }
             }
             catch (Exception ex)

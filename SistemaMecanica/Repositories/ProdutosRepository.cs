@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SistemaMecanica.Dtos;
 using SistemaMecanica.Models;
+using SistemaMecanica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,45 +13,45 @@ namespace SistemaMecanica.Repositories
     public class ProdutosRepository
     {
         private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-
-        private void SalvarProduto(Produtos produtos, int IdCliente)
+        public bool SalvarProduto(CadastrarProdutoViewModel salvarProdutoViewModel)
         {
             try
             {
-                var query = @"INSERT INTO Produtos 
-                              (DescricaoPeca, ValorPeca, IdPessoa)                               
-                              VALUES (@descricaoPeca,@valorPeca,@idPessoa)";
+                var query = @"INSERT INTO Produtos (DescricaoPeca, ValorPeca) VALUES (@descricaoPeca,@valorPeca)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@descricaoPeca", produtos.DescricaoPeca);
-                    command.Parameters.AddWithValue("@valorPeca", produtos.ValorPeca);
-                    command.Parameters.AddWithValue("@idPessoa", IdCliente);
+                    command.Parameters.AddWithValue("@descricaoPeca", salvarProdutoViewModel.DescricaoPeca);
+                    command.Parameters.AddWithValue("@valorPeca", salvarProdutoViewModel.ValorPeca);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
                 Console.WriteLine("Peça cadastrada com sucesso!");
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
+                return false;
+
             }
         }
-        private ProdutosDto BuscarProdutos(int idclientes)
+        public List<ProdutosDto> BuscarPorNomeProduto(string descricaoProduto)
         {
+            List<ProdutosDto> produtosEncontrados;
             try
             {
-                var query = @"SELECT * FROM Produtos
-                                      WHERE IdCliente = @idCliente";
+                var query = @"SELECT DescricaoProduto, ValorProduto FROM Produtos WHERE DescricaoProduto like CONCAT('%',@descricaoProduto,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        idclientes
+                        descricaoProduto
                     };
-                    return connection.QueryFirstOrDefault<ProdutosDto>(query, parametros);
-                }
+                    produtosEncontrados = connection.Query<ProdutosDto>(query, parametros).ToList();
+                }  
+                    return produtosEncontrados;                
             }
             catch (Exception ex)
             {
@@ -58,7 +59,5 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-
-
     }
 }

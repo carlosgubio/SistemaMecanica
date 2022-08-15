@@ -13,14 +13,13 @@ namespace SistemaMecanica.Repositories
     public class ClientesRepository
     {
         private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        public bool SalvarCliente(SalvarClienteViewModel salvarPessoaViewModel)
+        public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
         {
-            int IdPessoaCriada = -1;
+            //int IdClienteCriada = -1;
             try
             {
                 var query = @"INSERT INTO Clientes 
                               (NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente) 
-                              OUTPUT Inserted.Id
                               VALUES (@nomeCliente,@cpfCliente,@telefoneCliente,@enderecoCliente,@veiculoCliente,@placaVeiculoCliente,@corVeiculoCliente)";
                 using (var sql = new SqlConnection(_connection))
                 {
@@ -32,15 +31,10 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@veiculoCliente", salvarPessoaViewModel.VeiculoCliente);
                     command.Parameters.AddWithValue("@placaVeiculoCliente", salvarPessoaViewModel.PlacaVeiculoCliente);
                     command.Parameters.AddWithValue("@corVeiculoCliente", salvarPessoaViewModel.CorVeiculoCliente);
-
                     command.Connection.Open();
-                    IdPessoaCriada = (int)command.ExecuteScalar();
+                    command.ExecuteNonQuery();
+                    //IdClienteCriada = (int)command.ExecuteScalar();
                 }
-
-                //SalvarProfissionais(profissionais, IdPessoaCriada);
-                //SalvarServicos(servicos, IdPessoaCriada);
-                //SalvarProduto(produtos, IdPessoaCriada);
-
                 Console.WriteLine("Cliente cadastrado com sucesso!");
                 return true;
             }
@@ -50,7 +44,7 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<ClientesDto> BuscarPorNomeClientes(string nomeCliente)
+        public List<ClientesDto> BuscarPorNomeCliente(string nomeCliente)
         {
             List<ClientesDto> ClientesEncontrados;
             try
@@ -67,13 +61,7 @@ namespace SistemaMecanica.Repositories
                     ClientesEncontrados = connection.Query<ClientesDto>(query, parametros).ToList();
                 }
 
-                ClientesEncontrados.ForEach(e =>
-                {
-                    e.Profissionais = BuscarProfissional(e.Id);
-                    e.Produtos = BuscarProdutos(e.Id);
-                    e.Servicos = BuscarServicos(e.Id);
-                    e.OrdemServico = BuscarOrdemServico(e.Id);
-                });
+                //ClientesEncontrados.ForEach(e =>{e.Profissionais = BuscarProfissional(e.Id); e.Produtos = BuscarProdutos(e.Id); e.Servicos = BuscarServicos(e.Id); e.OrdemServico = BuscarOrdemServico(e.Id);});
                 return ClientesEncontrados;
             }
             catch (Exception ex)

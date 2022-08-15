@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SistemaMecanica.Dtos;
 using SistemaMecanica.Models;
+using SistemaMecanica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,43 +14,46 @@ namespace SistemaMecanica.Repositories
     {
         private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        private void SalvarProfissional(Profissionais profissionais, int IdCliente)
+        public bool SalvarProfissional(CadastrarProfissionalViewModel salvarProfissionalViewModel)
         {
+            //int IdProfissionalCriada = -1;
             try
             {
-                var query = @"INSERT INTO Profissionais 
-                              (NomeProfissional, CargoProfissional, IdPessoa)                               
-                              VALUES (@nomeProfissional,@cargoProfissional,@idPessoa)";
+                var query = @"INSERT INTO Profissionais (NomeProfissional, CargoProfissional) VALUES (@nomeProfissional,@cargoProfissional)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@nomeProfissional", profissionais.NomeProfissional);
-                    command.Parameters.AddWithValue("@cargoProfissional", profissionais.CargoProfissional);
-                    command.Parameters.AddWithValue("@idPessoa", IdCliente);
+                    command.Parameters.AddWithValue("@nomeProfissional", salvarProfissionalViewModel.NomeProfissional);
+                    command.Parameters.AddWithValue("@cargoProfissional", salvarProfissionalViewModel.CargoProfissional);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
+                    //IdProfissionalCriada = (int)command.ExecuteScalar();
                 }
-                Console.WriteLine("Serviço Cadastrado com sucesso!");
+                Console.WriteLine("Profissional Cadastrado com sucesso!");
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
+                return false;
             }
         }
-        private ProfissionaisDto BuscarProfissionais(int idclientes)
+        public List<ProfissionaisDto> BuscarProfissionais(string nomeProfissional)
         {
+            List<ProfissionaisDto> profissionaisEncontrados;
             try
             {
-                var query = @"SELECT * FROM Profissionais
-                                      WHERE IdCliente = @idCliente";
+                var query = @"SELECT NomeProfissional, CargoProfissional FROM Profissionais WHERE NomeProfissional like CONCAT('%',@nomeProfissional,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        idclientes
+                        nomeProfissional
                     };
-                    return connection.QueryFirstOrDefault<ProfissionaisDto>(query, parametros);
+                    profissionaisEncontrados = connection.Query<ProfissionaisDto>(query, parametros).ToList();
+
+                    return profissionaisEncontrados;
                 }
             }
             catch (Exception ex)

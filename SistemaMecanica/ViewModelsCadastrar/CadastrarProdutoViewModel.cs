@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMecanica.ViewModels
 {
-    public class SalvarProdutoViewModel
+    public class CadastrarProdutoViewModel
     {
         public string DescricaoPeca { get; set; }
         public float ValorPeca { get; set; }

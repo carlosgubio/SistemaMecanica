@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SistemaMecanica.Dtos;
 using SistemaMecanica.Models;
+using SistemaMecanica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,43 +14,43 @@ namespace SistemaMecanica.Repositories
     {
         private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        private void SalvarServico(Servicos servicos, int IdCliente)
+        public bool SalvarServico(CadastrarServicoViewModel salvarServiçoViewModel)
         {
             try
             {
-                var query = @"INSERT INTO Servicos 
-                              (DescricaoServico, ValorServico, IdPessoa)                               
-                              VALUES (@descricaoServico,@valorServico,@idPessoa)";
+                var query = @"INSERT INTO Servicos (DescricaoServico, ValorServico) VALUES (@descricaoServico, @valorServico)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@descricaoPeca", servicos.DescricaoServico);
-                    command.Parameters.AddWithValue("@valorPeca", servicos.ValorServico);
-                    command.Parameters.AddWithValue("@idPessoa", IdCliente);
+                    command.Parameters.AddWithValue("@descricaoServico", salvarServiçoViewModel.DescricaoServico);
+                    command.Parameters.AddWithValue("@valorServico", salvarServiçoViewModel.ValorServico);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
                 Console.WriteLine("Serviço Cadastrado com sucesso!");
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
+                return false;
             }
         }
-        private ServicosDto BuscarServicos(int idclientes)
+        public List<ServicosDto> BuscarServicos(string descricaoServico)
         {
+            List<ServicosDto> servicosEncontrados;
             try
             {
-                var query = @"SELECT * FROM Servicos
-                                      WHERE IdCliente = @idCliente";
+                var query = @"SELECT DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico like CONCAT('%',@descricaoServico,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        idclientes
+                        descricaoServico
                     };
-                    return connection.QueryFirstOrDefault<ServicosDto>(query, parametros);
+                    servicosEncontrados = connection.Query<ServicosDto>(query, parametros).ToList();
+                    return servicosEncontrados;
                 }
             }
             catch (Exception ex)

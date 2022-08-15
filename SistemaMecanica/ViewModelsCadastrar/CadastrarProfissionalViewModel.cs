@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMecanica.ViewModels
 {
-    public class SalvarProfissionalViewModel
+    public class CadastrarProfissionalViewModel
     {
         public string NomeProfissional { get; set; }
         public string CargoProfissional { get; set; }
