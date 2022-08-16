@@ -12,7 +12,7 @@ namespace SistemaMecanica.Repositories
 {
     public class ClientesRepository
     {
-        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
         public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
         {
             //int IdClienteCriada = -1;
