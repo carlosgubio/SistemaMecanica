@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SistemaMecanica.Models;
 using SistemaMecanica.Repositories;
 using SistemaMecanica.ViewModels;
+using SistemaMecanica.ViewModelsAtualizar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace SistemaMecanica.Controllers
     [ApiController]
     public class ServicosController : Controller
     {
+        public static readonly List<Servicos> servicos = new List<Servicos>();
         private readonly ServicosRepository _servicosRepository;
 
         public ServicosController()
@@ -41,6 +44,38 @@ namespace SistemaMecanica.Controllers
         {
             var resultado = _servicosRepository.BuscarServicos(descricaoServico);
             return Ok(resultado);
+        }
+        public IActionResult Atualizar(AtualizarServicoViewModel model)
+        {
+            if (model == null)
+                return NoContent();
+            if (model.Atualizar == null)
+                return NoContent();
+            if (model.Encontrar == null)
+                return NoContent();
+
+            var cEncontrada = servicos.FirstOrDefault(x => x.DescricaoServico == model.Encontrar.DescricaoServico);
+            if (cEncontrada == null)
+                return NotFound("Não há nenhum registro com esse nome.");
+
+            cEncontrada.DescricaoServico = model.Atualizar.DescricaoServico;
+            cEncontrada.ValorServico = model.Atualizar.ValorServico;
+
+            return Ok(cEncontrada);
+        }
+        [HttpDelete]
+        public IActionResult Remover(string nome)
+        {
+            if (string.IsNullOrEmpty(nome))
+                return NoContent();
+
+            var cliente = servicos.FirstOrDefault(x => x.DescricaoServico.Contains(nome));
+
+            if (cliente == null)
+                return NotFound();
+
+            servicos.Remove(cliente);
+            return Ok("Removido com sucesso!");
         }
     }
 }

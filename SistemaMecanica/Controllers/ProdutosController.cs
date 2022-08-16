@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SistemaMecanica.Dtos;
+using SistemaMecanica.Models;
 using SistemaMecanica.Repositories;
 using SistemaMecanica.ViewModels;
+using SistemaMecanica.ViewModelsAtualizar;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -14,6 +16,7 @@ namespace SistemaMecanica.Controllers
     [ApiController]
     public class ProdutosController : Controller
     {
+        public static readonly List<Produtos> produtos = new List<Produtos>();
         private readonly ProdutosRepository _produtosRepository;
 
         public ProdutosController()
@@ -45,6 +48,39 @@ namespace SistemaMecanica.Controllers
         {
             var resultado = _produtosRepository.BuscarPorNomeProduto(descricaoProdutos);
             return Ok(resultado);
+        }
+        [HttpPut]
+        public IActionResult Atualizar(AtualizarProdutoViewModel model)
+        {
+            if (model == null)
+                return NoContent();
+            if (model.Atualizar == null)
+                return NoContent();
+            if (model.Encontrar == null)
+                return NoContent();
+
+            var pEncontrada = produtos.FirstOrDefault(x => x.DescricaoPeca == model.Encontrar.DescricaoPeca);
+            if (pEncontrada == null)
+                return NotFound("Não há nenhum registro com esse nome.");
+
+            pEncontrada.DescricaoPeca = model.Atualizar.DescricaoPeca;
+            pEncontrada.ValorPeca = model.Atualizar.ValorPeca;
+
+            return Ok(pEncontrada);
+        }
+        [HttpDelete]
+        public IActionResult Remover(string nome)
+        {
+            if (string.IsNullOrEmpty(nome))
+                return NoContent();
+
+            var cliente = produtos.FirstOrDefault(x => x.DescricaoPeca.Contains(nome));
+
+            if (cliente == null)
+                return NotFound();
+
+            produtos.Remove(cliente);
+            return Ok("Removido com sucesso!");
         }
     }
 }

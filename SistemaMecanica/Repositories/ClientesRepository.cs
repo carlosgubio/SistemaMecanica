@@ -12,7 +12,7 @@ namespace SistemaMecanica.Repositories
 {
     public class ClientesRepository
     {
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
         public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
         {
             //int IdClienteCriada = -1;
@@ -49,7 +49,7 @@ namespace SistemaMecanica.Repositories
             List<ClientesDto> ClientesEncontrados;
             try
             {
-                var query = @"SELECT Id, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
+                var query = @"SELECT NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
                                       WHERE NomeCliente like CONCAT('%',@nomeCliente,'%')";
 
                 using (var connection = new SqlConnection(_connection))

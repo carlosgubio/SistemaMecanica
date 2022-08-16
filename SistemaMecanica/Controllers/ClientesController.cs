@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SistemaMecanica.Models;
 using SistemaMecanica.Repositories;
 using SistemaMecanica.ViewModels;
 using SistemaMecanica.ViewModelsAtualizar;
@@ -14,7 +15,9 @@ namespace SistemaMecanica.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
+        public static readonly List<Clientes> clientes = new List<Clientes>();
         private readonly ClientesRepository _clientesRepository;
+        
 
         public ClientesController()
         {
@@ -71,7 +74,7 @@ namespace SistemaMecanica.Controllers
             if (model.Encontrar == null)
                 return NoContent();
 
-            var cEncontrada = NomeCliente.FirstOrDefault(x=> x.NomeCliente == model.Encontrar.NomeCliente);
+            var cEncontrada = clientes.FirstOrDefault(x=> x.NomeCliente == model.Encontrar.NomeCliente);
             if (cEncontrada == null)
                 return NotFound("Não há nenhum registro com esse nome.");
 
@@ -91,12 +94,12 @@ namespace SistemaMecanica.Controllers
             if (string.IsNullOrEmpty(nome))
                 return NoContent();
 
-            var cliente = pessoas.FirstOrDefault(x=> x.NomeCliente.Contains(nome));
+            var cliente = clientes.FirstOrDefault(x=> x.NomeCliente.Contains(nome));
 
             if (cliente == null)
                 return NotFound();
 
-            pessoas.Remove(cliente);
+            clientes.Remove(cliente);
             return Ok("Removido com sucesso!");
         }
     }

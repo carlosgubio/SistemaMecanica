@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SistemaMecanica.Models;
 using SistemaMecanica.Repositories;
 using SistemaMecanica.ViewModels;
+using SistemaMecanica.ViewModelsAtualizar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace SistemaMecanica.Controllers
     [ApiController]
     public class OrdensServicoController : Controller
     {
+        public static readonly List<OrdemServico> ordensservico = new List<OrdemServico>();
         private readonly OrdensServicoRepository _ordensServicoRepository;
 
         public OrdensServicoController()
@@ -57,5 +60,41 @@ namespace SistemaMecanica.Controllers
             var resultado = _ordensServicoRepository.BuscarOrdemServico(nomeVeiculoCliente);
             return Ok(resultado);
         }
+        public IActionResult Atualizar(AtualizarOrdemServicoViewModel model)
+        {
+            if (model == null)
+                return NoContent();
+            if (model.Atualizar == null)
+                return NoContent();
+            if (model.Encontrar == null)
+                return NoContent();
+
+            var osEncontrada = ordensservico.FirstOrDefault(x => x.IdOrdemServico == model.Encontrar.IdOrdemServico);
+            if (osEncontrada == null)
+                return NotFound("Não há nenhum registro com esse nome.");
+
+            osEncontrada.IdOrdemServico = model.Atualizar.IdOrdemServico;
+            osEncontrada.IdProfissional = model.Atualizar.IdProfissional;
+            osEncontrada.IdCliente = model.Atualizar.IdCliente;
+            osEncontrada.IdServico = model.Atualizar.IdServico;
+            osEncontrada.IdPeca = model.Atualizar.IdPeca;
+            osEncontrada.TotalGeral = model.Atualizar.TotalGeral;
+
+            return Ok(osEncontrada);
+        }
+        //[HttpDelete]
+        //public IActionResult Remover(string id)
+        //{
+        //    if (string.IsNullOrEmpty(id))
+        //        return NoContent();
+
+        //    var cliente = ordensservico.FirstOrDefault(x => x.IdOrdemServico.Contains(id));
+
+        //    if (cliente == null)
+        //        return NotFound();
+
+        //    ordensservico.Remove(cliente);
+        //    return Ok("Removido com sucesso!");
+        //}
     }
 }
