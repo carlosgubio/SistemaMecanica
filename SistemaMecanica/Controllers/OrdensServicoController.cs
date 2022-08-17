@@ -14,7 +14,7 @@ namespace SistemaMecanica.Controllers
     [ApiController]
     public class OrdensServicoController : Controller
     {
-        public static readonly List<OrdemServico> ordensservico = new List<OrdemServico>();
+        public static readonly List<OrdemServico> ordensServico = new List<OrdemServico>();
         private readonly OrdensServicoRepository _ordensServicoRepository;
 
         public OrdensServicoController()
@@ -23,7 +23,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult SalvarOrdemServico(CadastrarOrdemServicoViewModel salvarOrdemServicoViewModel)
+        public IActionResult Cadastrar(CadastrarOrdemServicoViewModel salvarOrdemServicoViewModel)
         {
             if (salvarOrdemServicoViewModel == null)
                 return Ok("Não foram informados dados");
@@ -55,7 +55,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarOrdemServico(string nomeVeiculoCliente)
+        public IActionResult Consultar(string nomeVeiculoCliente)
         {
             var resultado = _ordensServicoRepository.BuscarOrdemServico(nomeVeiculoCliente);
             return Ok(resultado);
@@ -69,7 +69,7 @@ namespace SistemaMecanica.Controllers
             if (model.Encontrar == null)
                 return NoContent();
 
-            var osEncontrada = ordensservico.FirstOrDefault(x => x.IdOrdemServico == model.Encontrar.IdOrdemServico);
+            var osEncontrada = ordensServico.FirstOrDefault(x => x.IdOrdemServico == model.Encontrar.IdOrdemServico);
             if (osEncontrada == null)
                 return NotFound("Não há nenhum registro com esse nome.");
 
@@ -88,12 +88,12 @@ namespace SistemaMecanica.Controllers
         //    if (string.IsNullOrEmpty(id))
         //        return NoContent();
 
-        //    var cliente = ordensservico.FirstOrDefault(x => x.IdOrdemServico.Contains(id));
+        //    var cliente = ordensServico.FirstOrDefault(x => x.IdOrdemServico.Count(id));
 
         //    if (cliente == null)
         //        return NotFound();
 
-        //    ordensservico.Remove(cliente);
+        //    ordensServico.Remove(cliente);
         //    return Ok("Removido com sucesso!");
         //}
     }

@@ -25,7 +25,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult SalvarCliente(CadastrarClienteViewModel salvarClienteViewModel)
+        public IActionResult Cadastrar(CadastrarClienteViewModel salvarClienteViewModel)
         {
             if (salvarClienteViewModel == null)
                 return Ok("Não foram informados dados");
@@ -59,7 +59,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarPorNomeCliente(string nomeCliente)
+        public IActionResult ConsultaPorNome(string nomeCliente)
         {
             var resultado = _clientesRepository.BuscarPorNomeCliente(nomeCliente);
             return Ok(resultado);

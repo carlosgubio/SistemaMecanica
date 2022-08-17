@@ -7,6 +7,14 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            //CrudClienteService crudClienteService = new CrudClienteService();
+
+            //var todos = crudClienteService.BuscarTodos();
+
+            //foreach(var item in todos)
+            //{
+            //    NomeCliente = string.IsNullOrEmpty(item.NomeCliente)?
+            //}
            
         }
     }

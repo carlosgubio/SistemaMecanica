@@ -25,7 +25,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult SalvarProduto(CadastrarProdutoViewModel salvarProdutoViewModel)
+        public IActionResult Cadastrar(CadastrarProdutoViewModel salvarProdutoViewModel)
         {
             if (salvarProdutoViewModel == null)
                 return Ok("Não foram informados dados");
@@ -44,7 +44,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscarPorNomeProduto(string descricaoProdutos)
+        public IActionResult ConsultaPorNome(string descricaoProdutos)
         {
             var resultado = _produtosRepository.BuscarPorNomeProduto(descricaoProdutos);
             return Ok(resultado);

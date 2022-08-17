@@ -23,7 +23,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult SalvarProfissional(CadastrarProfissionalViewModel salvarProfissionalViewModel)
+        public IActionResult Cadastrar(CadastrarProfissionalViewModel salvarProfissionalViewModel)
         {
             if (salvarProfissionalViewModel == null)
                 return Ok("Não foram informados dados");
@@ -41,7 +41,7 @@ namespace SistemaMecanica.Controllers
             return Ok("Houve um problema ao salvar. Profissional não cadastrado.");
         }
         [HttpGet]
-        public IActionResult BuscarPorNomeProfissional(string nome)
+        public IActionResult ConsultaPorNome(string nome)
         {
         var resultado = _profissionaisRepository.BuscarProfissionais(nome);
             return Ok(resultado);

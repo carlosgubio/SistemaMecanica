@@ -22,7 +22,7 @@ namespace SistemaMecanica.Controllers
             _servicosRepository = new ServicosRepository();
         }
         [HttpPost]
-        public IActionResult SalvarServico(CadastrarServicoViewModel salvarServicoViewModel)
+        public IActionResult Cadastrar(CadastrarServicoViewModel salvarServicoViewModel)
         {
             if (salvarServicoViewModel == null)
                 return Ok("Não foram informados dados");
@@ -40,7 +40,7 @@ namespace SistemaMecanica.Controllers
             return Ok("Houve um problema ao salvar. Serviço não cadastrado.");
         }
         [HttpGet]
-        public IActionResult BuscarServicos(string descricaoServico)
+        public IActionResult ConsultaPorNome(string descricaoServico)
         {
             var resultado = _servicosRepository.BuscarServicos(descricaoServico);
             return Ok(resultado);
