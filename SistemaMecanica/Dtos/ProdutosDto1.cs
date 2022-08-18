@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMecanica.Dtos
 {
-    public class ServicosDto
+    public class ProdutosDto
     {
         public string IdServico { get; set; }
         public string DescricaoServico { get; set; }

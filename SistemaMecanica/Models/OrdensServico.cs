@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SistemaMecanica.Models
 {
-    public class OrdemServico
+    public class OrdensServico
     {
         public int IdOrdemServico { get; set; }
         public int IdProfissional { get; set; }

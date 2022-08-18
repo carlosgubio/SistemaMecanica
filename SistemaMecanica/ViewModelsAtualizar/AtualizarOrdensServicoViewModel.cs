@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SistemaMecanica.ViewModelsAtualizar
 {
-    public class AtualizarOrdemServicoViewModel
+    public class AtualizarOrdensServicoViewModel
     {
-        public OrdemServico Encontrar { get; set; }
-        public OrdemServico Atualizar { get; set; }
+        public OrdensServico Encontrar { get; set; }
+        public OrdensServico Atualizar { get; set; }
     }
 }

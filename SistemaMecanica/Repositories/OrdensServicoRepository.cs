@@ -43,9 +43,9 @@ namespace SistemaMecanica.Repositories
             }
         }
 
-        public List<OrdemServicoDto> BuscarOrdemServico(string nomeVeiculoCliente)
+        public List<OrdensServicoDto> BuscarOrdemServico(string nomeVeiculoCliente)
         {
-            List<OrdemServicoDto> OrdensServicoEncontrados;
+            List<OrdensServicoDto> OrdensServicoEncontrados;
             try
             {
                 var query = @"SELECT * FROM OrdemServico
@@ -57,7 +57,7 @@ namespace SistemaMecanica.Repositories
                     {
                         nomeVeiculoCliente
                     };
-                    OrdensServicoEncontrados = connection.Query<OrdemServicoDto>(query, parametros).ToList();
+                    OrdensServicoEncontrados = connection.Query<OrdensServicoDto>(query, parametros).ToList();
                     return OrdensServicoEncontrados;
                 }
             }

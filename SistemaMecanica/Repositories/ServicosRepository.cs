@@ -37,9 +37,9 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<ServicosDto> BuscarServicos(string descricaoServico)
+        public List<ProdutosDto> BuscarServicos(string descricaoServico)
         {
-            List<ServicosDto> servicosEncontrados;
+            List<ProdutosDto> servicosEncontrados;
             try
             {
                 var query = @"SELECT IdServico, DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico like CONCAT('%',@descricaoServico,'%')";
@@ -50,7 +50,7 @@ namespace SistemaMecanica.Repositories
                     {
                         descricaoServico
                     };
-                    servicosEncontrados = connection.Query<ServicosDto>(query, parametros).ToList();
+                    servicosEncontrados = connection.Query<ProdutosDto>(query, parametros).ToList();
                     return servicosEncontrados;
                 }
             }

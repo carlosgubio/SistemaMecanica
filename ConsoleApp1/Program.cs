@@ -19,8 +19,8 @@ namespace ConsoleApp1
             {
                 if (opcao == 1)
                 {
-                    var resultado = new SistemaMecanicaServices();
-                    clientes = resultado.BuscarTodos();
+                    var resultado = new ClientesServices();
+                    clientes = resultado.BuscarTodosClientes();
 
                     //mostra os dados na tela
                     foreach (var item in clientes)

@@ -17,8 +17,8 @@ namespace SistemaMecanica.Dtos
         public string CorVeiculoCliente { get; set; }
         public ProfissionaisDto Profissionais { get; set; }
         public ProdutosDto Produtos { get; set; }
-        public ServicosDto Servicos { get; set; }
-        public OrdemServicoDto OrdemServico { get; set; }
+        public ProdutosDto Servicos { get; set; }
+        public OrdensServicoDto OrdemServico { get; set; }
 
     }
 }

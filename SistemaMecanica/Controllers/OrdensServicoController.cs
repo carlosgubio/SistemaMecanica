@@ -14,7 +14,7 @@ namespace SistemaMecanica.Controllers
     [ApiController]
     public class OrdensServicoController : Controller
     {
-        public static readonly List<OrdemServico> ordensServico = new List<OrdemServico>();
+        public static readonly List<OrdensServico> ordensServico = new List<OrdensServico>();
         private readonly OrdensServicoRepository _ordensServicoRepository;
 
         public OrdensServicoController()
@@ -60,7 +60,7 @@ namespace SistemaMecanica.Controllers
             var resultado = _ordensServicoRepository.BuscarOrdemServico(nomeVeiculoCliente);
             return Ok(resultado);
         }
-        public IActionResult Atualizar(AtualizarOrdemServicoViewModel model)
+        public IActionResult Atualizar(AtualizarOrdensServicoViewModel model)
         {
             if (model == null)
                 return NoContent();
