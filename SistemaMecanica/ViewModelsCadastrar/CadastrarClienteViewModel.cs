@@ -7,6 +7,7 @@ namespace SistemaMecanica.ViewModels
 {
     public class CadastrarClienteViewModel
     {
+        public string IdCliente { get; set; }
         public string NomeCliente { get; set; }
         public string CpfCliente { get; set; }
         public string TelefoneCliente { get; set; }

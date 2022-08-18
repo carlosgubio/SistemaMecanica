@@ -15,18 +15,15 @@ namespace SistemaMecanica.Repositories
 
         public bool SalvarOrdemServico(CadastrarOrdemServicoViewModel SalvarOrdemServicoViewModel)
         {
-            //int IdOrdemServicoCriada = -1;
-
             try
             {
                 var query = @"INSERT INTO OrdensServico 
-                              (IdOrdemServico, IdProfissional, IdCliente,IdServico, IdPeca, TotalGeral) 
+                              (IdProfissional, IdCliente,IdServico, IdPeca, TotalGeral) 
                               OUTPUT Inserted.Id
-                              VALUES (@idOrdemServico,@idProfissional,@idCliente,@idServico,@idPeca,@totalGeral)";
+                              VALUES (@idProfissional,@idCliente,@idServico,@idPeca,@totalGeral)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idOrdemServico", SalvarOrdemServicoViewModel.IdOrdemServico);
                     command.Parameters.AddWithValue("@idProfissional", SalvarOrdemServicoViewModel.IdProfissional);
                     command.Parameters.AddWithValue("@idCliente", SalvarOrdemServicoViewModel.IdCliente);
                     command.Parameters.AddWithValue("@idServico", SalvarOrdemServicoViewModel.IdServico);
@@ -34,12 +31,7 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@totalGeral", SalvarOrdemServicoViewModel.TotalGeral);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
-                    //IdOrdemServicoCriada = (int)command.ExecuteScalar();
                 }
-
-                //SalvarProfissionais(profissionais, IdPessoaCriada);
-                //SalvarServicos(servicos, IdPessoaCriada);
-                //SalvarProduto(produtos, IdPessoaCriada);
 
                 Console.WriteLine("Ordem de Servico cadastrada com sucesso!");
                 return true;

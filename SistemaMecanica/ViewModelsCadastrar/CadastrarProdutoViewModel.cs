@@ -7,6 +7,7 @@ namespace SistemaMecanica.ViewModels
 {
     public class CadastrarProdutoViewModel
     {
+        public string IdPeca { get; set; }
         public string DescricaoPeca { get; set; }
         public float ValorPeca { get; set; }
     }

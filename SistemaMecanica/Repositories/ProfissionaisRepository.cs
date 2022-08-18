@@ -16,7 +16,6 @@ namespace SistemaMecanica.Repositories
 
         public bool SalvarProfissional(CadastrarProfissionalViewModel salvarProfissionalViewModel)
         {
-            //int IdProfissionalCriada = -1;
             try
             {
                 var query = @"INSERT INTO Profissionais (NomeProfissional, CargoProfissional) VALUES (@nomeProfissional,@cargoProfissional)";
@@ -27,7 +26,6 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@cargoProfissional", salvarProfissionalViewModel.CargoProfissional);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
-                    //IdProfissionalCriada = (int)command.ExecuteScalar();
                 }
                 Console.WriteLine("Profissional Cadastrado com sucesso!");
                 return true;
@@ -43,7 +41,7 @@ namespace SistemaMecanica.Repositories
             List<ProfissionaisDto> profissionaisEncontrados;
             try
             {
-                var query = @"SELECT NomeProfissional, CargoProfissional FROM Profissionais WHERE NomeProfissional like CONCAT('%',@nomeProfissional,'%')";
+                var query = @"SELECT IdProfissional, NomeProfissional, CargoProfissional FROM Profissionais WHERE NomeProfissional like CONCAT('%',@nomeProfissional,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -62,6 +60,25 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-
+        public void Atualizar(Profissionais profissionais, int id)
+        {
+            try
+            {
+                var query = @"UPDATE Profissionais set NomeProfissional = @nomeProfissional, CargoProfissional = @cargoProfissional WHERE IdProfissional = @idProfissional";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idProfissional", id);
+                    command.Parameters.AddWithValue("@nomeProfissional", profissionais.NomeProfissional);
+                    command.Parameters.AddWithValue("@cargoProfissional", profissionais.CargoProfissional);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
     }
 }

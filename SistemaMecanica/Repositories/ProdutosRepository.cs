@@ -41,7 +41,7 @@ namespace SistemaMecanica.Repositories
             List<ProdutosDto> produtosEncontrados;
             try
             {
-                var query = @"SELECT DescricaoProduto, ValorProduto FROM Produtos WHERE DescricaoProduto like CONCAT('%',@descricaoProduto,'%')";
+                var query = @"SELECT IdPeca, DescricaoProduto, ValorProduto FROM Produtos WHERE DescricaoProduto like CONCAT('%',@descricaoProduto,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {

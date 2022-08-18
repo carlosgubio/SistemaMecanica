@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SistemaMecanica.Dtos
+namespace SistemaMecanica.ViewModelsBuscar
 {
-    public class OrdemServicoDto
+    public class BuscarOrdemServicoViewModel
     {
         public int IdOrdemServico { get; set; }
         public int IdProfissional { get; set; }

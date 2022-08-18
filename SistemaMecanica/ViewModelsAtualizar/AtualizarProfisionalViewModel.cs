@@ -8,7 +8,7 @@ namespace SistemaMecanica.ViewModelsAtualizar
 {
     public class AtualizarProfisionalViewModel
     {
-        public Profissionais Encontrar { get; set; }
+        public int Encontrar { get; set; }
         public Profissionais Atualizar { get; set; }
     }
 }

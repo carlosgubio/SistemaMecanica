@@ -82,19 +82,19 @@ namespace SistemaMecanica.Controllers
 
             return Ok(osEncontrada);
         }
-        //[HttpDelete]
-        //public IActionResult Remover(string id)
-        //{
-        //    if (string.IsNullOrEmpty(id))
-        //        return NoContent();
+        [HttpDelete]
+        public IActionResult Remover(int id)
+        {
+            if (id == 0)
+                return NoContent();
 
-        //    var cliente = ordensServico.FirstOrDefault(x => x.IdOrdemServico.Count(id));
+            var cliente = ordensServico.FirstOrDefault(x => x.IdOrdemServico == id);
 
-        //    if (cliente == null)
-        //        return NotFound();
+            if (cliente == null)
+                return NotFound();
 
-        //    ordensServico.Remove(cliente);
-        //    return Ok("Removido com sucesso!");
-        //}
+            ordensServico.Remove(cliente);
+            return Ok("Removido com sucesso!");
+        }
     }
 }

@@ -64,6 +64,18 @@ namespace SistemaMecanica.Controllers
             var resultado = _clientesRepository.BuscarPorNomeCliente(nomeCliente);
             return Ok(resultado);
         }
+
+        [HttpGet]
+        public IActionResult BuscarTodos()
+        {
+            var resultado = _clientesRepository.BuscarTodos();
+
+            if (resultado == null)
+                return NotFound();
+
+            return Ok(resultado);
+        }
+
         [HttpPut]
         public IActionResult Atualizar(AtualizarClienteViewModel model)
         {
@@ -71,22 +83,11 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             if (model.Atualizar == null)
                 return NoContent();
-            if (model.Encontrar == null)
+            if (model.Encontrar == 0)
                 return NoContent();
+            _clientesRepository.Atualizar(model.Atualizar, model.Encontrar);
 
-            var cEncontrada = clientes.FirstOrDefault(x=> x.NomeCliente == model.Encontrar.NomeCliente);
-            if (cEncontrada == null)
-                return NotFound("Não há nenhum registro com esse nome.");
-
-            cEncontrada.NomeCliente = model.Atualizar.NomeCliente;
-            cEncontrada.CpfCliente = model.Atualizar.CpfCliente;
-            cEncontrada.TelefoneCliente = model.Atualizar.TelefoneCliente;
-            cEncontrada.EnderecoCliente = model.Atualizar.EnderecoCliente;
-            cEncontrada.VeiculoCliente = model.Atualizar.VeiculoCliente;
-            cEncontrada.PlacaVeiculoCliente = model.Atualizar.PlacaVeiculoCliente;
-            cEncontrada.CorVeiculoCliente = model.Atualizar.CorVeiculoCliente;
-            
-            return Ok(cEncontrada);
+            return Ok();
         }
         [HttpDelete]
         public IActionResult Remover(string nome) 

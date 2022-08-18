@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SistemaMecanica.Models
+namespace SistemaMecanica.ViewModelsBuscar
 {
-    public class Profissionais
+    public class BuscarProfissionalViewModel
     {
         public string IdProfissional { get; set; }
         public string NomeProfissional { get; set; }

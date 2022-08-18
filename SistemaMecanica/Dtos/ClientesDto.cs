@@ -7,7 +7,7 @@ namespace SistemaMecanica.Dtos
 {
     public class ClientesDto
     {
-        public int Id { get; set; }
+        public int IdCliente { get; set; }
         public string NomeCliente { get; set; }
         public string CpfCliente { get; set; }
         public string TelefoneCliente { get; set; }

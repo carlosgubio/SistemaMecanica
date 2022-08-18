@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SistemaMecanica.Models
+namespace SistemaMecanica.ViewModelsBuscar
 {
-    public class Clientes
+    public class BuscarClienteViewModel
     {
         public string IdCliente { get; set; }
         public string NomeCliente { get; set; }

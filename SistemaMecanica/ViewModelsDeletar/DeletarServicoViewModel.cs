@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SistemaMecanica.ViewModels
+namespace SistemaMecanica.ViewModelsDeletar
 {
-    public class CadastrarServicoViewModel
+    public class DeletarServicoViewModel
     {
         public string IdServico { get; set; }
         public string DescricaoServico { get; set; }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SistemaMecanica.Models
+namespace SistemaMecanica.ViewModelsDeletar
 {
-    public class Profissionais
+    public class DeletarProfissionalViewModel
     {
         public string IdProfissional { get; set; }
         public string NomeProfissional { get; set; }

@@ -22,6 +22,7 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idServico", salvarServiçoViewModel.IdServico);
                     command.Parameters.AddWithValue("@descricaoServico", salvarServiçoViewModel.DescricaoServico);
                     command.Parameters.AddWithValue("@valorServico", salvarServiçoViewModel.ValorServico);
                     command.Connection.Open();
@@ -41,7 +42,7 @@ namespace SistemaMecanica.Repositories
             List<ServicosDto> servicosEncontrados;
             try
             {
-                var query = @"SELECT DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico like CONCAT('%',@descricaoServico,'%')";
+                var query = @"SELECT IdServico, DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico like CONCAT('%',@descricaoServico,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
