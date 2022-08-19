@@ -77,7 +77,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPut]
-        public IActionResult Atualizar(AtualizarClienteViewModel model)
+        public IActionResult Atualizar(AtualizarClienteViewModel model, string nome)
         {
             if (model == null)
                 return NoContent();

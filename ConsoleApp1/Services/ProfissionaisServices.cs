@@ -62,5 +62,56 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
+        public static void Atualizar(string nome, Profissionais profissionais)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            try
+            {
+                var json = JsonConvert.SerializeObject(profissionais);
+                //monta a request para a api;
+                response = httpClient.PutAsync($"https://localhost:44373/profissionais/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine(resultado);
+                }
+
+                //converte os dados recebidos e retorna eles como objetos do C#;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        public static void Remover(string nome)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.DeleteAsync($"https://localhost:44373/profissionais/remover?nome={nome}").Result;
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine(resultado);
+                }
+                //converte os dados recebidos e retorna eles como objetos do C#;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
     }
 }
