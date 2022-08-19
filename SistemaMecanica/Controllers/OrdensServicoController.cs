@@ -53,34 +53,25 @@ namespace SistemaMecanica.Controllers
 
             return Ok("Houve um problema ao salvar. Ordem de Serviço não cadastrada.");
         }
-
         [HttpGet]
         public IActionResult Consultar(string nomeVeiculoCliente)
         {
             var resultado = _ordensServicoRepository.BuscarOrdemServico(nomeVeiculoCliente);
             return Ok(resultado);
         }
+        [HttpPut]
         public IActionResult Atualizar(AtualizarOrdensServicoViewModel model)
         {
             if (model == null)
                 return NoContent();
             if (model.Atualizar == null)
                 return NoContent();
-            if (model.Encontrar == null)
+            if (model.Encontrar == 0)
                 return NoContent();
 
-            var osEncontrada = ordensServico.FirstOrDefault(x => x.IdOrdemServico == model.Encontrar.IdOrdemServico);
-            if (osEncontrada == null)
-                return NotFound("Não há nenhum registro com esse nome.");
-
-            osEncontrada.IdOrdemServico = model.Atualizar.IdOrdemServico;
-            osEncontrada.IdProfissional = model.Atualizar.IdProfissional;
-            osEncontrada.IdCliente = model.Atualizar.IdCliente;
-            osEncontrada.IdServico = model.Atualizar.IdServico;
-            osEncontrada.IdPeca = model.Atualizar.IdPeca;
-            osEncontrada.TotalGeral = model.Atualizar.TotalGeral;
-
-            return Ok(osEncontrada);
+            _ordensServicoRepository.Atualizar(model.Atualizar, model.Encontrar);
+            
+            return Ok();
         }
         [HttpDelete]
         public IActionResult Remover(int id)
@@ -88,12 +79,12 @@ namespace SistemaMecanica.Controllers
             if (id == 0)
                 return NoContent();
 
-            var cliente = ordensServico.FirstOrDefault(x => x.IdOrdemServico == id);
+            var ordemServico = ordensServico.FirstOrDefault(x => x.IdOrdemServico == id);
 
-            if (cliente == null)
+            if (ordemServico == null)
                 return NotFound();
 
-            ordensServico.Remove(cliente);
+            ordensServico.Remove(ordemServico);
             return Ok("Removido com sucesso!");
         }
     }

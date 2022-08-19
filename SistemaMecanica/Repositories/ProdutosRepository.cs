@@ -59,5 +59,25 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+        public void Atualizar(Produtos produtos, int id)
+        {
+            try
+            {
+                var query = @"UPDATE Produtos set DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca,  WHERE IdProduto = @idProduto";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idProduto", id);
+                    command.Parameters.AddWithValue("@descricaoPeca", produtos.DescricaoPeca);
+                    command.Parameters.AddWithValue("@valorPeca", produtos.ValorPeca);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
     }
 }

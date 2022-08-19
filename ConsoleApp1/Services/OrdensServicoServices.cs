@@ -19,7 +19,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.GetAsync("https://localhost:44363/ordensservico/buscartodos").Result;
+                response = httpClient.GetAsync("https://localhost:44363/ordensservico/BuscarTodasOrdensServico").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -52,7 +52,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/ordensservico/buscartodos", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/ordensservico/BuscarTodasOrdensServico", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -62,7 +62,62 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        public static void Atualizar(string nome, OrdensServico ordensServico)
+
+        public List<OrdensServicoDto> BuscarPorIdOrdemServico()
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            //Busca todos os clientes dentro da api;
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.GetAsync("https://localhost:44363/servicos/BuscarPorIdOrdemServico").Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                //converte os dados recebidos e retorna eles como objetos do C#;
+                var objetoDesserializado = JsonConvert.DeserializeObject<List<OrdensServicoDto>>(resultado);
+
+                return objetoDesserializado;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<OrdensServicoDto>();
+            }
+        }
+        public void EnviarBuscaPorIdOrdemServico(OrdensServico ordensServicos)
+        {
+            //recebe os dados para enviar para a API cria a viewModel que será enviada;
+            var viewModel = new
+            {
+                ordensServicos,
+            };
+
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            //converte o objeto em um JSON 
+            var json = JsonConvert.SerializeObject(viewModel);
+
+            try
+            {
+                //envia os dados para a API, convertendo em uma cadeia de string
+                response = httpClient.PostAsync("https://localhost:44363/ordensServicos/BuscarPorIdOrdemServico", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response.EnsureSuccessStatusCode();
+                //faz a request, envia os dados e recebe a resposta da API.
+                var resultado = response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+
+        public void Atualizar(string nome, OrdensServico ordensServico)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -88,7 +143,35 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        public static void Remover(string nome)
+        public void EnviarAtualizacao(OrdensServico ordensServico)
+        {
+            //recebe os dados para enviar para a API cria a viewModel que será enviada;
+            var viewModel = new
+            {
+                ordensServico,
+            };
+
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            //converte o objeto em um JSON 
+            var json = JsonConvert.SerializeObject(viewModel);
+
+            try
+            {
+                //envia os dados para a API, convertendo em uma cadeia de string
+                response = httpClient.PostAsync("https://localhost:44363/ordensServico/Atualizar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response.EnsureSuccessStatusCode();
+                //faz a request, envia os dados e recebe a resposta da API.
+                var resultado = response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void Remover(string nome)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -113,5 +196,29 @@ namespace Client.Services
             }
 
         }
+        public void Salvar(OrdensServico ordensServico)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            var json = JsonConvert.SerializeObject(ordensServico);
+
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.PostAsync("https://localhost:44373/ordensServico/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                //converte os dados recebidos e retorna eles como objetos do C#;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
     }
 }

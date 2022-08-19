@@ -60,5 +60,25 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+        public void Atualizar(Servicos servicos, int id)
+        {
+            try
+            {
+                var query = @"UPDATE Servicos set DescricaoServico = @descricaoServico, ValorServico = @valorServico, WHERE IdServico = @idServico";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idServico", id);
+                    command.Parameters.AddWithValue("@descricaoServico", servicos.DescricaoServico);
+                    command.Parameters.AddWithValue("@valorServico", servicos.ValorServico);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
     }
 }

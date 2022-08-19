@@ -46,23 +46,19 @@ namespace SistemaMecanica.Controllers
         var resultado = _profissionaisRepository.BuscarProfissionais(nome);
             return Ok(resultado);
         }
+        [HttpPut]
         public IActionResult Atualizar(AtualizarProfisionalViewModel model)
         {
             if (model == null)
                 return NoContent();
             if (model.Atualizar == null)
                 return NoContent();
-            if (model.Encontrar == null)
+            if (model.Encontrar == 0)
                 return NoContent();
 
-            var cEncontrada = profissionais.FirstOrDefault(x => x.NomeProfissional == model.Encontrar.NomeProfissional);
-            if (cEncontrada == null)
-                return NotFound("Não há nenhum registro com esse nome.");
+            _profissionaisRepository.Atualizar(model.Atualizar, model.Encontrar);
 
-            cEncontrada.NomeProfissional = model.Atualizar.NomeProfissional;
-            cEncontrada.CargoProfissional = model.Atualizar.CargoProfissional;
-
-            return Ok(cEncontrada);
+            return Ok();
         }
         [HttpDelete]
         public IActionResult Remover(string nome)
@@ -70,12 +66,12 @@ namespace SistemaMecanica.Controllers
             if (string.IsNullOrEmpty(nome))
                 return NoContent();
 
-            var cliente = profissionais.FirstOrDefault(x => x.NomeProfissional.Contains(nome));
+            var profissional = profissionais.FirstOrDefault(x => x.NomeProfissional.Contains(nome));
 
-            if (cliente == null)
+            if (profissional == null)
                 return NotFound();
 
-            profissionais.Remove(cliente);
+            profissionais.Remove(profissional);
             return Ok("Removido com sucesso!");
         }
     }

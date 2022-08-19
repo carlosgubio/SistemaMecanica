@@ -57,14 +57,12 @@ namespace SistemaMecanica.Controllers
 
             return Ok("Houve um problema ao salvar. Pessoa não cadastrada.");
         }
-
         [HttpGet]
         public IActionResult ConsultaPorNome(string nomeCliente)
         {
             var resultado = _clientesRepository.BuscarPorNomeCliente(nomeCliente);
             return Ok(resultado);
         }
-
         [HttpGet]
         public IActionResult BuscarTodos()
         {
@@ -75,7 +73,6 @@ namespace SistemaMecanica.Controllers
 
             return Ok(resultado);
         }
-
         [HttpPut]
         public IActionResult Atualizar(AtualizarClienteViewModel model, string nome)
         {

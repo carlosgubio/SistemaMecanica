@@ -8,7 +8,7 @@ namespace SistemaMecanica.ViewModelsAtualizar
 {
     public class AtualizarServicoViewModel
     {
-        public Servicos Encontrar { get; set; }
+        public int Encontrar { get; set; }
         public Servicos Atualizar { get; set; }
     }
 }

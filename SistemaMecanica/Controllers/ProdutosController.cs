@@ -42,7 +42,6 @@ namespace SistemaMecanica.Controllers
 
             return Ok("Houve um problema ao salvar. Produto não cadastrado.");
         }
-
         [HttpGet]
         public IActionResult ConsultaPorNome(string descricaoProdutos)
         {
@@ -56,17 +55,12 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             if (model.Atualizar == null)
                 return NoContent();
-            if (model.Encontrar == null)
+            if (model.Encontrar == 0)
                 return NoContent();
 
-            var pEncontrada = produtos.FirstOrDefault(x => x.DescricaoPeca == model.Encontrar.DescricaoPeca);
-            if (pEncontrada == null)
-                return NotFound("Não há nenhum registro com esse nome.");
+            _produtosRepository.Atualizar(model.Atualizar, model.Encontrar);
 
-            pEncontrada.DescricaoPeca = model.Atualizar.DescricaoPeca;
-            pEncontrada.ValorPeca = model.Atualizar.ValorPeca;
-
-            return Ok(pEncontrada);
+            return Ok();
         }
         [HttpDelete]
         public IActionResult Remover(string nome)
@@ -74,12 +68,12 @@ namespace SistemaMecanica.Controllers
             if (string.IsNullOrEmpty(nome))
                 return NoContent();
 
-            var cliente = produtos.FirstOrDefault(x => x.DescricaoPeca.Contains(nome));
+            var produto = produtos.FirstOrDefault(x => x.DescricaoPeca.Contains(nome));
 
-            if (cliente == null)
+            if (produto == null)
                 return NotFound();
 
-            produtos.Remove(cliente);
+            produtos.Remove(produto);
             return Ok("Removido com sucesso!");
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using SistemaMecanica.Dtos;
+using SistemaMecanica.Models;
 using SistemaMecanica.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,28 @@ namespace SistemaMecanica.Repositories
             {
                 Console.WriteLine("Erro: " + ex.Message);
                 return null;
+            }
+        }
+        public void Atualizar(OrdensServico ordensServico, int id)
+        {
+            try
+            {
+                var query = @"UPDATE OrdensServico set IdProfissional = @idProfissional, IdCliente = @idCliente, IdServico = @idServico, IdPeca = @idpeca WHERE IdOrdemServico = @idOrdemServico";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idOrdemServico", id);
+                    command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
+                    command.Parameters.AddWithValue("@idCliente", ordensServico.IdCliente);
+                    command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
+                    command.Parameters.AddWithValue("@idpeca", ordensServico.IdPeca);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
             }
         }
 
