@@ -62,7 +62,7 @@ namespace ConsoleApp1
                     cliente.TelefoneCliente = Console.ReadLine();
                     Console.WriteLine("Informe o Endereco completo:");
                     cliente.EnderecoCliente = Console.ReadLine();
-                    Console.WriteLine("Informe O Veículo:");
+                    Console.WriteLine("Informe o Veículo:");
                     cliente.VeiculoCliente = Console.ReadLine();
                     Console.WriteLine("Informe a Placa do Veículo:");
                     cliente.PlacaVeiculoCliente = Console.ReadLine();
@@ -82,7 +82,7 @@ namespace ConsoleApp1
                 if (opcoes == Opcoes.CadastrarProduto)
                 {
                     var produto = new Produtos();
-                    Console.WriteLine("Informe a descrição do produto:");
+                    Console.WriteLine("Informe a Descrição do pPoduto:");
                     produto.DescricaoPeca = Console.ReadLine();
                     Console.WriteLine("Informe o Valor:");
                     produto.ValorPeca = Convert.ToSingle(Console.ReadLine());
@@ -91,7 +91,7 @@ namespace ConsoleApp1
                 if (opcoes == Opcoes.CadastrarServico)
                 {
                     var servico = new Servicos();
-                    Console.WriteLine("Informe a descrição do produto:");
+                    Console.WriteLine("Informe a Descrição do Serviço:");
                     servico.DescricaoServico = Console.ReadLine();
                     Console.WriteLine("Informe o Valor:");
                     servico.ValorServico = (float)Convert.ToDouble(Console.ReadLine());
@@ -110,34 +110,35 @@ namespace ConsoleApp1
                     ordensServico.IdPeca = Convert.ToInt32(Console.ReadLine());
 
                     ordensServicoServices.Salvar(ordensServico);
-                }
+                } // não está salvando
                 if (opcoes == Opcoes.AtualizarCliente)
                 {
                     Clientes clientes = new Clientes();
                     Console.WriteLine("Informe o Nome do Cliente que deseja atualizar:");
                     string nome = Console.ReadLine();
+                    var clienteretorno = clientesServices.ConfirmarClientes(nome);
 
-                    Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
 
-                    if (clientes != null && clientes.NomeCliente == nome)
-                    {
-                        Console.WriteLine("O nome cadastrado é: " + clientes.NomeCliente + "\nDigite o novo Nome caso deseje alterar.");
-                        clientes.NomeCliente = Console.ReadLine();
-                        Console.WriteLine("O CPF cadastrado é: " + clientes.CpfCliente + "\nDigite o novo CPF caso deseje alterar.");
-                        clientes.CpfCliente = Console.ReadLine();
-                        Console.WriteLine("O Telefone cadastrado é: " + clientes.TelefoneCliente + "\nDigite o novo Telefone caso deseje alterar.");
-                        clientes.TelefoneCliente = Console.ReadLine();
-                        Console.WriteLine("O Endereço cadastrado é: " + clientes.EnderecoCliente + "\nDigite o novo Endereço caso deseje alterar.");
-                        clientes.EnderecoCliente = Console.ReadLine();
-                        Console.WriteLine("O Veículo cadastrado é: " + clientes.VeiculoCliente + "\nDigite o novo Veículo caso deseje alterar.");
-                        clientes.VeiculoCliente = Console.ReadLine();
-                        Console.WriteLine("A placa cadastrada é: " + clientes.PlacaVeiculoCliente + "\nDigite a nova placa caso deseje alterar.");
-                        clientes.PlacaVeiculoCliente = Console.ReadLine();
-                        Console.WriteLine("A cor cadastrada é: " + clientes.CorVeiculoCliente + "\nDigite a nova Cor caso deseje alterar.");
-                        clientes.CorVeiculoCliente = Console.ReadLine();
+                    if (clienteretorno != null && clienteretorno.NomeCliente == nome)
+                    { 
+                        Console.WriteLine("O nome cadastrado é: " + clienteretorno.NomeCliente + "\nDigite o novo Nome caso deseje alterar.");
+                        clienteretorno.NomeCliente = Console.ReadLine();
+                        Console.WriteLine("O CPF cadastrado é: " + clienteretorno.CpfCliente + "\nDigite o novo CPF caso deseje alterar.");
+                        clienteretorno.CpfCliente = Console.ReadLine();
+                        Console.WriteLine("O Telefone cadastrado é: " + clienteretorno.TelefoneCliente + "\nDigite o novo Telefone caso deseje alterar.");
+                        clienteretorno.TelefoneCliente = Console.ReadLine();
+                        Console.WriteLine("O Endereço cadastrado é: " + clienteretorno.EnderecoCliente + "\nDigite o novo Endereço caso deseje alterar.");
+                        clienteretorno.EnderecoCliente = Console.ReadLine();
+                        Console.WriteLine("O Veículo cadastrado é: " + clienteretorno.VeiculoCliente + "\nDigite o novo Veículo caso deseje alterar.");
+                        clienteretorno.VeiculoCliente = Console.ReadLine();
+                        Console.WriteLine("A placa cadastrada é: " + clienteretorno.PlacaVeiculoCliente + "\nDigite a nova placa caso deseje alterar.");
+                        clienteretorno.PlacaVeiculoCliente = Console.ReadLine();
+                        Console.WriteLine("A cor cadastrada é: " + clienteretorno.CorVeiculoCliente + "\nDigite a nova Cor caso deseje alterar.");
+                        clienteretorno.CorVeiculoCliente = Console.ReadLine();
+                        clientesServices.Atualizar(nome, clienteretorno);
                     }
-                    clientesServices.Atualizar(nome, clientes);
-                }
+                    
+                } //Não está Confirmando o Cliente
                 if (opcoes == Opcoes.AtualizarProfissional)
                 {
                     Profissionais profissionais = new Profissionais();
@@ -304,6 +305,12 @@ namespace ConsoleApp1
                     }
                     ordensServicoServices.BuscarPorIdOrdemServico();
                 }
+
+                Console.WriteLine("======================================");
+                Console.WriteLine("Digite a Opção desejada:\n0-Sair\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n6-Atualizar Cliente" +
+                                  "\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Atualizar Ordem de Serviço\n11-Remover Cliente\n12-Remover Profissional\n13-Remover Produto\n14-Remover Serviço" +
+                                  "\n15-Remover Ordem de Serviço\n16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
+                opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
             }
         }
     }

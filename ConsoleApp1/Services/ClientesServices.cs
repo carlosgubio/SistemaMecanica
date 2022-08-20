@@ -116,7 +116,7 @@ namespace Client.Services
             }
         }
 
-        public void Atualizar(string nome, Clientes clientes)
+        public void Atualizar(string nome, ClientesDto clientes)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -125,7 +125,7 @@ namespace Client.Services
             {
                 var json = JsonConvert.SerializeObject(clientes);
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44373/clientes/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/clientes/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -178,7 +178,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.DeleteAsync($"https://localhost:44373/clientes/remover?nome={nome}").Result;
+                response = httpClient.DeleteAsync($"https://localhost:44363/clientes/remover?nome={nome}").Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -206,7 +206,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.PostAsync("https://localhost:44373/clientes/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/clientes/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -217,6 +217,27 @@ namespace Client.Services
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public ClientesDto ConfirmarClientes(string nome)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            try
+            {
+                response = httpClient.GetAsync($"https://localhost:44363/clientes/Confirmar?nome={nome}").Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                var objetoDesserializado = JsonConvert.DeserializeObject<ClientesDto>(resultado);
+                return objetoDesserializado;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ClientesDto();
             }
         }
     }

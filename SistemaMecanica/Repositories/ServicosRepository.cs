@@ -12,9 +12,9 @@ namespace SistemaMecanica.Repositories
 {
     public class ServicosRepository
     {
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        public bool SalvarServico(CadastrarServicoViewModel salvarServiçoViewModel)
+        public bool SalvarServico(CadastrarServicoViewModel cadastrarServiçoViewModel)
         {
             try
             {
@@ -22,9 +22,9 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idServico", salvarServiçoViewModel.IdServico);
-                    command.Parameters.AddWithValue("@descricaoServico", salvarServiçoViewModel.DescricaoServico);
-                    command.Parameters.AddWithValue("@valorServico", salvarServiçoViewModel.ValorServico);
+                    //command.Parameters.AddWithValue("@idServico", cadastrarServiçoViewModel.IdServico);
+                    command.Parameters.AddWithValue("@descricaoServico", cadastrarServiçoViewModel.DescricaoServico);
+                    command.Parameters.AddWithValue("@valorServico", cadastrarServiçoViewModel.ValorServico);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }

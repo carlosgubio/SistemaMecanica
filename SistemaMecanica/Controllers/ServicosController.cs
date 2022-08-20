@@ -22,18 +22,18 @@ namespace SistemaMecanica.Controllers
             _servicosRepository = new ServicosRepository();
         }
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarServicoViewModel salvarServicoViewModel)
+        public IActionResult Cadastrar(CadastrarServicoViewModel cadastrarServicoViewModel)
         {
-            if (salvarServicoViewModel == null)
+            if (cadastrarServicoViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (salvarServicoViewModel.DescricaoServico == null)
+            if (cadastrarServicoViewModel.DescricaoServico == null)
                 return Ok("Dados do Serviço não informados.");
 
-            if (salvarServicoViewModel.ValorServico == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarServicoViewModel.ValorServico)} vazio ou nulo.");
+            if (cadastrarServicoViewModel.ValorServico == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarServicoViewModel.ValorServico)} vazio ou nulo.");
 
-            var resultado = _servicosRepository.SalvarServico(salvarServicoViewModel);
+            var resultado = _servicosRepository.SalvarServico(cadastrarServicoViewModel);
 
             if (resultado) return Ok("Serviço cadastrado com sucesso.");
 

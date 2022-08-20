@@ -25,33 +25,33 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarClienteViewModel salvarClienteViewModel)
+        public IActionResult Cadastrar(CadastrarClienteViewModel cadastrarClienteViewModel)
         {
-            if (salvarClienteViewModel == null)
+            if (cadastrarClienteViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (salvarClienteViewModel.NomeCliente == null)
+            if (cadastrarClienteViewModel.NomeCliente == null)
                 return Ok("Dados do Cliente não informados.");
 
-            if (salvarClienteViewModel.CpfCliente == null)
-                throw new ArgumentNullException($"campo {nameof(salvarClienteViewModel.CpfCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.CpfCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.CpfCliente)} vazio ou nulo.");
 
-            if (salvarClienteViewModel.TelefoneCliente == null)
-                throw new ArgumentNullException($"campo {nameof(salvarClienteViewModel.TelefoneCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.TelefoneCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.TelefoneCliente)} vazio ou nulo.");
 
-            if (salvarClienteViewModel.EnderecoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(salvarClienteViewModel.EnderecoCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.EnderecoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.EnderecoCliente)} vazio ou nulo.");
 
-            if (salvarClienteViewModel.VeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(salvarClienteViewModel.VeiculoCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.VeiculoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.VeiculoCliente)} vazio ou nulo.");
 
-            if (salvarClienteViewModel.PlacaVeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(salvarClienteViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.PlacaVeiculoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
 
-            if (salvarClienteViewModel.CorVeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(salvarClienteViewModel.CorVeiculoCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.CorVeiculoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.CorVeiculoCliente)} vazio ou nulo.");
 
-            var resultado = _clientesRepository.SalvarCliente(salvarClienteViewModel);
+            var resultado = _clientesRepository.SalvarCliente(cadastrarClienteViewModel);
 
             if (resultado) return Ok("Pessoa cadastrada com sucesso.");
 
@@ -99,6 +99,12 @@ namespace SistemaMecanica.Controllers
 
             clientes.Remove(cliente);
             return Ok("Removido com sucesso!");
+        }
+        [HttpGet]
+        public IActionResult Confirmar(string nome)
+        {
+            var resultado = _clientesRepository.ConfirmarCliente(nome);
+            return Ok(resultado);
         }
     }
 }

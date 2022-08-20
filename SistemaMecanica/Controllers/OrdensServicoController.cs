@@ -31,11 +31,11 @@ namespace SistemaMecanica.Controllers
             if (salvarOrdemServicoViewModel.IdOrdemServico == 0)
                 return Ok("Dados da Ordem de Servico não informados.");
 
-            if (salvarOrdemServicoViewModel.IdProfissional == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdProfissional)} vazio ou nulo.");
-
             if (salvarOrdemServicoViewModel.IdCliente == 0)
                 throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdCliente)} vazio ou nulo.");
+            
+            if (salvarOrdemServicoViewModel.IdProfissional == 0)
+                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdProfissional)} vazio ou nulo.");
 
             if (salvarOrdemServicoViewModel.IdServico == 0)
                 throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdServico)} vazio ou nulo.");

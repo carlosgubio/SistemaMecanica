@@ -12,24 +12,24 @@ namespace SistemaMecanica.Repositories
 {
     public class OrdensServicoRepository
     {
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        public bool SalvarOrdemServico(CadastrarOrdemServicoViewModel SalvarOrdemServicoViewModel)
+        public bool SalvarOrdemServico(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
             try
             {
                 var query = @"INSERT INTO OrdensServico 
-                              (IdProfissional, IdCliente,IdServico, IdPeca, TotalGeral) 
+                              (IdProfissional, IdCliente, IdServico, IdPeca, TotalGeral) 
                               OUTPUT Inserted.Id
                               VALUES (@idProfissional,@idCliente,@idServico,@idPeca,@totalGeral)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idProfissional", SalvarOrdemServicoViewModel.IdProfissional);
-                    command.Parameters.AddWithValue("@idCliente", SalvarOrdemServicoViewModel.IdCliente);
-                    command.Parameters.AddWithValue("@idServico", SalvarOrdemServicoViewModel.IdServico);
-                    command.Parameters.AddWithValue("@idPeca", SalvarOrdemServicoViewModel.IdPeca);
-                    command.Parameters.AddWithValue("@totalGeral", SalvarOrdemServicoViewModel.TotalGeral);
+                    command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
+                    command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
+                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
+                    command.Parameters.AddWithValue("@idPeca", cadastrarOrdemServicoViewModel.IdPeca);
+                    command.Parameters.AddWithValue("@totalGeral", cadastrarOrdemServicoViewModel.TotalGeral);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }

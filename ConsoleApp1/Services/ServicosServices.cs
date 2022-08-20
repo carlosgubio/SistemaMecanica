@@ -125,7 +125,7 @@ namespace Client.Services
             {
                 var json = JsonConvert.SerializeObject(servicos);
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44373/servicos/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/servicos/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -178,7 +178,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.DeleteAsync($"https://localhost:44373/servicos/remover?nome={nome}").Result;
+                response = httpClient.DeleteAsync($"https://localhost:44363/servicos/remover?nome={nome}").Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -204,7 +204,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.PostAsync("https://localhost:44373/servicos/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/servicos/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;

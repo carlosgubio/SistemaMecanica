@@ -13,7 +13,7 @@ namespace SistemaMecanica.Repositories
 {
     public class ClientesRepository
     {
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
         public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
         {
             try
@@ -111,6 +111,29 @@ namespace SistemaMecanica.Repositories
             {
                 Console.WriteLine("Erro: " + ex.Message);
             }
+        }
+        public ClientesDto ConfirmarCliente(string nome)
+        {
+            var cliente = new ClientesDto();
+            try
+            {
+                var query = @"SELECT * FROM Clientes WHERE NomeCliente = CONCAT('%',@nomeCliente,'%')";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        nome
+                    };
+                    cliente = connection.QueryFirstOrDefault<ClientesDto>(query, parametros);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                cliente = null;
+            }
+            return cliente;
         }
     }
 }
