@@ -100,17 +100,17 @@ namespace ConsoleApp1
                 if (opcoes == Opcoes.CadastrarOrdemServico)
                 {
                     var ordensServico = new OrdensServico();
-                    Console.WriteLine("Informe o Id do Cliente:");
-                    ordensServico.IdCliente = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Informe o Id do Profissional:");
                     ordensServico.IdProfissional = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Informe o Id do Cliente:");
+                    ordensServico.IdCliente = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Informe o Id do Serviço:");
                     ordensServico.IdServico = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Informe o Id da Peça:");
                     ordensServico.IdPeca = Convert.ToInt32(Console.ReadLine());
 
                     ordensServicoServices.Salvar(ordensServico);
-                } // não está salvando
+                } // não está salvando. Precisa inserir o ValorTotal?
                 if (opcoes == Opcoes.AtualizarCliente)
                 {
                     Clientes clientes = new Clientes();
@@ -190,24 +190,28 @@ namespace ConsoleApp1
                     }
                     servicosServices.Atualizar(nome, servicos);
                 }
-                //if (opcoes == Opcoes.AtualizarOrdemServico)
-                //{
-                //    OrdensServico ordensServico  = new OrdensServico();
-                //    Console.WriteLine("Informe a Descrição da Peça que deseja atualizar:");
-                //    string nome = Console.ReadLine();
+                if (opcoes == Opcoes.AtualizarOrdemServico)
+                {
+                    OrdensServico ordensServico = new OrdensServico();
+                    Console.WriteLine("Informe a ID da ordem ao qual deseja atualizar:");
+                    int id = Convert.ToInt32(Console.ReadLine());
 
-                //    Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
+                    Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
 
-                //    if (ordensServico != null && ordensServico.DescricaoServico == nome)
-                //    {
-                //        Console.WriteLine("A descrição da Peça cadastrada é: " + ordensServico.DescricaoServico + "\nDigite a nova Descriação da Peça caso deseje alterar.");
-                //        ordensServico.DescricaoServico = Console.ReadLine();
-                //        Console.WriteLine("O Valor da Peça cadastrada é: " + ordensServico.ValorServico + "\nDigite o novo Valor caso deseje alterar.");
-                //        ordensServico.ValorServico = Convert.ToSingle(Console.ReadLine());
-                //    }
-                //    servicosServices.Atualizar(nome, servicos);
-                //}
-                if(opcoes == Opcoes.RemoverCliente)
+                    if (ordensServico != null && ordensServico.IdOrdemServico == id)
+                    {
+                        Console.WriteLine("A ID Profissional cadastrado é: " + ordensServico.IdProfissional + "\nDigite a nova ID do Profissional caso deseje alterar.");
+                        ordensServico.IdProfissional = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("A ID Serviço cadastrado é: " + ordensServico.IdServico + "\nDigite a nova ID do Serviço caso deseje alterar.");
+                        ordensServico.IdServico = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("A ID Descrição da Peça cadastrada é: " + ordensServico.IdPeca + "\nDigite a nova ID da Peça caso deseje alterar.");
+                        ordensServico.IdPeca = Convert.ToInt32(Console.ReadLine());
+                        //Console.WriteLine("O Valor da Peça cadastrada é: " + ordensServico.TotalGeral + "\nDigite o novo Valor caso deseje alterar.");
+                        //ordensServico.TotalGeral = Convert.ToSingle(Console.ReadLine()); 
+                    }
+                    ordensServicoServices.Atualizar(id, ordensServico);
+                }//Tem necessidade de alterar o Total Geral? Tem Erro no final tb
+                if (opcoes == Opcoes.RemoverCliente)
                 {
                     Console.WriteLine("Digite o nome do Cliente para remover:");
                     string nome = Console.ReadLine();

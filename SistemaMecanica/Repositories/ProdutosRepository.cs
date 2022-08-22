@@ -13,6 +13,9 @@ namespace SistemaMecanica.Repositories
     public class ProdutosRepository
     {
         private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+
+
         public bool SalvarProduto(CadastrarProdutoViewModel salvarProdutoViewModel)
         {
             try

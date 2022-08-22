@@ -23,31 +23,31 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarOrdemServicoViewModel salvarOrdemServicoViewModel)
+        public IActionResult Cadastrar(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
-            if (salvarOrdemServicoViewModel == null)
+            if (cadastrarOrdemServicoViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (salvarOrdemServicoViewModel.IdOrdemServico == 0)
+            if (cadastrarOrdemServicoViewModel.IdOrdemServico == 0)
                 return Ok("Dados da Ordem de Servico não informados.");
-
-            if (salvarOrdemServicoViewModel.IdCliente == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdCliente)} vazio ou nulo.");
             
-            if (salvarOrdemServicoViewModel.IdProfissional == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdProfissional)} vazio ou nulo.");
+            if (cadastrarOrdemServicoViewModel.IdProfissional == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdProfissional)} vazio ou nulo.");
+            
+            if (cadastrarOrdemServicoViewModel.IdCliente == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdCliente)} vazio ou nulo.");
 
-            if (salvarOrdemServicoViewModel.IdServico == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdServico)} vazio ou nulo.");
+            if (cadastrarOrdemServicoViewModel.IdServico == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");
 
-            if (salvarOrdemServicoViewModel.IdPeca == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.IdPeca)} vazio ou nulo.");
+            if (cadastrarOrdemServicoViewModel.IdPeca == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdPeca)} vazio ou nulo.");
 
-            if (salvarOrdemServicoViewModel.TotalGeral == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarOrdemServicoViewModel.TotalGeral)} vazio ou nulo.");
+            if (cadastrarOrdemServicoViewModel.TotalGeral == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.TotalGeral)} vazio ou nulo.");
 
 
-            var resultado = _ordensServicoRepository.SalvarOrdemServico(salvarOrdemServicoViewModel);
+            var resultado = _ordensServicoRepository.SalvarOrdemServico(cadastrarOrdemServicoViewModel);
 
             if (resultado) return Ok("Ordem de Serviço cadastrada com sucesso.");
 
