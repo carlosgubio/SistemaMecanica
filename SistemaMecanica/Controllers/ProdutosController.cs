@@ -49,7 +49,7 @@ namespace SistemaMecanica.Controllers
             return Ok(resultado);
         }
         [HttpPut]
-        public IActionResult Atualizar(AtualizarProdutoViewModel model)
+        public IActionResult AtualizarProduto(AtualizarProdutoViewModel model)
         {
             if (model == null)
                 return NoContent();
@@ -57,7 +57,6 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             if (model.Encontrar == 0)
                 return NoContent();
-
             _produtosRepository.Atualizar(model.Atualizar, model.Encontrar);
 
             return Ok();
@@ -75,6 +74,12 @@ namespace SistemaMecanica.Controllers
 
             produtos.Remove(produto);
             return Ok("Removido com sucesso!");
+        }
+        [HttpGet]
+        public IActionResult ConfirmarOProduto(int id)
+        {
+            var resultado = _produtosRepository.ConfirmarProduto(id);
+            return Ok(resultado);
         }
     }
 }

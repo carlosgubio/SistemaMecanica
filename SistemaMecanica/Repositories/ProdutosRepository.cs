@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ProdutosRepository
     {
-        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
         public bool SalvarProduto(CadastrarProdutoViewModel salvarProdutoViewModel)
@@ -66,11 +66,11 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Produtos set DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca,  WHERE IdProduto = @idProduto";
+                var query = @"UPDATE Produtos set DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca WHERE IdPeca = @idPeca";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idProduto", id);
+                    command.Parameters.AddWithValue("@idPeca", id);
                     command.Parameters.AddWithValue("@descricaoPeca", produtos.DescricaoPeca);
                     command.Parameters.AddWithValue("@valorPeca", produtos.ValorPeca);
                     command.Connection.Open();
@@ -81,6 +81,29 @@ namespace SistemaMecanica.Repositories
             {
                 Console.WriteLine("Erro: " + ex.Message);
             }
+        }
+        public ProdutosDto ConfirmarProduto(int idPeca)
+        {
+            var produto = new ProdutosDto();
+            try
+            {
+                var query = "SELECT * FROM Produtos WHERE IdPeca = @idPeca";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        idPeca
+                    };
+                    produto = connection.QueryFirstOrDefault<ProdutosDto>(query, parametros);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                produto = null;
+            }
+            return produto;
         }
     }
 }

@@ -13,8 +13,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ClientesRepository
     {
-        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
         public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
@@ -138,6 +138,24 @@ namespace SistemaMecanica.Repositories
                 cliente = null;
             }
             return cliente;
+        }
+        public void DeletarCliente(string nome) 
+        {
+            try
+            {
+                var query = "Delete From Clientes where NomeCliente = @nomeCliente";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@nomeCliente", nome);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
         }
     }
 }

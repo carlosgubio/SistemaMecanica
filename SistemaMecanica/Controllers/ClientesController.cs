@@ -73,6 +73,12 @@ namespace SistemaMecanica.Controllers
 
             return Ok(resultado);
         }
+        [HttpGet]
+        public IActionResult Confirmar(int id)
+        {
+            var resultado = _clientesRepository.ConfirmarCliente(id);
+            return Ok(resultado);
+        }
         [HttpPut]
         public IActionResult Atualizar(AtualizarClienteViewModel model)
         {
@@ -97,15 +103,10 @@ namespace SistemaMecanica.Controllers
             if (cliente == null)
                 return NotFound();
 
-            clientes.Remove(cliente);
+            _clientesRepository.DeletarCliente(nome);
             return Ok("Removido com sucesso!");
         }
-        [HttpGet]
-        public IActionResult Confirmar(int id)
-        {
-            var resultado = _clientesRepository.ConfirmarCliente(id);
-            return Ok(resultado);
-        }
+        
     }
 }
 

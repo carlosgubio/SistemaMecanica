@@ -7,7 +7,7 @@ namespace SistemaMecanica.Models
 {
     public class Produtos
     {
-        public string IdPeca { get; set; }
+        public int IdPeca { get; set; }
         public string DescricaoPeca { get; set; }
         public float ValorPeca { get; set; }
     }

@@ -167,7 +167,7 @@ namespace ConsoleApp1
                         Console.WriteLine("O Valor da Peça cadastrada é: " + produtoRetorno.ValorPeca + "\nDigite o novo Valor caso deseje alterar.");
                         produtoRetorno.ValorPeca = Convert.ToSingle(Console.ReadLine());
                     }
-                    produtosServices.Atualizar(id, produtoRetorno);
+                    produtosServices.AtualizarProduto(id, produtoRetorno);
                 }
                 if (opcoes == Opcoes.AtualizarServico)
                 {
