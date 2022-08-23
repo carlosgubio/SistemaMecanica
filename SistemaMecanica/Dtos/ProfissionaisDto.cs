@@ -7,7 +7,7 @@ namespace SistemaMecanica.Dtos
 {
     public class ProfissionaisDto
     {
-        public string IdProfissional { get; set; }
+        public int IdProfissional { get; set; }
         public string NomeProfissional { get; set; }
         public string CargoProfissional { get; set; }
     }

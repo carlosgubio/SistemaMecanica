@@ -74,5 +74,11 @@ namespace SistemaMecanica.Controllers
             profissionais.Remove(profissional);
             return Ok("Removido com sucesso!");
         }
+        [HttpGet]
+        public IActionResult ConfirmarOProfissional(int id)
+        {
+            var resultado = _profissionaisRepository.ConfirmarProfissional(id);
+            return Ok(resultado);
+        }
     }
 }

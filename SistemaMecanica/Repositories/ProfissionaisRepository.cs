@@ -81,5 +81,28 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
+        public ProfissionaisDto ConfirmarProfissional(int idProfissional)
+        {
+            var Profissional = new ProfissionaisDto();
+            try
+            {
+                var query = "SELECT * FROM Profissionais WHERE IdProfissional = @idProfissional";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        idProfissional
+                    };
+                    Profissional = connection.QueryFirstOrDefault<ProfissionaisDto>(query, parametros);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                Profissional = null;
+            }
+            return Profissional;
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace SistemaMecanica.Repositories
             try
             {
                 var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
-                                      WHERE NomeCliente like CONCAT('%',@nomeCliente,'%')";
+                                      WHERE NomeCliente LIKE CONCAT('%',@nomeCliente,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -94,7 +94,8 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Clientes set NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente, VeiculoCliente = @veiculoCliente, PlacaVeiculoCliente = @placaVeiculoCliente, CorVeiculoCliente = @corVeiculoCliente WHERE IdCliente = @idCliente";
+                var query = @"UPDATE Clientes set NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente,
+                            VeiculoCliente = @veiculoCliente, PlacaVeiculoCliente = @placaVeiculoCliente, CorVeiculoCliente = @corVeiculoCliente WHERE IdCliente = @idCliente";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -115,18 +116,18 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public ClientesDto ConfirmarCliente(string nome)
+        public ClientesDto ConfirmarCliente(int idCliente)
         {
             var cliente = new ClientesDto();
             try
             {
-                var query = @"SELECT * FROM Clientes WHERE NomeCliente = CONCAT('%',@nomeCliente,'%')";
+                var query = "SELECT * FROM Clientes WHERE IdCliente = @idCliente";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        nome
+                        idCliente
                     };
                     cliente = connection.QueryFirstOrDefault<ClientesDto>(query, parametros);
                 }

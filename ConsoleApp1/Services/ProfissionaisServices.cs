@@ -116,16 +116,22 @@ namespace Client.Services
             }
         }
         
-        public void Atualizar(string nome, Profissionais profissionais)
+        public void Atualizar(int id, ProfissionaisDto profissionais)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
+            
+            var viewModel = new
+            {
+                Encontrar = id,
+                Atualizar = profissionais
+            };
 
             try
             {
-                var json = JsonConvert.SerializeObject(profissionais);
+                var json = JsonConvert.SerializeObject(viewModel);
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44363/profissionais/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/profissionais/atualizar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -159,7 +165,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/clientes/Atualizar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/profissionais/EnviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -216,6 +222,27 @@ namespace Client.Services
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public ProfissionaisDto ConfirmarProfissionais(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            try
+            {
+                response = httpClient.GetAsync($"https://localhost:44363/profissionais/ConfirmarOProfissional?id={id}").Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                var objetoDesserializado = JsonConvert.DeserializeObject<ProfissionaisDto>(resultado);
+                return objetoDesserializado;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ProfissionaisDto();
             }
         }
     }

@@ -116,16 +116,22 @@ namespace Client.Services
             }
         }
 
-        public void Atualizar(string nome, ClientesDto clientes)
+        public void Atualizar(int id, ClientesDto clientes)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
 
+            var viewModel = new
+            {
+                Encontrar = id,
+                Atualizar = clientes
+            };
+
             try
             {
-                var json = JsonConvert.SerializeObject(clientes);
+                var json = JsonConvert.SerializeObject(viewModel);
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44363/clientes/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/clientes/atualizar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -206,7 +212,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.PostAsync("https://localhost:44363/clientes/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/clientes/cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -220,13 +226,13 @@ namespace Client.Services
             }
         }
 
-        public ClientesDto ConfirmarClientes(string nome)
+        public ClientesDto ConfirmarClientes(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
             try
             {
-                response = httpClient.GetAsync($"https://localhost:44363/clientes/Confirmar?nome={nome}").Result;
+                response = httpClient.GetAsync($"https://localhost:44363/clientes/Confirmar?id={id}").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
