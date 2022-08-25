@@ -117,16 +117,22 @@ namespace Client.Services
         }
 
 
-        public void Atualizar(string nome, OrdensServico ordensServico)
+        public void Atualizar(int id, OrdensServico ordensServico)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
 
+            var viewModel = new
+            {
+                Encontrar = id,
+                Atualizar = ordensServico
+            };
+
             try
             {
-                var json = JsonConvert.SerializeObject(ordensServico);
+                var json = JsonConvert.SerializeObject(viewModel);
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/atualizar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -160,7 +166,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/ordensServico/Atualizar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/ordensServico/EnviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -169,32 +175,6 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
             }
-        }
-
-        public void Remover(string nome)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-
-            try
-            {
-                //monta a request para a api;
-                response = httpClient.DeleteAsync($"https://localhost:44363/ordensServico/remover?nome={nome}").Result;
-
-                var resultado = response.Content.ReadAsStringAsync().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    Console.WriteLine(resultado);
-                }
-                //converte os dados recebidos e retorna eles como objetos do C#;
-
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
         }
         public void Salvar(OrdensServico ordensServico)
         {
@@ -217,6 +197,51 @@ namespace Client.Services
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public string Remover(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            var resultado = string.Empty;
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.DeleteAsync($"https://localhost:44363/ordensServico/remover?id={id}").Result;
+
+                resultado = response.Content.ReadAsStringAsync().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine(resultado);
+                }
+                //converte os dados recebidos e retorna eles como objetos do C#;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return resultado;
+        }
+        public OrdensServicoDto ConfirmarOrdensServicos(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            try
+            {
+                response = httpClient.GetAsync($"https://localhost:44363/ordensServico/Confirmar?id={id}").Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                var objetoDesserializado = JsonConvert.DeserializeObject<OrdensServicoDto>(resultado);
+                return objetoDesserializado;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new OrdensServicoDto();
             }
         }
 

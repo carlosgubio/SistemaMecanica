@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class OrdensServicoRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
         public bool SalvarOrdemServico(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
@@ -44,24 +44,43 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-
-        public List<OrdensServicoDto> BuscarOrdemServico(string nomeVeiculoCliente)
+        public List<OrdensServicoDto> BuscarPorIDOrdemServico(int id)
         {
-            List<OrdensServicoDto> OrdensServicoEncontrados;
+            List<OrdensServicoDto> OrdemServicoEncontrados;
             try
             {
-                var query = @"SELECT * FROM OrdemServico
-                                      WHERE IdCliente = @idCliente";
+                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
+                                      WHERE NomeCliente LIKE CONCAT('%',@nomeCliente,'%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        nomeVeiculoCliente
+                        id
                     };
-                    OrdensServicoEncontrados = connection.Query<OrdensServicoDto>(query, parametros).ToList();
-                    return OrdensServicoEncontrados;
+                    OrdemServicoEncontrados = connection.Query<OrdensServicoDto>(query, parametros).ToList();
                 }
+
+                return OrdemServicoEncontrados;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+        public List<OrdensServicoDto> BuscarTodos()
+        {
+            List<OrdensServicoDto> ordensServicoEncontrados;
+            try
+            {
+                var query = @"SELECT IdOrdemServico, IdCliente, IDProfissional, IdServico, IdPeca, TotalGeral FROM OrdensServico";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    ordensServicoEncontrados = connection.Query<OrdensServicoDto>(query).ToList();
+                }
+                return ordensServicoEncontrados;
             }
             catch (Exception ex)
             {
@@ -73,15 +92,15 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE OrdensServico set IdProfissional = @idProfissional, IdCliente = @idCliente, IdServico = @idServico, IdPeca = @idpeca WHERE IdOrdemServico = @idOrdemServico";
+                var query = @"UPDATE OrdensServico set IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdPeca = @idPeca, TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idOrdemServico", id);
+                    command.Parameters.AddWithValue("@idCliente", id);
                     command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
-                    command.Parameters.AddWithValue("@idCliente", ordensServico.IdCliente);
                     command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
-                    command.Parameters.AddWithValue("@idpeca", ordensServico.IdPeca);
+                    command.Parameters.AddWithValue("@idPeca", ordensServico.IdPeca);
+                    command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -91,6 +110,46 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
+        public OrdensServicoDto ConfirmarOrdemServico(int idOrdemServico)
+        {
+            var ordemServico = new OrdensServicoDto();
+            try
+            {
+                var query = "SELECT * FROM OrdensServico WHERE IdCliente = @idCliente";
 
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        idOrdemServico
+                    };
+                    ordemServico = connection.QueryFirstOrDefault<OrdensServicoDto>(query, parametros);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                ordemServico = null;
+            }
+            return ordemServico;
+        }
+        public void DeletarOrdemServico(int id)
+        {
+            try
+            {
+                var query = "Delete From OrdensServico where IdOrdemServico = @id";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
     }
 }

@@ -173,73 +173,132 @@ namespace ConsoleApp1
                 {
                     Servicos servicos = new Servicos();
                     Console.WriteLine("Informe a Descrição da Peça que deseja atualizar:");
-                    string nome = Console.ReadLine();
+                    int id = Convert.ToInt32(Console.ReadLine());
 
                     Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
 
-                    if (servicos != null && servicos.DescricaoServico == nome)
+                    if (servicos != null && servicos.IdServico == id)
                     {
                         Console.WriteLine("A descrição da Peça cadastrada é: " + servicos.DescricaoServico + "\nDigite a nova Descrição da Peça caso deseje alterar.");
                         servicos.DescricaoServico = Console.ReadLine();
                         Console.WriteLine("O Valor da Peça cadastrada é: " + servicos.ValorServico + "\nDigite o novo Valor caso deseje alterar.");
                         servicos.ValorServico = Convert.ToSingle(Console.ReadLine());
                     }
-                    servicosServices.Atualizar(nome, servicos);
+                    servicosServices.AtualizarServico(id, servicos);
                 }
-                //if (opcoes == Opcoes.AtualizarOrdemServico)
-                //{
-                //    OrdensServico ordensServico = new OrdensServico();
-                //    Console.WriteLine("Informe a ID da ordem ao qual deseja atualizar:");
-                //    int id = Convert.ToInt32(Console.ReadLine());
+                if (opcoes == Opcoes.AtualizarOrdemServico)
+                {
+                    OrdensServico ordensServico = new OrdensServico();
+                    Console.WriteLine("Informe a ID da ordem ao qual deseja atualizar:");
+                    int id = Convert.ToInt32(Console.ReadLine());
 
-                //    Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
+                    Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
 
-                //    if (ordensServico != null && ordensServico.IdOrdemServico == id)
-                //    {
-                //        Console.WriteLine("A ID Profissional cadastrado é: " + ordensServico.IdProfissional + "\nDigite a nova ID do Profissional caso deseje alterar.");
-                //        ordensServico.IdProfissional = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("A ID Serviço cadastrado é: " + ordensServico.IdServico + "\nDigite a nova ID do Serviço caso deseje alterar.");
-                //        ordensServico.IdServico = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("A ID Descrição da Peça cadastrada é: " + ordensServico.IdPeca + "\nDigite a nova ID da Peça caso deseje alterar.");
-                //        ordensServico.IdPeca = Convert.ToInt32(Console.ReadLine());
-                //        //Console.WriteLine("O Valor da Peça cadastrada é: " + ordensServico.TotalGeral + "\nDigite o novo Valor caso deseje alterar.");
-                //        //ordensServico.TotalGeral = Convert.ToSingle(Console.ReadLine()); 
-                //    }
-                //    ordensServicoServices.Atualizar(id, ordensServico);
-                //}//Tem necessidade de alterar o Total Geral? Tem Erro no final tb
+                    if (ordensServico != null && ordensServico.IdOrdemServico == id)
+                    {
+                        Console.WriteLine("A ID Cliente cadastrada é: " + ordensServico.IdCliente + "\nDigite a nova ID do Cliente caso deseje alterar.");
+                        ordensServico.IdProfissional = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("A ID Profissional cadastrada é: " + ordensServico.IdProfissional + "\nDigite a nova ID do Profissional caso deseje alterar.");
+                        ordensServico.IdProfissional = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("A ID Serviço cadastrada é: " + ordensServico.IdServico + "\nDigite a nova ID do Serviço caso deseje alterar.");
+                        ordensServico.IdServico = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("A ID Servico cadastrada é: " + ordensServico.IdPeca + "\nDigite a nova ID da Peça caso deseje alterar.");
+                        ordensServico.IdPeca = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("O Valor da Peça cadastrada é: " + ordensServico.TotalGeral + "\nDigite o novo Valor caso deseje alterar.");
+                        ordensServico.TotalGeral = Convert.ToSingle(Console.ReadLine());
+                    }
+                    ordensServicoServices.Atualizar(id, ordensServico);
+                }//Tem necessidade de alterar o Total Geral?
                 if (opcoes == Opcoes.RemoverCliente)
                 {
-                    Console.WriteLine("Digite o nome do Cliente para remover:");
-                    string nome = Console.ReadLine();
-                   clientesServices.Remover(nome);
+                    Console.WriteLine("Digite a ID do Cliente para remover:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var cliente = clientesServices.ConfirmarClientes(id);
+                    if (cliente != null && cliente.IdCliente == id)
+                    {
+                        Console.WriteLine(cliente.IdCliente);
+                        Console.WriteLine(cliente.NomeCliente);
+                        Console.WriteLine("Digite 1 se deseja mesmo deletar:");
+                        int confirma = Convert.ToInt32(Console.ReadLine());
+                        if (confirma == 1)
+                        {
+                           var resultado = clientesServices.Remover(id);
+                            Console.WriteLine(resultado);
+                        } 
+                    }
                 }
                 if (opcoes == Opcoes.RemoverProfissional)
                 {
-                    Console.WriteLine("Digite o nome do Profissional para remover:");
-                    string nome = Console.ReadLine();
-                    profissionaisServices.Remover(nome);
+                    Console.WriteLine("Digite a ID do Profissional para remover:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var profissional = profissionaisServices.ConfirmarProfissionais(id);
+                    if (profissional != null && profissional.IdProfissional == id)
+                    {
+                        Console.WriteLine(profissional.IdProfissional);
+                        Console.WriteLine(profissional.NomeProfissional);
+                        Console.WriteLine("Digite 1 se deseja mesmo deletar:");
+                        int confirma = Convert.ToInt32(Console.ReadLine());
+                        if (confirma == 1)
+                        {
+                            var resultado = profissionaisServices.Remover(id);
+                            Console.WriteLine(resultado);
+                        }
+                    }
 
                 }
                 if (opcoes == Opcoes.RemoverProduto)
                 {
-                    Console.WriteLine("Digite o nome do Produto para remover:");
-                    string nome = Console.ReadLine();
-                    produtosServices.Remover(nome);
+                    Console.WriteLine("Digite a ID da Peça para remover:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var produto = produtosServices.ConfirmarProdutos(id);
+                    if (produto != null && produto.IdPeca == id)
+                    {
+                        Console.WriteLine(produto.IdPeca);
+                        Console.WriteLine(produto.DescricaoPeca);
+                        Console.WriteLine("Digite 1 se deseja mesmo deletar:");
+                        int confirma = Convert.ToInt32(Console.ReadLine());
+                        if (confirma == 1)
+                        {
+                            var resultado = produtosServices.Remover(id);
+                            Console.WriteLine(resultado);
+                        }
+                    }
 
                 }
                 if (opcoes == Opcoes.RemoverServico)
                 {
-                    Console.WriteLine("Digite o nome do Serviço para remover:");
-                    string nome = Console.ReadLine();
-                    servicosServices.Remover(nome);
-
+                    Console.WriteLine("Digite a ID do Serviço para remover:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var servico = servicosServices.ConfirmarServicos(id);
+                    if (servico != null && servico.IdServico == id)
+                    {
+                        Console.WriteLine(servico.IdServico);
+                        Console.WriteLine(servico.DescricaoServico);
+                        Console.WriteLine("Digite 1 se deseja mesmo deletar:");
+                        int confirma = Convert.ToInt32(Console.ReadLine());
+                        if (confirma == 1)
+                        {
+                            var resultado = servicosServices.Remover(id);
+                            Console.WriteLine(resultado);
+                        }
+                    }
                 }
                 if (opcoes == Opcoes.RemoverOrdemServico)
                 {
-                    Console.WriteLine("Digite o numero do ID da Ordem de Serviço para remover:");
-                    string id = Console.ReadLine();
-                    ordensServicoServices.Remover(id);
-
+                    Console.WriteLine("Digite a ID da Ordem de Serviço para remover:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var ordemServico = ordensServicoServices.ConfirmarOrdensServicos(id);
+                    if (ordemServico != null && ordemServico.IdOrdemServico == id)
+                    {
+                        Console.WriteLine(ordemServico.IdOrdemServico);
+                        Console.WriteLine("Digite 1 se deseja mesmo deletar:");
+                        int confirma = Convert.ToInt32(Console.ReadLine());
+                        if (confirma == 1)
+                        {
+                            var resultado = ordensServicoServices.Remover(id);
+                            Console.WriteLine(resultado);
+                        }
+                    }
                 }
                 if (opcoes == Opcoes.PesquisarCliente)
                 {

@@ -175,33 +175,6 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
-
-        public void Remover(string nome)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-
-            try
-            {
-                //monta a request para a api;
-                response = httpClient.DeleteAsync($"https://localhost:44363/clientes/remover?nome={nome}").Result;
-
-                var resultado = response.Content.ReadAsStringAsync().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    Console.WriteLine(resultado);
-                }
-                //converte os dados recebidos e retorna eles como objetos do C#;
-
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-        }
-        
         public void Salvar(Clientes clientes)
         {
             HttpClient httpClient = new HttpClient();
@@ -225,7 +198,30 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
+        public string Remover(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            var resultado = string.Empty;
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.DeleteAsync($"https://localhost:44363/clientes/remover?id={id}").Result;
 
+                resultado = response.Content.ReadAsStringAsync().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine(resultado);
+                }
+                //converte os dados recebidos e retorna eles como objetos do C#;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return resultado;
+        }
         public ClientesDto ConfirmarClientes(int id)
         {
             HttpClient httpClient = new HttpClient();

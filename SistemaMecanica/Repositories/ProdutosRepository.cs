@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ProdutosRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
         public bool SalvarProduto(CadastrarProdutoViewModel salvarProdutoViewModel)
@@ -104,6 +104,25 @@ namespace SistemaMecanica.Repositories
                 produto = null;
             }
             return produto;
+        }
+
+        public void DeletarProduto(int id)
+        {
+            try
+            {
+                var query = "Delete From Produtos where IdPeca = @id";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
         }
     }
 }

@@ -13,8 +13,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ClientesRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
         public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
@@ -139,15 +139,15 @@ namespace SistemaMecanica.Repositories
             }
             return cliente;
         }
-        public void DeletarCliente(string nome) 
+        public void DeletarCliente(int id) 
         {
             try
             {
-                var query = "Delete From Clientes where NomeCliente = @nomeCliente";
+                var query = "Delete From Clientes where IdCliente = @id";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@nomeCliente", nome);
+                    command.Parameters.AddWithValue("@id", id);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }

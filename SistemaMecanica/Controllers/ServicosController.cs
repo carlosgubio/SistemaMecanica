@@ -45,6 +45,12 @@ namespace SistemaMecanica.Controllers
             var resultado = _servicosRepository.BuscarServicos(descricaoServico);
             return Ok(resultado);
         }
+        [HttpGet]
+        public IActionResult Confirmar(int id)
+        {
+            var resultado = _servicosRepository.ConfirmarServico(id);
+            return Ok(resultado);
+        }
         [HttpPut]
         public IActionResult Atualizar(AtualizarServicoViewModel model)
         {
@@ -60,17 +66,12 @@ namespace SistemaMecanica.Controllers
             return Ok();
         }
         [HttpDelete]
-        public IActionResult Remover(string nome)
+        public IActionResult Remover(int id)
         {
-            if (string.IsNullOrEmpty(nome))
-                return NoContent();
+            if (id == 0)
+                return Ok("Ocorreu um erro!");
 
-            var servico = servicos.FirstOrDefault(x => x.DescricaoServico.Contains(nome));
-
-            if (servico == null)
-                return NotFound();
-
-            servicos.Remove(servico);
+            _servicosRepository.DeletarServico(id);
             return Ok("Removido com sucesso!");
         }
     }

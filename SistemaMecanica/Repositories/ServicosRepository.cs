@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ServicosRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
         public bool SalvarServico(CadastrarServicoViewModel cadastrarServiçoViewModel)
@@ -39,9 +39,9 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<ProdutosDto> BuscarServicos(string descricaoServico)
+        public List<ServicosDto> BuscarServicos(string descricaoServico)
         {
-            List<ProdutosDto> servicosEncontrados;
+            List<ServicosDto> servicosEncontrados;
             try
             {
                 var query = @"SELECT IdServico, DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico like CONCAT('%',@descricaoServico,'%')";
@@ -52,7 +52,7 @@ namespace SistemaMecanica.Repositories
                     {
                         descricaoServico
                     };
-                    servicosEncontrados = connection.Query<ProdutosDto>(query, parametros).ToList();
+                    servicosEncontrados = connection.Query<ServicosDto>(query, parametros).ToList();
                     return servicosEncontrados;
                 }
             }
@@ -73,6 +73,47 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@idServico", id);
                     command.Parameters.AddWithValue("@descricaoServico", servicos.DescricaoServico);
                     command.Parameters.AddWithValue("@valorServico", servicos.ValorServico);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
+        public ServicosDto ConfirmarServico(int idServico)
+        {
+            var servico = new ServicosDto();
+            try
+            {
+                var query = "SELECT * FROM Servicos WHERE IdServico = @idServico";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        idServico
+                    };
+                    servico = connection.QueryFirstOrDefault<ServicosDto>(query, parametros);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                servico = null;
+            }
+            return servico;
+        }
+        public void DeletarServico(int id)
+        {
+            try
+            {
+                var query = "Delete From Servicos where IdServico = @id";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@id", id);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }

@@ -48,8 +48,14 @@ namespace SistemaMecanica.Controllers
             var resultado = _produtosRepository.BuscarPorNomeProduto(descricaoProdutos);
             return Ok(resultado);
         }
+        [HttpGet]
+        public IActionResult Confirmar(int id)
+        {
+            var resultado = _produtosRepository.ConfirmarProduto(id);
+            return Ok(resultado);
+        }
         [HttpPut]
-        public IActionResult AtualizarProduto(AtualizarProdutoViewModel model)
+        public IActionResult Atualizar(AtualizarProdutoViewModel model)
         {
             if (model == null)
                 return NoContent();
@@ -62,24 +68,13 @@ namespace SistemaMecanica.Controllers
             return Ok();
         }
         [HttpDelete]
-        public IActionResult Remover(string nome)
+        public IActionResult Remover(int id)
         {
-            if (string.IsNullOrEmpty(nome))
-                return NoContent();
+            if (id == 0)
+            return Ok("Ocorreu um erro!");
 
-            var produto = produtos.FirstOrDefault(x => x.DescricaoPeca.Contains(nome));
-
-            if (produto == null)
-                return NotFound();
-
-            produtos.Remove(produto);
+            _produtosRepository.DeletarProduto(id);
             return Ok("Removido com sucesso!");
-        }
-        [HttpGet]
-        public IActionResult ConfirmarOProduto(int id)
-        {
-            var resultado = _produtosRepository.ConfirmarProduto(id);
-            return Ok(resultado);
         }
     }
 }

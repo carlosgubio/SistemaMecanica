@@ -176,17 +176,17 @@ namespace Client.Services
             }
         }
 
-        public void Remover(string nome)
+        public string Remover(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             try
             {
                 //monta a request para a api;
-                response = httpClient.DeleteAsync($"https://localhost:44363/servicos/remover?nome={nome}").Result;
+                response = httpClient.DeleteAsync($"https://localhost:44363/produtos/remover?id={id}").Result;
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
@@ -198,6 +198,7 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
        
         public void Salvar(Produtos produtos)
@@ -230,7 +231,7 @@ namespace Client.Services
             HttpResponseMessage response;
             try
             {
-                response = httpClient.GetAsync($"https://localhost:44363/produtos/ConfirmarOProduto?id={id}").Result;
+                response = httpClient.GetAsync($"https://localhost:44363/produtos/Confirmar?id={id}").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;

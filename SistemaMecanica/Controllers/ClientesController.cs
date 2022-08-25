@@ -93,18 +93,13 @@ namespace SistemaMecanica.Controllers
             return Ok();
         }
         [HttpDelete]
-        public IActionResult Remover(string nome) 
+        public IActionResult Remover(int id) 
         {
-            if (string.IsNullOrEmpty(nome))
-                return NoContent();
+            if (id == 0)
+            return Ok ("Ocorreu um erro!");
 
-            var cliente = clientes.FirstOrDefault(x=> x.NomeCliente.Contains(nome));
-
-            if (cliente == null)
-                return NotFound();
-
-            _clientesRepository.DeletarCliente(nome);
-            return Ok("Removido com sucesso!");
+            _clientesRepository.DeletarCliente(id);
+            return Ok ("Removido com sucesso!");
         }
         
     }

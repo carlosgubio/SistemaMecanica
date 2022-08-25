@@ -54,9 +54,25 @@ namespace SistemaMecanica.Controllers
             return Ok("Houve um problema ao salvar. Ordem de Serviço não cadastrada.");
         }
         [HttpGet]
-        public IActionResult Consultar(string nomeVeiculoCliente)
+        public IActionResult Consultar(int id)
         {
-            var resultado = _ordensServicoRepository.BuscarOrdemServico(nomeVeiculoCliente);
+            var resultado = _ordensServicoRepository.BuscarPorIDOrdemServico(id);
+            return Ok(resultado);
+        }
+        [HttpGet]
+        public IActionResult BuscarTodas()
+        {
+            var resultado = _ordensServicoRepository.BuscarTodos();
+
+            if (resultado == null)
+                return NotFound();
+
+            return Ok(resultado);
+        }
+        [HttpGet]
+        public IActionResult Confirmar(int id)
+        {
+            var resultado = _ordensServicoRepository.ConfirmarOrdemServico(id);
             return Ok(resultado);
         }
         [HttpPut]
@@ -68,23 +84,17 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             if (model.Encontrar == 0)
                 return NoContent();
-
             _ordensServicoRepository.Atualizar(model.Atualizar, model.Encontrar);
-            
+
             return Ok();
         }
         [HttpDelete]
         public IActionResult Remover(int id)
         {
             if (id == 0)
-                return NoContent();
+                return Ok("Ocorreu um erro!");
 
-            var ordemServico = ordensServico.FirstOrDefault(x => x.IdOrdemServico == id);
-
-            if (ordemServico == null)
-                return NotFound();
-
-            ordensServico.Remove(ordemServico);
+            _ordensServicoRepository.DeletarOrdemServico(id);
             return Ok("Removido com sucesso!");
         }
     }

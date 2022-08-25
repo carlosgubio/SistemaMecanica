@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ProfissionaisRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
         public bool SalvarProfissional(CadastrarProfissionalViewModel salvarProfissionalViewModel)
         {
@@ -83,7 +83,7 @@ namespace SistemaMecanica.Repositories
         }
         public ProfissionaisDto ConfirmarProfissional(int idProfissional)
         {
-            var Profissional = new ProfissionaisDto();
+            var profissional = new ProfissionaisDto();
             try
             {
                 var query = "SELECT * FROM Profissionais WHERE IdProfissional = @idProfissional";
@@ -94,15 +94,34 @@ namespace SistemaMecanica.Repositories
                     {
                         idProfissional
                     };
-                    Profissional = connection.QueryFirstOrDefault<ProfissionaisDto>(query, parametros);
+                    profissional = connection.QueryFirstOrDefault<ProfissionaisDto>(query, parametros);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
-                Profissional = null;
+                profissional = null;
             }
-            return Profissional;
+            return profissional;
         }
+        public void DeletarProfissional(int id)
+        {
+            try
+            {
+                var query = "Delete From Profissionais where IdProfissional = @id";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
+
     }
 }

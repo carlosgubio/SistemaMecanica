@@ -116,16 +116,20 @@ namespace Client.Services
             }
         }
 
-        public void Atualizar(string nome, Servicos servicos)
+        public void AtualizarServico(int id, Servicos servicos)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var viewModel = new
+            {
+                Encontrar = id,
+                Atualizar = servicos
+            };
             try
             {
                 var json = JsonConvert.SerializeObject(servicos);
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44363/servicos/atualizar?nome={nome}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/servicos/atualizar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
@@ -214,6 +218,50 @@ namespace Client.Services
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+        public string Remover(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            var resultado = string.Empty;
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.DeleteAsync($"https://localhost:44363/servicos/remover?id={id}").Result;
+
+                resultado = response.Content.ReadAsStringAsync().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.WriteLine(resultado);
+                }
+                //converte os dados recebidos e retorna eles como objetos do C#;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return resultado;
+        }
+        public ServicosDto ConfirmarServicos(int id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            try
+            {
+                response = httpClient.GetAsync($"https://localhost:44363/servicos/Confirmar?id={id}").Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                var objetoDesserializado = JsonConvert.DeserializeObject<ServicosDto>(resultado);
+                return objetoDesserializado;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ServicosDto();
             }
         }
     }
