@@ -58,9 +58,9 @@ namespace SistemaMecanica.Controllers
             return Ok("Houve um problema ao salvar. Pessoa não cadastrada.");
         }
         [HttpGet]
-        public IActionResult ConsultaPorNome(string nomeCliente)
+        public IActionResult ConsultaNome(string nome )
         {
-            var resultado = _clientesRepository.BuscarPorNomeCliente(nomeCliente);
+            var resultado = _clientesRepository.BuscarPorNome(nome);
             return Ok(resultado);
         }
         [HttpGet]
@@ -76,7 +76,7 @@ namespace SistemaMecanica.Controllers
         [HttpGet]
         public IActionResult Confirmar(int id)
         {
-            var resultado = _clientesRepository.ConfirmarCliente(id);
+            var resultado = _clientesRepository.Confirmar(id);
             return Ok(resultado);
         }
         [HttpPut]

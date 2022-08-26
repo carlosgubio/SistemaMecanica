@@ -37,18 +37,18 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<ProfissionaisDto> BuscarProfissionais(string nomeProfissional)
+        public List<ProfissionaisDto> BuscarPorNome(string nome)
         {
             List<ProfissionaisDto> profissionaisEncontrados;
             try
             {
-                var query = @"SELECT IdProfissional, NomeProfissional, CargoProfissional FROM Profissionais WHERE NomeProfissional like CONCAT('%',@nomeProfissional,'%')";
+                var query = @"SELECT IdProfissional, NomeProfissional, CargoProfissional FROM Profissionais WHERE NomeProfissional = @nome";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        nomeProfissional
+                        nome
                     };
                     profissionaisEncontrados = connection.Query<ProfissionaisDto>(query, parametros).ToList();
 
@@ -122,6 +122,5 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-
     }
 }

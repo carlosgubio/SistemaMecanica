@@ -23,27 +23,27 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarProfissionalViewModel salvarProfissionalViewModel)
+        public IActionResult Cadastrar(CadastrarProfissionalViewModel cadastrarProfissionalViewModel)
         {
-            if (salvarProfissionalViewModel == null)
+            if (cadastrarProfissionalViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (salvarProfissionalViewModel.NomeProfissional == null)
+            if (cadastrarProfissionalViewModel.NomeProfissional == null)
                 return Ok("Dados do profissional não informados.");
 
-            if (salvarProfissionalViewModel.CargoProfissional == null)
-                throw new ArgumentNullException($"campo {nameof(salvarProfissionalViewModel.CargoProfissional)} vazio ou nulo.");
+            if (cadastrarProfissionalViewModel.CargoProfissional == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarProfissionalViewModel.CargoProfissional)} vazio ou nulo.");
 
-            var resultado = _profissionaisRepository.SalvarProfissional(salvarProfissionalViewModel);
+            var resultado = _profissionaisRepository.SalvarProfissional(cadastrarProfissionalViewModel);
 
             if (resultado) return Ok("Profissional cadastrado com sucesso.");
 
             return Ok("Houve um problema ao salvar. Profissional não cadastrado.");
         }
         [HttpGet]
-        public IActionResult ConsultaPorNome(string nome)
+        public IActionResult ConsultaNome(string nome)
         {
-        var resultado = _profissionaisRepository.BuscarProfissionais(nome);
+        var resultado = _profissionaisRepository.BuscarPorNome(nome);
             return Ok(resultado);
         }
         [HttpGet]

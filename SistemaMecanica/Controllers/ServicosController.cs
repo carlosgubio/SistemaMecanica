@@ -40,15 +40,15 @@ namespace SistemaMecanica.Controllers
             return Ok("Houve um problema ao salvar. Serviço não cadastrado.");
         }
         [HttpGet]
-        public IActionResult ConsultaPorNome(string descricaoServico)
+        public IActionResult ConsultaNome(string nome)
         {
-            var resultado = _servicosRepository.BuscarServicos(descricaoServico);
+            var resultado = _servicosRepository.BuscarPorNome(nome);
             return Ok(resultado);
         }
         [HttpGet]
         public IActionResult Confirmar(int id)
         {
-            var resultado = _servicosRepository.ConfirmarServico(id);
+            var resultado = _servicosRepository.Confirmar(id);
             return Ok(resultado);
         }
         [HttpPut]

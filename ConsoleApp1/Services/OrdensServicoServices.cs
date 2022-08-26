@@ -224,7 +224,7 @@ namespace Client.Services
             }
             return resultado;
         }
-        public OrdensServicoDto ConfirmarOrdensServicos(int id)
+        public OrdensServicoDto Confirmar(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;

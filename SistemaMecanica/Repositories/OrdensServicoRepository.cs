@@ -92,7 +92,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE OrdensServico set IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdPeca = @idPeca, TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
+                var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdPeca = @idPeca, TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -110,12 +110,12 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public OrdensServicoDto ConfirmarOrdemServico(int idOrdemServico)
+        public OrdensServicoDto Confirmar(int idOrdemServico)
         {
             var ordemServico = new OrdensServicoDto();
             try
             {
-                var query = "SELECT * FROM OrdensServico WHERE IdCliente = @idCliente";
+                var query = "SELECT * FROM OrdensServico WHERE IdOrdemServico = @idOrdemServico";
 
                 using (var connection = new SqlConnection(_connection))
                 {

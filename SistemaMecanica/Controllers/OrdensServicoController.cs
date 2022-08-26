@@ -72,7 +72,7 @@ namespace SistemaMecanica.Controllers
         [HttpGet]
         public IActionResult Confirmar(int id)
         {
-            var resultado = _ordensServicoRepository.ConfirmarOrdemServico(id);
+            var resultado = _ordensServicoRepository.Confirmar(id);
             return Ok(resultado);
         }
         [HttpPut]

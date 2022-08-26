@@ -39,18 +39,18 @@ namespace SistemaMecanica.Repositories
 
             }
         }
-        public List<ProdutosDto> BuscarPorNomeProduto(string descricaoProduto)
+        public List<ProdutosDto> BuscarPorNome(string nome)
         {
             List<ProdutosDto> produtosEncontrados;
             try
             {
-                var query = @"SELECT IdPeca, DescricaoProduto, ValorProduto FROM Produtos WHERE DescricaoProduto like CONCAT('%',@descricaoProduto,'%')";
+                var query = @"SELECT IdPeca, DescricaoPeca, ValorPeca FROM Produtos WHERE DescricaoPeca = @nome";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        descricaoProduto
+                        nome
                     };
                     produtosEncontrados = connection.Query<ProdutosDto>(query, parametros).ToList();
                 }  

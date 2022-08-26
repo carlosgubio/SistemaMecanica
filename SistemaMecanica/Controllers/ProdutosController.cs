@@ -25,27 +25,27 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarProdutoViewModel salvarProdutoViewModel)
+        public IActionResult Cadastrar(CadastrarProdutoViewModel cadastrarProdutoViewModel)
         {
-            if (salvarProdutoViewModel == null)
+            if (cadastrarProdutoViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (salvarProdutoViewModel.DescricaoPeca == null)
+            if (cadastrarProdutoViewModel.DescricaoPeca == null)
                 return Ok("Dados do produto não informados.");
 
-            if (salvarProdutoViewModel.ValorPeca == 0)
-                throw new ArgumentNullException($"campo {nameof(salvarProdutoViewModel.ValorPeca)} vazio ou nulo.");
+            if (cadastrarProdutoViewModel.ValorPeca == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarProdutoViewModel.ValorPeca)} vazio ou nulo.");
 
-            var resultado = _produtosRepository.SalvarProduto(salvarProdutoViewModel);
+            var resultado = _produtosRepository.SalvarProduto(cadastrarProdutoViewModel);
 
             if (resultado) return Ok("Produto cadastrado com sucesso.");
 
             return Ok("Houve um problema ao salvar. Produto não cadastrado.");
         }
         [HttpGet]
-        public IActionResult ConsultaPorNome(string descricaoProdutos)
+        public IActionResult ConsultaNome(string nome)
         {
-            var resultado = _produtosRepository.BuscarPorNomeProduto(descricaoProdutos);
+            var resultado = _produtosRepository.BuscarPorNome(nome);
             return Ok(resultado);
         }
         [HttpGet]

@@ -46,19 +46,19 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<ClientesDto> BuscarPorNomeCliente(string nomeCliente)
+        public List<ClientesDto> BuscarPorNome(string nome)
         {
             List<ClientesDto> ClientesEncontrados;
             try
             {
                 var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
-                                      WHERE NomeCliente LIKE CONCAT('%',@nomeCliente,'%')";
+                                      WHERE NomeCliente = @nome";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        nomeCliente
+                        nome
                     };
                     ClientesEncontrados = connection.Query<ClientesDto>(query, parametros).ToList();
                 }
@@ -94,7 +94,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Clientes set NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente,
+                var query = @"UPDATE Clientes SET NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente,
                             VeiculoCliente = @veiculoCliente, PlacaVeiculoCliente = @placaVeiculoCliente, CorVeiculoCliente = @corVeiculoCliente WHERE IdCliente = @idCliente";
                 using (var sql = new SqlConnection(_connection))
                 {
@@ -116,7 +116,7 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public ClientesDto ConfirmarCliente(int idCliente)
+        public ClientesDto Confirmar(int idCliente)
         {
             var cliente = new ClientesDto();
             try

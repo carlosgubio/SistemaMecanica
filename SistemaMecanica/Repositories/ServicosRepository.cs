@@ -39,18 +39,18 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<ServicosDto> BuscarServicos(string descricaoServico)
+        public List<ServicosDto> BuscarPorNome(string nome)
         {
             List<ServicosDto> servicosEncontrados;
             try
             {
-                var query = @"SELECT IdServico, DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico like CONCAT('%',@descricaoServico,'%')";
+                var query = @"SELECT IdServico, DescricaoServico, ValorServico FROM Servicos WHERE DescricaoServico = @nome";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        descricaoServico
+                        nome
                     };
                     servicosEncontrados = connection.Query<ServicosDto>(query, parametros).ToList();
                     return servicosEncontrados;
@@ -66,7 +66,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Servicos set DescricaoServico = @descricaoServico, ValorServico = @valorServico, WHERE IdServico = @idServico";
+                var query = @"UPDATE Servicos SET DescricaoServico = @descricaoServico, ValorServico = @valorServico WHERE IdServico = @idServico";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -82,7 +82,7 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public ServicosDto ConfirmarServico(int idServico)
+        public ServicosDto Confirmar(int idServico)
         {
             var servico = new ServicosDto();
             try
