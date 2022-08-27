@@ -11,7 +11,7 @@ namespace SistemaMecanica.ViewModelsBuscar
         public int IdProfissional { get; set; }
         public int IdCliente { get; set; }
         public int IdServico { get; set; }
-        public int IdPeca { get; set; }
+        public int IdProduto { get; set; }
         public float TotalGeral { get; set; }
     }
 }

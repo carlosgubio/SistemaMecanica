@@ -28,9 +28,6 @@ namespace SistemaMecanica.Controllers
             if (cadastrarOrdemServicoViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (cadastrarOrdemServicoViewModel.IdOrdemServico == 0)
-                return Ok("Dados da Ordem de Servico não informados.");
-            
             if (cadastrarOrdemServicoViewModel.IdProfissional == 0)
                 throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdProfissional)} vazio ou nulo.");
             
@@ -38,13 +35,7 @@ namespace SistemaMecanica.Controllers
                 throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdCliente)} vazio ou nulo.");
 
             if (cadastrarOrdemServicoViewModel.IdServico == 0)
-                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");
-
-            if (cadastrarOrdemServicoViewModel.IdPeca == 0)
-                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdPeca)} vazio ou nulo.");
-
-            if (cadastrarOrdemServicoViewModel.TotalGeral == 0)
-                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.TotalGeral)} vazio ou nulo.");
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");                        
 
 
             var resultado = _ordensServicoRepository.SalvarOrdemServico(cadastrarOrdemServicoViewModel);
@@ -57,7 +48,7 @@ namespace SistemaMecanica.Controllers
         public IActionResult Consultar(int id)
         {
             var resultado = _ordensServicoRepository.BuscarPorIDOrdemServico(id);
-            return Ok(resultado);
+            return Ok(resultado);            
         }
         [HttpGet]
         public IActionResult BuscarTodas()
@@ -97,5 +88,8 @@ namespace SistemaMecanica.Controllers
             _ordensServicoRepository.DeletarOrdemServico(id);
             return Ok("Removido com sucesso!");
         }
+        
+    
+    
     }
 }

@@ -44,7 +44,7 @@ namespace SistemaMecanica.Repositories
             List<ProdutosDto> produtosEncontrados;
             try
             {
-                var query = @"SELECT IdPeca, DescricaoPeca, ValorPeca FROM Produtos WHERE DescricaoPeca = @nome";
+                var query = @"SELECT IdProduto, DescricaoPeca, ValorPeca FROM Produtos WHERE DescricaoPeca = @nome";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -66,11 +66,11 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Produtos set DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca WHERE IdPeca = @idPeca";
+                var query = @"UPDATE Produtos set DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca WHERE IdProduto = @idProduto";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idPeca", id);
+                    command.Parameters.AddWithValue("@idProduto", id);
                     command.Parameters.AddWithValue("@descricaoPeca", produtos.DescricaoPeca);
                     command.Parameters.AddWithValue("@valorPeca", produtos.ValorPeca);
                     command.Connection.Open();
@@ -82,18 +82,18 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public ProdutosDto ConfirmarProduto(int idPeca)
+        public ProdutosDto ConfirmarProduto(int idProduto)
         {
             var produto = new ProdutosDto();
             try
             {
-                var query = "SELECT * FROM Produtos WHERE IdPeca = @idPeca";
+                var query = "SELECT * FROM Produtos WHERE IdProduto = @idProduto";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        idPeca
+                        idProduto
                     };
                     produto = connection.QueryFirstOrDefault<ProdutosDto>(query, parametros);
                 }
@@ -110,7 +110,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = "Delete From Produtos where IdPeca = @id";
+                var query = "Delete From Produtos where idProduto = @id";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);

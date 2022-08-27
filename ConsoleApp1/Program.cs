@@ -106,11 +106,27 @@ namespace ConsoleApp1
                     ordensServico.IdProfissional = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Informe o Id do Serviço:");
                     ordensServico.IdServico = Convert.ToInt32(Console.ReadLine());
+                    
+                    List<int> idsProdutos = new List<int>();
+
                     Console.WriteLine("Informe o Id da Peça:");
-                    ordensServico.IdPeca = Convert.ToInt32(Console.ReadLine());
+                    int idProduto = Convert.ToInt32(Console.ReadLine());
+                    idsProdutos.Add(idProduto);
+                    Console.WriteLine("Deseja inserir mais uma peça? 0-Não 1-Sim ");
+                    int opcao = Convert.ToInt32(Console.ReadLine());
+                    while (opcao != 0) 
+                    {
+                        Console.WriteLine("Informe o Id da Peça:");
+                        idProduto = Convert.ToInt32(Console.ReadLine());
+                        idsProdutos.Add(idProduto);
+                        Console.WriteLine("Deseja inserir mais uma peça? 0-Não 1-Sim ");
+                        opcao = Convert.ToInt32(Console.ReadLine());
+                    }
+
+                    ordensServico.IdItens = idsProdutos;
 
                     ordensServicoServices.Salvar(ordensServico);
-                } // não está salvando. Precisa inserir o ValorTotal?
+                } //
                 if (opcoes == Opcoes.AtualizarCliente)
                 {
                     Clientes clientes = new Clientes();
@@ -160,7 +176,7 @@ namespace ConsoleApp1
                     int id = Convert.ToInt32(Console.ReadLine());
                     var produtoRetorno = produtosServices.Confirmar(id);
 
-                    if (produtoRetorno != null && produtoRetorno.IdPeca == id)
+                    if (produtoRetorno != null && produtoRetorno.IdProduto == id)
                     {
                         Console.WriteLine("A descrição da Peça cadastrada é: " + produtoRetorno.DescricaoPeca + "\nDigite a nova Descriação da Peça caso deseje alterar.");
                         produtoRetorno.DescricaoPeca = Console.ReadLine();
@@ -202,8 +218,8 @@ namespace ConsoleApp1
                 //        ordemServicoRetorno.IdProfissional = Convert.ToInt32(Console.ReadLine());
                 //        Console.WriteLine("A ID Serviço cadastrada é: " + ordemServicoRetorno.IdServico + "\nDigite a nova ID do Serviço caso deseje alterar.");
                 //        ordemServicoRetorno.IdServico = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("A ID Servico cadastrada é: " + ordemServicoRetorno.IdPeca + "\nDigite a nova ID da Peça caso deseje alterar.");
-                //        ordemServicoRetorno.IdPeca = Convert.ToInt32(Console.ReadLine());
+                //        Console.WriteLine("A ID Servico cadastrada é: " + ordemServicoRetorno.IdProduto + "\nDigite a nova ID da Peça caso deseje alterar.");
+                //        ordemServicoRetorno.IdProduto = Convert.ToInt32(Console.ReadLine());
                 //        Console.WriteLine("O Valor da Peça cadastrada é: " + ordemServicoRetorno.TotalGeral + "\nDigite o novo Valor caso deseje alterar.");
                 //        ordemServicoRetorno.TotalGeral = Convert.ToSingle(Console.ReadLine());
                 //        ordensServicoServices.Atualizar(id, ordemServicoRetorno);
@@ -251,9 +267,9 @@ namespace ConsoleApp1
                     Console.WriteLine("Digite a ID da Peça para remover:");
                     int id = Convert.ToInt32(Console.ReadLine());
                     var produto = produtosServices.Confirmar(id);
-                    if (produto != null && produto.IdPeca == id)
+                    if (produto != null && produto.IdProduto == id)
                     {
-                        Console.WriteLine(produto.IdPeca);
+                        Console.WriteLine(produto.IdProduto);
                         Console.WriteLine(produto.DescricaoPeca);
                         Console.WriteLine("Digite 1 se deseja mesmo deletar:");
                         int confirma = Convert.ToInt32(Console.ReadLine());
@@ -307,8 +323,7 @@ namespace ConsoleApp1
                     List<ClientesDto> clientes = new List<ClientesDto>();
                     if (nome != null)
                     {
-                        Console.WriteLine(nome);
-                        clientes = clientesServices.BuscarPorNome(nome);
+                        Console.WriteLine(nome);                        clientes = clientesServices.BuscarPorNome(nome);
                         foreach (var item in clientes)
                         {
                             Console.WriteLine("=================================");

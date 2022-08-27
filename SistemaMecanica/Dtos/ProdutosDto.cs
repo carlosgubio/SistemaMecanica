@@ -7,7 +7,7 @@ namespace SistemaMecanica.Dtos
 {
     public class ProdutosDto
     {
-        public int IdPeca { get; set; }
+        public int IdProduto { get; set; }
         public string DescricaoPeca { get; set; }
         public float ValorPeca { get; set; }
     }

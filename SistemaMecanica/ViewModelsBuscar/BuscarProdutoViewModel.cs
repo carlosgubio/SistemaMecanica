@@ -7,7 +7,7 @@ namespace SistemaMecanica.ViewModelsBuscar
 {
     public class BuscarProdutoViewModel
     {
-        public string IdPeca { get; set; }
+        public string IdProduto { get; set; }
         public string DescricaoPeca { get; set; }
         public float ValorPeca { get; set; }
     }

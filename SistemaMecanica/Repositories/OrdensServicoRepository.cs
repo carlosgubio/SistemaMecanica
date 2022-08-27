@@ -19,20 +19,27 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
+                int idOrdemCriada = -1;
                 var query = @"INSERT INTO OrdensServico 
-                              (IdProfissional, IdCliente, IdServico, IdPeca, TotalGeral) 
-                              OUTPUT Inserted.Id
-                              VALUES (@idProfissional,@idCliente,@idServico,@idPeca,@totalGeral)";
+                              (IdCliente, IdProfissional, IdServico) OUTPUT Inserted.IdOrdemServico VALUES (@idCliente,@idProfissional,@idServico)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
                     command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
-                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
-                    command.Parameters.AddWithValue("@idPeca", cadastrarOrdemServicoViewModel.IdPeca);
-                    command.Parameters.AddWithValue("@totalGeral", cadastrarOrdemServicoViewModel.TotalGeral);
+                    command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
+                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);                                        
                     command.Connection.Open();
-                    command.ExecuteNonQuery();
+                    idOrdemCriada =  (int)command.ExecuteScalar();
+                }
+
+                VincularItensOs(cadastrarOrdemServicoViewModel.IdItens, idOrdemCriada);
+
+                var os = BuscarPorIDOrdemServico(idOrdemCriada);
+
+                if(os != null) 
+                {
+                    os.TotalGeral = CalcularTotalOrdemServico(idOrdemCriada);
+                    AtualizarTotalGeralOs(os);
                 }
 
                 Console.WriteLine("Ordem de Servico cadastrada com sucesso!");
@@ -44,13 +51,35 @@ namespace SistemaMecanica.Repositories
                 return false;
             }
         }
-        public List<OrdensServicoDto> BuscarPorIDOrdemServico(int id)
+        public void AtualizarTotalGeralOs(OrdensServicoDto ordensServicoDto)
         {
-            List<OrdensServicoDto> OrdemServicoEncontrados;
             try
             {
-                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
-                                      WHERE NomeCliente LIKE CONCAT('%',@nomeCliente,'%')";
+                var query = @"UPDATE OrdensServico SET TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idOrdemServico", ordensServicoDto.IdOrdemServico);
+                    command.Parameters.AddWithValue("@totalGeral", ordensServicoDto.TotalGeral);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
+        public OrdensServicoDto BuscarPorIDOrdemServico(int id)
+        {            
+            try
+            {
+                var query = @"select  IdOrdemServico
+                                      ,IdCliente
+                                      ,IdProfissional
+                                      ,IdServico                                                                            
+                                  from OrdensServico
+                                  where IdOrdemServico = @id";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -58,10 +87,8 @@ namespace SistemaMecanica.Repositories
                     {
                         id
                     };
-                    OrdemServicoEncontrados = connection.Query<OrdensServicoDto>(query, parametros).ToList();
+                    return connection.QueryFirst<OrdensServicoDto>(query, parametros);
                 }
-
-                return OrdemServicoEncontrados;
             }
             catch (Exception ex)
             {
@@ -74,7 +101,7 @@ namespace SistemaMecanica.Repositories
             List<OrdensServicoDto> ordensServicoEncontrados;
             try
             {
-                var query = @"SELECT IdOrdemServico, IdCliente, IDProfissional, IdServico, IdPeca, TotalGeral FROM OrdensServico";
+                var query = @"SELECT IdOrdemServico, IdCliente, IDProfissional, IdServico, IdProduto, TotalGeral FROM OrdensServico";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -92,14 +119,14 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdPeca = @idPeca, TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
+                var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
                     command.Parameters.AddWithValue("@idCliente", id);
                     command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
                     command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
-                    command.Parameters.AddWithValue("@idPeca", ordensServico.IdPeca);
+                    command.Parameters.AddWithValue("@idProduto", ordensServico.IdProduto);
                     command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
@@ -150,6 +177,49 @@ namespace SistemaMecanica.Repositories
             {
                 Console.WriteLine("Erro: " + ex.Message);
             }
+        }
+        public void VincularItensOs(List<int> idItens, int idOrdemServico)  
+        {
+            foreach (var item in idItens) 
+            {
+                var sql = @"insert into Itens (IdProduto, IdOrdemServico) values (@idProduto, @idOrdemServico)";
+
+                var parametros = new 
+                {
+                    idProduto = item,
+                    idOrdemServico
+                };
+
+                try 
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex) 
+                {
+                    Console.WriteLine($"Erro ao salvar Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
+        public float CalcularTotalOrdemServico (int idOrdemServico)
+        {
+            var query = @"select (select sum(pr.ValorPeca) from Servicos s
+                            inner join OrdensServico os on s.IdServico = os.IdServico
+                            inner join Itens p on p.IdOrdemServico = os.IdOrdemServico
+                            inner join Produtos pr on p.IdProduto = pr.IdProduto
+                            where os.IdOrdemServico = @idOrdemServico) + (select s.ValorServico from Servicos s
+                            inner join OrdensServico os on s.IdServico = os.IdServico where IdOrdemServico = @idOrdemServico) as ValorTotalServico";
+            var parametros = new
+            {
+                idOrdemServico
+            };
+            using (var connection = new SqlConnection(_connection))
+            {
+                var res = connection.QuerySingle<float>(query,parametros);
+                return res;
+            }           
         }
     }
 }
