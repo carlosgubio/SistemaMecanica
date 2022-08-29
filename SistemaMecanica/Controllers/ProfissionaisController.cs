@@ -29,17 +29,18 @@ namespace SistemaMecanica.Controllers
                 return Ok("Não foram informados dados");
 
             if (cadastrarProfissionalViewModel.NomeProfissional == null)
-                return Ok("Dados do profissional não informados.");
+                return Ok("Dados do Profissional não informados.");
 
             if (cadastrarProfissionalViewModel.CargoProfissional == null)
                 throw new ArgumentNullException($"campo {nameof(cadastrarProfissionalViewModel.CargoProfissional)} vazio ou nulo.");
 
-            var resultado = _profissionaisRepository.SalvarProfissional(cadastrarProfissionalViewModel);
+            var resultado = _profissionaisRepository.Salvar(cadastrarProfissionalViewModel);
 
             if (resultado) return Ok("Profissional cadastrado com sucesso.");
 
             return Ok("Houve um problema ao salvar. Profissional não cadastrado.");
         }
+        
         [HttpGet]
         public IActionResult ConsultaNome(string nome)
         {
@@ -49,9 +50,10 @@ namespace SistemaMecanica.Controllers
         [HttpGet]
         public IActionResult Confirmar(int id)
         {
-            var resultado = _profissionaisRepository.ConfirmarProfissional(id);
+            var resultado = _profissionaisRepository.Confirmar(id);
             return Ok(resultado);
         }
+        
         [HttpPut]
         public IActionResult Atualizar(AtualizarProfisionalViewModel model)
         {
@@ -66,13 +68,14 @@ namespace SistemaMecanica.Controllers
 
             return Ok();
         }
+        
         [HttpDelete]
         public IActionResult Remover(int id)
         {
             if (id == 0)
                 return Ok("Ocorreu um erro!");
 
-            _profissionaisRepository.DeletarProfissional(id);
+            _profissionaisRepository.Deletar(id);
             return Ok("Removido com sucesso!");
         }
        

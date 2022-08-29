@@ -17,7 +17,7 @@ namespace SistemaMecanica.Repositories
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
-        public bool SalvarCliente(CadastrarClienteViewModel salvarPessoaViewModel)
+        public bool Salvar(CadastrarClienteViewModel salvarPessoaViewModel)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace SistemaMecanica.Repositories
             }
             return cliente;
         }
-        public void DeletarCliente(int id) 
+        public void Deletar(int id) 
         {
             try
             {

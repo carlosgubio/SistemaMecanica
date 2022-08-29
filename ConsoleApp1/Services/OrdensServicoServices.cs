@@ -10,6 +10,30 @@ namespace Client.Services
 {
     public class OrdensServicoServices
     {
+        public void Salvar(OrdensServico ordensServico)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+
+            var json = JsonConvert.SerializeObject(ordensServico);
+
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.PostAsync("https://localhost:44363/ordensServico/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response.EnsureSuccessStatusCode();
+
+                var resultado = response.Content.ReadAsStringAsync().Result;
+
+                //converte os dados recebidos e retorna eles como objetos do C#;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         public List<OrdensServicoDto> BuscarTodasOrdensServico()
         {
             HttpClient httpClient = new HttpClient();
@@ -19,7 +43,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.GetAsync("https://localhost:44363/ordensservico/BuscarTodasOrdensServico").Result;
+                response = httpClient.GetAsync("https://localhost:44363/ordensservico/buscarTodasOrdensServico").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -52,7 +76,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/ordensservico/BuscarTodasOrdensServico", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/ordensservico/buscarTodasOrdensServico", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -72,7 +96,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.GetAsync("https://localhost:44363/servicos/BuscarPorIdOrdemServico").Result;
+                response = httpClient.GetAsync("https://localhost:44363/servicos/buscarPorIdOrdemServico").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -88,7 +112,7 @@ namespace Client.Services
                 return new List<OrdensServicoDto>();
             }
         }
-        public void EnviarBuscaPorIdOrdemServico(OrdensServico ordensServicos)
+        public void EnviarBusca(OrdensServico ordensServicos)
         {
             //recebe os dados para enviar para a API cria a viewModel que será enviada;
             var viewModel = new
@@ -116,7 +140,6 @@ namespace Client.Services
             }
         }
 
-
         public void Atualizar(int id, OrdensServico ordensServico)
         {
             HttpClient httpClient = new HttpClient();
@@ -127,7 +150,6 @@ namespace Client.Services
                 Encontrar = id,
                 Atualizar = ordensServico
             };
-
             try
             {
                 var json = JsonConvert.SerializeObject(viewModel);
@@ -142,7 +164,6 @@ namespace Client.Services
                 }
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
-
             }
             catch (HttpRequestException ex)
             {
@@ -166,7 +187,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/ordensServico/EnviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/ordensServico/enviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -176,30 +197,7 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        public void Salvar(OrdensServico ordensServico)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-
-            var json = JsonConvert.SerializeObject(ordensServico);
-
-            try
-            {
-                //monta a request para a api;
-                response = httpClient.PostAsync("https://localhost:44363/ordensServico/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
-                response.EnsureSuccessStatusCode();
-
-                var resultado = response.Content.ReadAsStringAsync().Result;
-
-                //converte os dados recebidos e retorna eles como objetos do C#;
-
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
+        
         public string Remover(int id)
         {
             HttpClient httpClient = new HttpClient();
@@ -230,7 +228,7 @@ namespace Client.Services
             HttpResponseMessage response;
             try
             {
-                response = httpClient.GetAsync($"https://localhost:44363/ordensServico/Confirmar?id={id}").Result;
+                response = httpClient.GetAsync($"https://localhost:44363/ordensServico/confirmar?id={id}").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;

@@ -36,12 +36,13 @@ namespace SistemaMecanica.Controllers
             if (cadastrarProdutoViewModel.ValorPeca == 0)
                 throw new ArgumentNullException($"campo {nameof(cadastrarProdutoViewModel.ValorPeca)} vazio ou nulo.");
 
-            var resultado = _produtosRepository.SalvarProduto(cadastrarProdutoViewModel);
+            var resultado = _produtosRepository.Salvar(cadastrarProdutoViewModel);
 
             if (resultado) return Ok("Produto cadastrado com sucesso.");
 
             return Ok("Houve um problema ao salvar. Produto não cadastrado.");
         }
+        
         [HttpGet]
         public IActionResult ConsultaNome(string nome)
         {
@@ -51,9 +52,10 @@ namespace SistemaMecanica.Controllers
         [HttpGet]
         public IActionResult Confirmar(int id)
         {
-            var resultado = _produtosRepository.ConfirmarProduto(id);
+            var resultado = _produtosRepository.Confirmar(id);
             return Ok(resultado);
         }
+        
         [HttpPut]
         public IActionResult Atualizar(AtualizarProdutoViewModel model)
         {
@@ -67,13 +69,14 @@ namespace SistemaMecanica.Controllers
 
             return Ok();
         }
+        
         [HttpDelete]
         public IActionResult Remover(int id)
         {
             if (id == 0)
             return Ok("Ocorreu um erro!");
 
-            _produtosRepository.DeletarProduto(id);
+            _produtosRepository.Deletar(id);
             return Ok("Removido com sucesso!");
         }
     }

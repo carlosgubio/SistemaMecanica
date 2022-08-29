@@ -33,12 +33,13 @@ namespace SistemaMecanica.Controllers
             if (cadastrarServicoViewModel.ValorServico == 0)
                 throw new ArgumentNullException($"campo {nameof(cadastrarServicoViewModel.ValorServico)} vazio ou nulo.");
 
-            var resultado = _servicosRepository.SalvarServico(cadastrarServicoViewModel);
+            var resultado = _servicosRepository.Salvar(cadastrarServicoViewModel);
 
             if (resultado) return Ok("Serviço cadastrado com sucesso.");
 
             return Ok("Houve um problema ao salvar. Serviço não cadastrado.");
         }
+        
         [HttpGet]
         public IActionResult ConsultaNome(string nome)
         {
@@ -51,6 +52,7 @@ namespace SistemaMecanica.Controllers
             var resultado = _servicosRepository.Confirmar(id);
             return Ok(resultado);
         }
+        
         [HttpPut]
         public IActionResult Atualizar(AtualizarServicoViewModel model)
         {
@@ -65,13 +67,14 @@ namespace SistemaMecanica.Controllers
 
             return Ok();
         }
+        
         [HttpDelete]
         public IActionResult Remover(int id)
         {
             if (id == 0)
                 return Ok("Ocorreu um erro!");
 
-            _servicosRepository.DeletarServico(id);
+            _servicosRepository.Deletar(id);
             return Ok("Removido com sucesso!");
         }
     }

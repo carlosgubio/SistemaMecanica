@@ -16,7 +16,7 @@ namespace SistemaMecanica.Repositories
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
-        public bool SalvarProduto(CadastrarProdutoViewModel salvarProdutoViewModel)
+        public bool Salvar(CadastrarProdutoViewModel salvarProdutoViewModel)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Produtos set DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca WHERE IdProduto = @idProduto";
+                var query = @"UPDATE Produtos SET DescricaoPeca = @descricaoPeca, ValorPeca = @valorPeca WHERE IdProduto = @idProduto";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -82,7 +82,7 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public ProdutosDto ConfirmarProduto(int idProduto)
+        public ProdutosDto Confirmar(int idProduto)
         {
             var produto = new ProdutosDto();
             try
@@ -105,12 +105,11 @@ namespace SistemaMecanica.Repositories
             }
             return produto;
         }
-
-        public void DeletarProduto(int id)
+        public void Deletar(int id)
         {
             try
             {
-                var query = "Delete From Produtos where idProduto = @id";
+                var query = "DELETE FROM Produtos WHERE idProduto = @id";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);

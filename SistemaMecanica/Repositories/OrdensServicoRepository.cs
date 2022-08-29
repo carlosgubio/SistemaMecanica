@@ -15,13 +15,13 @@ namespace SistemaMecanica.Repositories
         private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        public bool SalvarOrdemServico(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
+        public bool Salvar(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
             try
             {
                 int idOrdemCriada = -1;
                 var query = @"INSERT INTO OrdensServico 
-                              (IdCliente, IdProfissional, IdServico) OUTPUT Inserted.IdOrdemServico VALUES (@idCliente,@idProfissional,@idServico)";
+                              (IdCliente, IdProfissional, IdServico) OUTPUT INSERTED.IdOrdemServico VALUES (@idCliente,@idProfissional,@idServico)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -74,12 +74,7 @@ namespace SistemaMecanica.Repositories
         {            
             try
             {
-                var query = @"select  IdOrdemServico
-                                      ,IdCliente
-                                      ,IdProfissional
-                                      ,IdServico                                                                            
-                                  from OrdensServico
-                                  where IdOrdemServico = @id";
+                var query = @"SELECT  IdOrdemServico, IdCliente, IdProfissional, IdServico FROM OrdensServico WHERE IdOrdemServico = @id";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -119,7 +114,8 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
+                var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral
+                            WHERE IdOrdemServico = @idOrdemServico";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -160,11 +156,11 @@ namespace SistemaMecanica.Repositories
             }
             return ordemServico;
         }
-        public void DeletarOrdemServico(int id)
+        public void Deletar(int id)
         {
             try
             {
-                var query = "Delete From OrdensServico where IdOrdemServico = @id";
+                var query = "DELETE FROM OrdensServico WHERE IdOrdemServico = @id";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -182,14 +178,13 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens) 
             {
-                var sql = @"insert into Itens (IdProduto, IdOrdemServico) values (@idProduto, @idOrdemServico)";
+                var sql = @"INSERT INTO Itens (IdProduto, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
 
                 var parametros = new 
                 {
                     idProduto = item,
                     idOrdemServico
                 };
-
                 try 
                 {
                     using (var connection = new SqlConnection(_connection))
@@ -205,12 +200,12 @@ namespace SistemaMecanica.Repositories
         }
         public float CalcularTotalOrdemServico (int idOrdemServico)
         {
-            var query = @"select (select sum(pr.ValorPeca) from Servicos s
-                            inner join OrdensServico os on s.IdServico = os.IdServico
-                            inner join Itens p on p.IdOrdemServico = os.IdOrdemServico
-                            inner join Produtos pr on p.IdProduto = pr.IdProduto
-                            where os.IdOrdemServico = @idOrdemServico) + (select s.ValorServico from Servicos s
-                            inner join OrdensServico os on s.IdServico = os.IdServico where IdOrdemServico = @idOrdemServico) as ValorTotalServico";
+            var query = @"SELECT (SELECT SUM(pr.ValorPeca) FROM Servicos s
+                        INNER JOIN OrdensServico os on s.IdServico = os.IdServico
+                        INNER JOIN Itens p on p.IdOrdemServico = os.IdOrdemServico
+                        INNER JOIN Produtos pr on p.IdProduto = pr.IdProduto
+                        WHERE os.IdOrdemServico = @idOrdemServico) + (SELECT s.ValorServico FROM Servicos s
+                        INNER JOIN OrdensServico os on s.IdServico = os.IdServico WHERE IdOrdemServico = @idOrdemServico) as ValorTotalServico";
             var parametros = new
             {
                 idOrdemServico

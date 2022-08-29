@@ -51,12 +51,13 @@ namespace SistemaMecanica.Controllers
             if (cadastrarClienteViewModel.CorVeiculoCliente == null)
                 throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.CorVeiculoCliente)} vazio ou nulo.");
 
-            var resultado = _clientesRepository.SalvarCliente(cadastrarClienteViewModel);
+            var resultado = _clientesRepository.Salvar(cadastrarClienteViewModel);
 
             if (resultado) return Ok("Pessoa cadastrada com sucesso.");
 
             return Ok("Houve um problema ao salvar. Pessoa não cadastrada.");
         }
+        
         [HttpGet]
         public IActionResult ConsultaNome(string nome )
         {
@@ -79,6 +80,7 @@ namespace SistemaMecanica.Controllers
             var resultado = _clientesRepository.Confirmar(id);
             return Ok(resultado);
         }
+        
         [HttpPut]
         public IActionResult Atualizar(AtualizarClienteViewModel model)
         {
@@ -92,16 +94,16 @@ namespace SistemaMecanica.Controllers
 
             return Ok();
         }
+        
         [HttpDelete]
         public IActionResult Remover(int id) 
         {
             if (id == 0)
             return Ok ("Ocorreu um erro!");
 
-            _clientesRepository.DeletarCliente(id);
+            _clientesRepository.Deletar(id);
             return Ok ("Removido com sucesso!");
         }
-        
     }
 }
 

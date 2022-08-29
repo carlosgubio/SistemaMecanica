@@ -15,7 +15,7 @@ namespace SistemaMecanica.Repositories
         private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-        public bool SalvarProfissional(CadastrarProfissionalViewModel salvarProfissionalViewModel)
+        public bool Salvar(CadastrarProfissionalViewModel salvarProfissionalViewModel)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        public ProfissionaisDto ConfirmarProfissional(int idProfissional)
+        public ProfissionaisDto Confirmar(int idProfissional)
         {
             var profissional = new ProfissionaisDto();
             try
@@ -104,11 +104,11 @@ namespace SistemaMecanica.Repositories
             }
             return profissional;
         }
-        public void DeletarProfissional(int id)
+        public void Deletar(int id)
         {
             try
             {
-                var query = "Delete From Profissionais where IdProfissional = @id";
+                var query = "DELETE FROM Profissionais WHERE IdProfissional = @id";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);

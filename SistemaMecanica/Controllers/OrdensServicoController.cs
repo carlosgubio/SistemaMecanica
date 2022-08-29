@@ -38,12 +38,13 @@ namespace SistemaMecanica.Controllers
                 throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");                        
 
 
-            var resultado = _ordensServicoRepository.SalvarOrdemServico(cadastrarOrdemServicoViewModel);
+            var resultado = _ordensServicoRepository.Salvar(cadastrarOrdemServicoViewModel);
 
             if (resultado) return Ok("Ordem de Serviço cadastrada com sucesso.");
 
             return Ok("Houve um problema ao salvar. Ordem de Serviço não cadastrada.");
         }
+        
         [HttpGet]
         public IActionResult Consultar(int id)
         {
@@ -66,6 +67,7 @@ namespace SistemaMecanica.Controllers
             var resultado = _ordensServicoRepository.Confirmar(id);
             return Ok(resultado);
         }
+        
         [HttpPut]
         public IActionResult Atualizar(AtualizarOrdensServicoViewModel model)
         {
@@ -79,13 +81,14 @@ namespace SistemaMecanica.Controllers
 
             return Ok();
         }
+        
         [HttpDelete]
         public IActionResult Remover(int id)
         {
             if (id == 0)
                 return Ok("Ocorreu um erro!");
 
-            _ordensServicoRepository.DeletarOrdemServico(id);
+            _ordensServicoRepository.Deletar(id);
             return Ok("Removido com sucesso!");
         }
         

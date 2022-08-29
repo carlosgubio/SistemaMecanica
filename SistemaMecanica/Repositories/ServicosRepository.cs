@@ -16,7 +16,7 @@ namespace SistemaMecanica.Repositories
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
-        public bool SalvarServico(CadastrarServicoViewModel cadastrarServiçoViewModel)
+        public bool Salvar(CadastrarServicoViewModel cadastrarServiçoViewModel)
         {
             try
             {
@@ -105,11 +105,11 @@ namespace SistemaMecanica.Repositories
             }
             return servico;
         }
-        public void DeletarServico(int id)
+        public void Deletar(int id)
         {
             try
             {
-                var query = "Delete From Servicos where IdServico = @id";
+                var query = "DELETE FROM Servicos WHERE IdServico = @id";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);

@@ -20,7 +20,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/profissionais/cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -58,7 +58,7 @@ namespace Client.Services
                 return new List<ProfissionaisDto>();
             }
         }
-        public void EnviarProfissionais(Profissionais profissionais)
+        public void EnviarBusca(Profissionais profissionais)
         {
             //recebe os dados para enviar para a API cria a viewModel que será enviada;
             var viewModel = new
@@ -75,7 +75,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/BuscarTodosProfissionais", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/profissionais/buscarTodosProfissionais", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -95,7 +95,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.GetAsync($"https://localhost:44363/profissionais/ConsultaNome?nome={nome}").Result;
+                response = httpClient.GetAsync($"https://localhost:44363/profissionais/consultaNome?nome={nome}").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -111,7 +111,7 @@ namespace Client.Services
                 return new List<ProfissionaisDto>();
             }
         }
-        public void EnviarBuscaPorNome(Profissionais profissionais)
+        public void EnviarBuscaNome(Profissionais profissionais)
         {
             //recebe os dados para enviar para a API cria a viewModel que será enviada;
             var viewModel = new
@@ -128,7 +128,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/EnviarBuscaPorNome", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/profissionais/enviarBuscaNome", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -188,7 +188,7 @@ namespace Client.Services
             try
             {
                 //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/EnviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PostAsync("https://localhost:44363/profissionais/enviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
                 //faz a request, envia os dados e recebe a resposta da API.
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -198,6 +198,7 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
+        
         public string Remover(int id)
         {
             HttpClient httpClient = new HttpClient();
@@ -222,13 +223,13 @@ namespace Client.Services
             }
             return resultado;
         }
-        public ProfissionaisDto ConfirmarProfissionais(int id)
+        public ProfissionaisDto Confirmar(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
             try
             {
-                response = httpClient.GetAsync($"https://localhost:44363/profissionais/Confirmar?id={id}").Result;
+                response = httpClient.GetAsync($"https://localhost:44363/profissionais/confirmar?id={id}").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
