@@ -74,7 +74,7 @@ namespace SistemaMecanica.Repositories
         {            
             try
             {
-                var query = @"SELECT  IdOrdemServico, IdCliente, IdProfissional, IdServico FROM OrdensServico WHERE IdOrdemServico = @id";
+                var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -215,6 +215,52 @@ namespace SistemaMecanica.Repositories
                 var res = connection.QuerySingle<float>(query,parametros);
                 return res;
             }           
+        }
+        public void InserirProfissionalOS(List<int> idItens, int idOrdemServico)
+        {
+            foreach (var item in idItens)
+            {
+                var sql = @"INSERT INTO Execucao (IdProfissional, IdOrdemServico) VALUES (@idProfissional, @idOrdemServico)";
+                var parametros = new
+                {
+                    idProfissional = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao salvar Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
+        public void InserirProdutoOS(List<int> idItens, int idOrdemServico)
+        {
+            foreach (var item in idItens)
+            {
+                var sql = @"INSERT INTO Execucao (IdProduto, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
+                var parametros = new
+                {
+                    idProduto = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao salvar Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
         }
     }
 }

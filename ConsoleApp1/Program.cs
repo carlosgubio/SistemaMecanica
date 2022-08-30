@@ -19,7 +19,8 @@ namespace ConsoleApp1
         AtualizarProfissional,
         AtualizarProduto,
         AtualizarServico,
-        AtualizarOrdemServico,
+        AtualizarOrdemServicoProfissional,
+        AtualizarOrdemServicoProduto,
         RemoverCliente,
         RemoverProfissional,
         RemoverProduto,
@@ -45,9 +46,9 @@ namespace ConsoleApp1
             Opcoes opcoes;
             Console.WriteLine("======================================");
             Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +
-                             "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Atualizar Ordem de Serviço\n------------------------------>\n" +
-                             "11-Remover Cliente\n12-Remover Profissional\n13-Remover Produto\n14-Remover Serviço\n15-Remover Ordem de Serviço\n------------------------------>\n" +
-                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
+                            "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
+                            "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n16-Remover Ordem de Serviço\n------------------------------>\n" +
+                            "17-Pesquisar Cliente\n18-Pesquisar Profissional\n19-Pesquisar Produto\n20-Pesquisar Serviço\n21-Pesquisar Ordem de Serviço");
             opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
 
             while (opcoes != Opcoes.Sair)
@@ -123,8 +124,7 @@ namespace ConsoleApp1
                         Console.WriteLine("Deseja inserir mais uma Peça? 0-Não 1-Sim ");
                         opcao = Convert.ToInt32(Console.ReadLine());
                     }
-                    ordensServico.IdItens = idsProdutos;
-                    ordensServicoServices.Salvar(ordensServico);
+                    //ordensServicoServices.Atualizar(ordensServico);
                 } // ok
                 if (opcoes == Opcoes.AtualizarCliente)
                 {
@@ -199,29 +199,36 @@ namespace ConsoleApp1
                         servicosServices.Atualizar(id, servicoRetorno);
                     }
                 } //ok
-                //if (opcoes == Opcoes.AtualizarOrdemServico)
-                //{
-                //    OrdensServico ordensServico = new OrdensServico();
-                //    Console.WriteLine("Informe a ID da ordem ao qual deseja atualizar:");
-                //    int id = Convert.ToInt32(Console.ReadLine());
-                //    var ordemServicoRetorno = ordensServicoServices.Confirmar(id);
+                if (opcoes == Opcoes.AtualizarOrdemServicoProfissional)
+                {
+                    Console.WriteLine("Informe a ID da Ordem de Serviço ao qual deseja atualizar:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var ordemServicoRetorno = ordensServicoServices.Confirmar(id);
+                   
+                    List<int> idsProfissionais = new List<int>();
 
-                //    if (ordemServicoRetorno != null && ordemServicoRetorno.IdOrdemServico == id)
-                //    {
-                //        Console.WriteLine("Informe o(s) dado(s) que deseja Atualizar:");
-                //        Console.WriteLine("A ID Cliente cadastrada é: " + ordemServicoRetorno.IdCliente + "\nDigite a nova ID do Cliente caso deseje alterar.");
-                //        ordemServicoRetorno.IdProfissional = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("A ID Profissional cadastrada é: " + ordemServicoRetorno.IdProfissional + "\nDigite a nova ID do Profissional caso deseje alterar.");
-                //        ordemServicoRetorno.IdProfissional = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("A ID Serviço cadastrada é: " + ordemServicoRetorno.IdServico + "\nDigite a nova ID do Serviço caso deseje alterar.");
-                //        ordemServicoRetorno.IdServico = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("A ID Servico cadastrada é: " + ordemServicoRetorno.IdProduto + "\nDigite a nova ID da Peça caso deseje alterar.");
-                //        ordemServicoRetorno.IdProduto = Convert.ToInt32(Console.ReadLine());
-                //        Console.WriteLine("O Valor da Peça cadastrada é: " + ordemServicoRetorno.TotalGeral + "\nDigite o novo Valor caso deseje alterar.");
-                //        ordemServicoRetorno.TotalGeral = Convert.ToSingle(Console.ReadLine());
-                //        ordensServicoServices.Atualizar(id, ordemServicoRetorno);
-                //    }
-                //}//Tem necessidade de alterar o Total Geral? Erro no final
+                    Console.WriteLine("Informe a ID do Profissional caso deseje atualizar:");
+                    int idProfissional = Convert.ToInt32(Console.ReadLine());
+                    idsProfissionais.Add(idProfissional);
+                    ordensServicoServices.AdicionarProfissional(id, idsProfissionais);
+
+
+                }
+                if (opcoes == Opcoes.AtualizarOrdemServicoProduto)
+                {
+                    Console.WriteLine("Informe a ID da Ordem de Serviço ao qual deseja atualizar:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    var ordemServicoRetorno = ordensServicoServices.Confirmar(id);
+
+                    List<int> idsProdutos = new List<int>();
+
+                    Console.WriteLine("Informe a ID do Produto caso deseje atualizar:");
+                    int idProduto = Convert.ToInt32(Console.ReadLine());
+                    idsProdutos.Add(idProduto);
+                    ordensServicoServices.AdicionarProduto(id, idsProdutos);
+
+
+                }
                 if (opcoes == Opcoes.RemoverCliente)
                 {
                     Console.WriteLine("Digite a ID do Cliente para remover:");
@@ -388,24 +395,33 @@ namespace ConsoleApp1
                         }
                     }
                 } //ok
-                //if (opcoes == Opcoes.PesquisarOrdemServico)
-                //{
-                //    Console.WriteLine("Informe o ID da Ordem do Serviço:");
-                //    int id = Convert.ToInt32(Console.ReadLine());
-                //    OrdensServico ordensServico = new OrdensServico();
-                //    if (ordensServico != null && ordensServico.IdOrdemServico == id)
-                //    {
-                //        Console.WriteLine(ordensServico.IdOrdemServico);
-                //        ordensServicoServices.BuscarPorIdOrdemServico();
-                //    }
-                //    ordensServicoServices.BuscarPorIdOrdemServico();
-                //}
+                if (opcoes == Opcoes.PesquisarOrdemServico)
+                {
+                    Console.WriteLine("Informe o ID da Ordem do Serviço:");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    List<OrdensServicoDto> ordensServico = new List<OrdensServicoDto>();
+                    if (id != 0)
+                    {
+                        Console.WriteLine(id);
+                        ordensServico = ordensServicoServices.BuscarPorIdOrdemServico(id);
+                        foreach (var item in ordensServico)
+                        {
+                            Console.WriteLine("=================================");
+                            Console.WriteLine($"Serviço: " + item.IdCliente);
+                            Console.WriteLine($"  Valor: " + item.IdProfissional);
+                            Console.WriteLine($"  Valor: " + item.IdProduto);
+                            Console.WriteLine($"  Valor: " + item.IdServico);
+                            Console.WriteLine($"  Valor: " + item.TotalGeral);
+                            Console.WriteLine("=================================");
+                        }
+                    }
+                }
 
                 Console.WriteLine("======================================");
                 Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +
-                             "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Atualizar Ordem de Serviço\n------------------------------>\n" +
-                             "11-Remover Cliente\n12-Remover Profissional\n13-Remover Produto\n14-Remover Serviço\n15-Remover Ordem de Serviço\n------------------------------>\n" +
-                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
+                             "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
+                             "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n16-Remover Ordem de Serviço\n------------------------------>\n" +
+                             "17-Pesquisar Cliente\n18-Pesquisar Profissional\n19-Pesquisar Produto\n20-Pesquisar Serviço\n21-Pesquisar Ordem de Serviço");
                 opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
             }
         }

@@ -91,8 +91,18 @@ namespace SistemaMecanica.Controllers
             _ordensServicoRepository.Deletar(id);
             return Ok("Removido com sucesso!");
         }
-        
-    
-    
+        [HttpPut]
+        public IActionResult AdicionarProfissional(int id, List<int> profissionais)
+        {
+            _ordensServicoRepository.InserirProfissionalOS(profissionais, id);
+            return Ok("Adicionado com sucesso!");
+        }
+        [HttpPut]
+        public IActionResult AdicionarProduto(int id, List<int> produtos)
+        {
+            _ordensServicoRepository.InserirProdutoOS(produtos, id);
+            return Ok("Adicionado com sucesso!");
+        }
+
     }
 }
