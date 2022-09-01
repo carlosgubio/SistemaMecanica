@@ -33,7 +33,7 @@ namespace Client.Services
             }
         }
 
-        public List<ProfissionaisDto> BuscarTodosProfissionais()
+        public List<ProfissionaisDto> BuscarTodos()
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -56,33 +56,6 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
                 return new List<ProfissionaisDto>();
-            }
-        }
-        public void EnviarBusca(Profissionais profissionais)
-        {
-            //recebe os dados para enviar para a API cria a viewModel que será enviada;
-            var viewModel = new
-            {
-                profissionais,
-            };
-
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-
-            //converte o objeto em um JSON 
-            var json = JsonConvert.SerializeObject(viewModel);
-
-            try
-            {
-                //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/buscarTodosProfissionais", new StringContent(json, Encoding.UTF8, "application/json")).Result;
-                response.EnsureSuccessStatusCode();
-                //faz a request, envia os dados e recebe a resposta da API.
-                var resultado = response.Content.ReadAsStringAsync().Result;
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
 
@@ -109,33 +82,6 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
                 return new List<ProfissionaisDto>();
-            }
-        }
-        public void EnviarBuscaNome(Profissionais profissionais)
-        {
-            //recebe os dados para enviar para a API cria a viewModel que será enviada;
-            var viewModel = new
-            {
-                profissionais,
-            };
-
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-
-            //converte o objeto em um JSON 
-            var json = JsonConvert.SerializeObject(viewModel);
-
-            try
-            {
-                //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/enviarBuscaNome", new StringContent(json, Encoding.UTF8, "application/json")).Result;
-                response.EnsureSuccessStatusCode();
-                //faz a request, envia os dados e recebe a resposta da API.
-                var resultado = response.Content.ReadAsStringAsync().Result;
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
         
@@ -165,33 +111,6 @@ namespace Client.Services
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
 
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-        public void EnviarAtualizacao(Profissionais profissionais)
-        {
-            //recebe os dados para enviar para a API cria a viewModel que será enviada;
-            var viewModel = new
-            {
-                profissionais,
-            };
-
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-
-            //converte o objeto em um JSON 
-            var json = JsonConvert.SerializeObject(viewModel);
-
-            try
-            {
-                //envia os dados para a API, convertendo em uma cadeia de string
-                response = httpClient.PostAsync("https://localhost:44363/profissionais/enviarAtualizacao", new StringContent(json, Encoding.UTF8, "application/json")).Result;
-                response.EnsureSuccessStatusCode();
-                //faz a request, envia os dados e recebe a resposta da API.
-                var resultado = response.Content.ReadAsStringAsync().Result;
             }
             catch (HttpRequestException ex)
             {

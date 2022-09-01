@@ -29,7 +29,17 @@ namespace ConsoleApp1
         PesquisarProfissional,
         PesquisarProduto,
         PesquisarServico,
-        PesquisarOrdemServico
+        PesquisarOrdemServico,
+        PesquisarTodos
+    }
+    enum BuscarTodos
+    {
+        Sair,
+        BuscarClientes,
+        BuscarProfissionais,
+        BuscarProdutos,
+        BuscarServiços,
+        BuscartodasOrdensServico
     }
 
     class Program
@@ -394,7 +404,98 @@ namespace ConsoleApp1
                         Console.WriteLine($"  Valor: " + ordensServico.TotalGeral);
                         Console.WriteLine("=================================");
                     }
-                }
+                } //ok
+                if (opcoes == Opcoes.PesquisarTodos)
+                {
+                    BuscarTodos buscar;
+                    do
+                    {
+                        Console.WriteLine("Escolha a busca desejada:\n------------------------->\n0-Sair\n------------------------->\n1-Todos os Clientes\n2-Todos os Profissionais\n3-Todos os Produtos\n4-Todos os Serviços\n5-Todas as Ordens de Serviço");
+                        buscar = (BuscarTodos)Convert.ToInt32(Console.ReadLine());
+                        
+                        if (buscar == BuscarTodos.BuscarClientes)
+                        {
+                            var cliente = clientesServices.BuscarTodos();
+                            foreach (var item in cliente)
+                            {
+                                Console.WriteLine("=================================");
+                                Console.WriteLine($"      ID: " + item.IdCliente);
+                                Console.WriteLine($"    Nome: " + item.NomeCliente);
+                                Console.WriteLine($"     CPF: " + item.CpfCliente);
+                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
+                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
+                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
+                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
+                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
+                                Console.WriteLine("=================================");
+                            }
+                        }
+                        if (buscar == BuscarTodos.BuscarProfissionais)
+                        {
+                            var profissional = profissionaisServices.BuscarTodos();
+                            foreach (var item in profissional)
+                            {
+                                Console.WriteLine("=================================");
+                                Console.WriteLine($"   ID: " + item.IdProfissional);
+                                Console.WriteLine($" Nome: " + item.NomeProfissional);
+                                Console.WriteLine($"Cargo: " + item.CargoProfissional);
+                                Console.WriteLine("=================================");
+                            }
+                        }
+                        if (buscar == BuscarTodos.BuscarProdutos)
+                        {
+                            var cliente = clientesServices.BuscarTodos();
+                            foreach (var item in cliente)
+                            {
+                                Console.WriteLine("=================================");
+                                Console.WriteLine($"      ID: " + item.IdCliente);
+                                Console.WriteLine($"    Nome: " + item.NomeCliente);
+                                Console.WriteLine($"     CPF: " + item.CpfCliente);
+                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
+                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
+                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
+                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
+                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
+                                Console.WriteLine("=================================");
+                            }
+                        }
+                        if (buscar == BuscarTodos.BuscarServiços)
+                        {
+                            var cliente = clientesServices.BuscarTodos();
+                            foreach (var item in cliente)
+                            {
+                                Console.WriteLine("=================================");
+                                Console.WriteLine($"      ID: " + item.IdCliente);
+                                Console.WriteLine($"    Nome: " + item.NomeCliente);
+                                Console.WriteLine($"     CPF: " + item.CpfCliente);
+                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
+                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
+                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
+                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
+                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
+                                Console.WriteLine("=================================");
+                            }
+                        }
+                        if (buscar == BuscarTodos.BuscartodasOrdensServico)
+                        {
+                            var cliente = clientesServices.BuscarTodos();
+                            foreach (var item in cliente)
+                            {
+                                Console.WriteLine("=================================");
+                                Console.WriteLine($"      ID: " + item.IdCliente);
+                                Console.WriteLine($"    Nome: " + item.NomeCliente);
+                                Console.WriteLine($"     CPF: " + item.CpfCliente);
+                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
+                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
+                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
+                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
+                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
+                                Console.WriteLine("=================================");
+                            }
+                        }
+                    } 
+                    while (buscar != BuscarTodos.Sair);
+                } 
 
                 Console.WriteLine("======================================");
                 Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +

@@ -48,6 +48,16 @@ namespace SistemaMecanica.Controllers
             return Ok(resultado);
         }
         [HttpGet]
+        public IActionResult BuscarTodos()
+        {
+            var resultado = _profissionaisRepository.BuscarTodos();
+
+            if (resultado == null)
+                return NotFound();
+
+            return Ok(resultado);
+        }
+        [HttpGet]
         public IActionResult Confirmar(int id)
         {
             var resultado = _profissionaisRepository.Confirmar(id);

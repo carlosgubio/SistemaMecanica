@@ -61,6 +61,25 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+        public List<ProfissionaisDto> BuscarTodos()
+        {
+            List<ProfissionaisDto> profissionaisEncontrados;
+            try
+            {
+                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente FROM Clientes";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    profissionaisEncontrados = connection.Query<ProfissionaisDto>(query).ToList();
+                }
+                return profissionaisEncontrados;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
         public void Atualizar(Profissionais profissionais, int id)
         {
             try
