@@ -87,7 +87,7 @@ namespace Client.Services
             }
         }
 
-        public List<OrdensServicoDto> BuscarPorIdOrdemServico(int id)
+        public OrdensServicoDto BuscarPorIdOrdemServico(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -102,14 +102,14 @@ namespace Client.Services
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
-                var objetoDesserializado = JsonConvert.DeserializeObject<List<OrdensServicoDto>>(resultado);
+                var objetoDesserializado = JsonConvert.DeserializeObject<OrdensServicoDto>(resultado);
 
                 return objetoDesserializado;
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new List<OrdensServicoDto>();
+                return new OrdensServicoDto();
             }
         }
         public void EnviarBusca(OrdensServico ordensServicos)
@@ -197,31 +197,7 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
             }
         }
-        
-        public string Remover(int id)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response;
-            var resultado = string.Empty;
-            try
-            {
-                //monta a request para a api;
-                response = httpClient.DeleteAsync($"https://localhost:44363/ordensServico/remover?id={id}").Result;
-
-                resultado = response.Content.ReadAsStringAsync().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    Console.WriteLine(resultado);
-                }
-                //converte os dados recebidos e retorna eles como objetos do C#;
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return resultado;
-        }
+       
         public OrdensServicoDto Confirmar(int id)
         {
             HttpClient httpClient = new HttpClient();
@@ -253,13 +229,10 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionarProfissional?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
-
-                //converte os dados recebidos e retorna eles como objetos do C#;
-
             }
             catch (HttpRequestException ex)
             {
@@ -276,7 +249,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionarProduto?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;

@@ -35,8 +35,7 @@ namespace SistemaMecanica.Controllers
                 throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdCliente)} vazio ou nulo.");
 
             if (cadastrarOrdemServicoViewModel.IdServico == 0)
-                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");                        
-
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");
 
             var resultado = _ordensServicoRepository.Salvar(cadastrarOrdemServicoViewModel);
 
@@ -82,15 +81,6 @@ namespace SistemaMecanica.Controllers
             return Ok();
         }
         
-        [HttpDelete]
-        public IActionResult Remover(int id)
-        {
-            if (id == 0)
-                return Ok("Ocorreu um erro!");
-
-            _ordensServicoRepository.Deletar(id);
-            return Ok("Removido com sucesso!");
-        }
         [HttpPut]
         public IActionResult AdicionarProfissional(int id, List<int> profissionais)
         {

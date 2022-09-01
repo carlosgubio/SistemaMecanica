@@ -27,7 +27,7 @@ namespace SistemaMecanica.Repositories
                     SqlCommand command = new SqlCommand(query, sql);
                     command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
                     command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
-                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);                                        
+                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);    
                     command.Connection.Open();
                     idOrdemCriada =  (int)command.ExecuteScalar();
                 }
@@ -156,24 +156,6 @@ namespace SistemaMecanica.Repositories
             }
             return ordemServico;
         }
-        public void Deletar(int id)
-        {
-            try
-            {
-                var query = "DELETE FROM OrdensServico WHERE IdOrdemServico = @id";
-                using (var sql = new SqlConnection(_connection))
-                {
-                    SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@id", id);
-                    command.Connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro: " + ex.Message);
-            }
-        }
         public void VincularItensOs(List<int> idItens, int idOrdemServico)  
         {
             foreach (var item in idItens) 
@@ -243,7 +225,7 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens)
             {
-                var sql = @"INSERT INTO Execucao (IdProduto, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
+                var sql = @"INSERT INTO Itens (IdProduto, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
                 var parametros = new
                 {
                     idProduto = item,

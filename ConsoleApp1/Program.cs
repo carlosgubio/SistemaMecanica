@@ -25,7 +25,6 @@ namespace ConsoleApp1
         RemoverProfissional,
         RemoverProduto,
         RemoverServico,
-        RemoverOrdemServico,
         PesquisarCliente,
         PesquisarProfissional,
         PesquisarProduto,
@@ -46,9 +45,9 @@ namespace ConsoleApp1
             Opcoes opcoes;
             Console.WriteLine("======================================");
             Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +
-                            "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
-                            "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n16-Remover Ordem de Serviço\n------------------------------>\n" +
-                            "17-Pesquisar Cliente\n18-Pesquisar Profissional\n19-Pesquisar Produto\n20-Pesquisar Serviço\n21-Pesquisar Ordem de Serviço");
+                             "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
+                             "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n------------------------------>\n"+
+                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
             opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
 
             while (opcoes != Opcoes.Sair)
@@ -124,8 +123,9 @@ namespace ConsoleApp1
                         Console.WriteLine("Deseja inserir mais uma Peça? 0-Não 1-Sim ");
                         opcao = Convert.ToInt32(Console.ReadLine());
                     }
-                    //ordensServicoServices.Atualizar(ordensServico);
-                } // ok
+                    ordensServico.IdItens = idsProdutos;
+                    ordensServicoServices.Salvar(ordensServico);
+                }//ok
                 if (opcoes == Opcoes.AtualizarCliente)
                 {
                     Clientes clientes = new Clientes();
@@ -207,13 +207,13 @@ namespace ConsoleApp1
                    
                     List<int> idsProfissionais = new List<int>();
 
-                    Console.WriteLine("Informe a ID do Profissional caso deseje atualizar:");
+                    Console.WriteLine("Informe a ID do Profissional que deseja inserir na Ordem de Serviço:");
                     int idProfissional = Convert.ToInt32(Console.ReadLine());
                     idsProfissionais.Add(idProfissional);
                     ordensServicoServices.AdicionarProfissional(id, idsProfissionais);
 
 
-                }
+                } //ok
                 if (opcoes == Opcoes.AtualizarOrdemServicoProduto)
                 {
                     Console.WriteLine("Informe a ID da Ordem de Serviço ao qual deseja atualizar:");
@@ -222,13 +222,13 @@ namespace ConsoleApp1
 
                     List<int> idsProdutos = new List<int>();
 
-                    Console.WriteLine("Informe a ID do Produto caso deseje atualizar:");
+                    Console.WriteLine("Informe a ID do Produto que deseja inserir na Ordem de Serviço:");
                     int idProduto = Convert.ToInt32(Console.ReadLine());
                     idsProdutos.Add(idProduto);
                     ordensServicoServices.AdicionarProduto(id, idsProdutos);
 
 
-                }
+                } //ok
                 if (opcoes == Opcoes.RemoverCliente)
                 {
                     Console.WriteLine("Digite a ID do Cliente para remover:");
@@ -301,23 +301,6 @@ namespace ConsoleApp1
                         }
                     }
                 } //ok
-                if (opcoes == Opcoes.RemoverOrdemServico)
-                {
-                    Console.WriteLine("Digite a ID da Ordem de Serviço para remover:");
-                    int id = Convert.ToInt32(Console.ReadLine());
-                    var ordemServico = ordensServicoServices.Confirmar(id);
-                    if (ordemServico != null && ordemServico.IdOrdemServico == id)
-                    {
-                        Console.WriteLine($"Id Ordem de Serviço: " + ordemServico.IdOrdemServico);
-                        Console.WriteLine("Digite 1 se deseja mesmo deletar:");
-                        int confirma = Convert.ToInt32(Console.ReadLine());
-                        if (confirma == 1)
-                        {
-                            var resultado = ordensServicoServices.Remover(id);
-                            Console.WriteLine(resultado);
-                        }
-                    }
-                }// nao testada
                 if (opcoes == Opcoes.PesquisarCliente)
                 {
                     Console.WriteLine("Informe o Nome do Cliente:");
@@ -399,29 +382,25 @@ namespace ConsoleApp1
                 {
                     Console.WriteLine("Informe o ID da Ordem do Serviço:");
                     int id = Convert.ToInt32(Console.ReadLine());
-                    List<OrdensServicoDto> ordensServico = new List<OrdensServicoDto>();
                     if (id != 0)
                     {
-                        Console.WriteLine(id);
-                        ordensServico = ordensServicoServices.BuscarPorIdOrdemServico(id);
-                        foreach (var item in ordensServico)
-                        {
-                            Console.WriteLine("=================================");
-                            Console.WriteLine($"Serviço: " + item.IdCliente);
-                            Console.WriteLine($"  Valor: " + item.IdProfissional);
-                            Console.WriteLine($"  Valor: " + item.IdProduto);
-                            Console.WriteLine($"  Valor: " + item.IdServico);
-                            Console.WriteLine($"  Valor: " + item.TotalGeral);
-                            Console.WriteLine("=================================");
-                        }
+                        var ordensServico = ordensServicoServices.BuscarPorIdOrdemServico(id);
+                        
+                        Console.WriteLine("=================================");
+                        Console.WriteLine($"Serviço: " + ordensServico.IdCliente);
+                        Console.WriteLine($"  Valor: " + ordensServico.IdProfissional);
+                        Console.WriteLine($"  Valor: " + ordensServico.IdProduto);
+                        Console.WriteLine($"  Valor: " + ordensServico.IdServico);
+                        Console.WriteLine($"  Valor: " + ordensServico.TotalGeral);
+                        Console.WriteLine("=================================");
                     }
                 }
 
                 Console.WriteLine("======================================");
                 Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +
                              "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
-                             "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n16-Remover Ordem de Serviço\n------------------------------>\n" +
-                             "17-Pesquisar Cliente\n18-Pesquisar Profissional\n19-Pesquisar Produto\n20-Pesquisar Serviço\n21-Pesquisar Ordem de Serviço");
+                             "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n------------------------------>\n" +
+                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
                 opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
             }
         }
