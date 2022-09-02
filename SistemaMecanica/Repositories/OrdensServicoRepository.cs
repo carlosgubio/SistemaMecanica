@@ -244,5 +244,17 @@ namespace SistemaMecanica.Repositories
                 }
             }
         }
+
+        public float FaturamentoBruto()
+        {
+            var query = "SELECT(SELECT SUM(TotalGeral) FROM OrdensServico)";
+
+            
+            using (var connection = new SqlConnection(_connection))
+            {
+                var res = connection.QuerySingle<float>(query);
+                return res;
+            }
+        }
     }
 }

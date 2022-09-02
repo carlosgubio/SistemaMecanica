@@ -66,7 +66,7 @@ namespace SistemaMecanica.Repositories
             List<ProfissionaisDto> profissionaisEncontrados;
             try
             {
-                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente FROM Clientes";
+                var query = @"SELECT IdProfissional, NomeProfissional, CargoProfissional FROM Profissionais";
 
                 using (var connection = new SqlConnection(_connection))
                 {

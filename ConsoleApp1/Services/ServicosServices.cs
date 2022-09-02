@@ -33,7 +33,7 @@ namespace Client.Services
             }
         }
 
-        public List<ServicosDto> BuscarTodosServicos()
+        public List<ServicosDto> BuscarTodos()
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -42,7 +42,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.GetAsync("https://localhost:44363/servicos/buscarTodosServicos").Result;
+                response = httpClient.GetAsync("https://localhost:44363/servicos/buscarTodos").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;

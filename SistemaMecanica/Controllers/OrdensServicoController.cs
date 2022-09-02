@@ -61,6 +61,16 @@ namespace SistemaMecanica.Controllers
             return Ok(resultado);
         }
         [HttpGet]
+        public IActionResult Faturamento()
+        {
+            var resultado = _ordensServicoRepository.FaturamentoBruto();
+
+            if (resultado == null)
+                return NotFound();
+
+            return Ok(resultado);
+        }
+        [HttpGet]
         public IActionResult Confirmar(int id)
         {
             var resultado = _ordensServicoRepository.Confirmar(id);

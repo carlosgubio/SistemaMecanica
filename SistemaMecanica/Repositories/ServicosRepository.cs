@@ -62,6 +62,25 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+        public List<ServicosDto> BuscarTodos()
+        {
+            List<ServicosDto> servicosEncontrados;
+            try
+            {
+                var query = @"SELECT IdServico, DescricaoServico, ValorServico FROM Servicos";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    servicosEncontrados = connection.Query<ServicosDto>(query).ToList();
+                }
+                return servicosEncontrados;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
         public void Atualizar(Servicos servicos, int id)
         {
             try

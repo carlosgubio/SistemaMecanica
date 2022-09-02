@@ -59,7 +59,30 @@ namespace Client.Services
                 return new OrdensServicoDto();
             }
         }
+        public double Faturamento()
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            var resultado = string.Empty;
+            //Busca todos os clientes dentro da api;
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.GetAsync($"https://localhost:44363/ordensServico/Faturamento").Result;
+                response.EnsureSuccessStatusCode();
 
+                resultado = response.Content.ReadAsStringAsync().Result;
+
+
+                //converte os dados recebidos e retorna eles como objetos do C#;
+                //var objetoDesserializado = JsonConvert.DeserializeObject<OrdensServicoDto>(resultado);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return Convert.ToDouble(resultado);
+        }
         public OrdensServicoDto Confirmar(int id)
         {
             HttpClient httpClient = new HttpClient();

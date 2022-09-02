@@ -39,7 +39,7 @@ namespace ConsoleApp1
         BuscarProfissionais,
         BuscarProdutos,
         BuscarServiços,
-        BuscartodasOrdensServico
+        BuscarFaturamentoBruto
     }
 
     class Program
@@ -57,7 +57,7 @@ namespace ConsoleApp1
             Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +
                              "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
                              "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n------------------------------>\n"+
-                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
+                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço\n21-Buscas Gerais");
             opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
 
             while (opcoes != Opcoes.Sair)
@@ -79,8 +79,11 @@ namespace ConsoleApp1
                     cliente.PlacaVeiculoCliente = Console.ReadLine();
                     Console.WriteLine("Informe a Cor do Veículo:");
                     cliente.CorVeiculoCliente = Console.ReadLine();
-                    clientesServices.Salvar(cliente);
-                } //ok
+                    var resultado = clientesServices.Salvar(cliente);
+                    Console.WriteLine("***************************************");
+                    Console.WriteLine(resultado);
+                    Console.WriteLine("***************************************");
+                }
                 if (opcoes == Opcoes.CadastrarProfissional)
                 {
                     var profissional = new Profissionais();
@@ -89,7 +92,7 @@ namespace ConsoleApp1
                     Console.WriteLine("Informe o Cargo do Profissional:");
                     profissional.CargoProfissional = Console.ReadLine();
                     profissionaisServices.Salvar(profissional);
-                } //ok
+                } 
                 if (opcoes == Opcoes.CadastrarProduto)
                 {
                     var produto = new Produtos();
@@ -98,7 +101,7 @@ namespace ConsoleApp1
                     Console.WriteLine("Informe o Valor:");
                     produto.ValorPeca = Convert.ToSingle(Console.ReadLine());
                     produtosServices.Salvar(produto);
-                } //ok
+                } 
                 if (opcoes == Opcoes.CadastrarServico)
                 {
                     var servico = new Servicos();
@@ -107,7 +110,7 @@ namespace ConsoleApp1
                     Console.WriteLine("Informe o Valor:");
                     servico.ValorServico = (float)Convert.ToDouble(Console.ReadLine());
                     servicosServices.Salvar(servico);
-                } //ok
+                } 
                 if (opcoes == Opcoes.CadastrarOrdemServico)
                 {
                     var ordensServico = new OrdensServico();
@@ -135,7 +138,7 @@ namespace ConsoleApp1
                     }
                     ordensServico.IdItens = idsProdutos;
                     ordensServicoServices.Salvar(ordensServico);
-                }//ok
+                }
                 if (opcoes == Opcoes.AtualizarCliente)
                 {
                     Clientes clientes = new Clientes();
@@ -160,7 +163,7 @@ namespace ConsoleApp1
                         clienteRetorno.CorVeiculoCliente = Console.ReadLine();
                         clientesServices.Atualizar(id, clienteRetorno);
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.AtualizarProfissional)
                 {
                     Profissionais profissionais = new Profissionais();
@@ -176,7 +179,7 @@ namespace ConsoleApp1
                         profissionalRetorno.CargoProfissional = Console.ReadLine();
                     }
                     profissionaisServices.Atualizar(id, profissionalRetorno);
-                } //ok
+                } 
                 if (opcoes == Opcoes.AtualizarProduto)
                 {
                     Produtos produtos = new Produtos();
@@ -192,7 +195,7 @@ namespace ConsoleApp1
                         produtoRetorno.ValorPeca = Convert.ToSingle(Console.ReadLine());
                     }
                     produtosServices.Atualizar(id, produtoRetorno);
-                } //ok
+                } 
                 if (opcoes == Opcoes.AtualizarServico)
                 {
                     Servicos servicos = new Servicos();
@@ -208,7 +211,7 @@ namespace ConsoleApp1
                         servicoRetorno.ValorServico = Convert.ToSingle(Console.ReadLine());
                         servicosServices.Atualizar(id, servicoRetorno);
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.AtualizarOrdemServicoProfissional)
                 {
                     Console.WriteLine("Informe a ID da Ordem de Serviço ao qual deseja atualizar:");
@@ -223,7 +226,7 @@ namespace ConsoleApp1
                     ordensServicoServices.AdicionarProfissional(id, idsProfissionais);
 
 
-                } //ok
+                } 
                 if (opcoes == Opcoes.AtualizarOrdemServicoProduto)
                 {
                     Console.WriteLine("Informe a ID da Ordem de Serviço ao qual deseja atualizar:");
@@ -238,7 +241,7 @@ namespace ConsoleApp1
                     ordensServicoServices.AdicionarProduto(id, idsProdutos);
 
 
-                } //ok
+                } 
                 if (opcoes == Opcoes.RemoverCliente)
                 {
                     Console.WriteLine("Digite a ID do Cliente para remover:");
@@ -256,7 +259,7 @@ namespace ConsoleApp1
                             Console.WriteLine(resultado);
                         } 
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.RemoverProfissional)
                 {
                     Console.WriteLine("Digite a ID do Profissional para remover:");
@@ -274,7 +277,7 @@ namespace ConsoleApp1
                             Console.WriteLine(resultado);
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.RemoverProduto)
                 {
                     Console.WriteLine("Digite a ID do Produto para remover:");
@@ -292,7 +295,7 @@ namespace ConsoleApp1
                             Console.WriteLine(resultado);
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.RemoverServico)
                 {
                     Console.WriteLine("Digite a ID do Serviço para remover:");
@@ -310,7 +313,7 @@ namespace ConsoleApp1
                             Console.WriteLine(resultado);
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.PesquisarCliente)
                 {
                     Console.WriteLine("Informe o Nome do Cliente:");
@@ -333,7 +336,7 @@ namespace ConsoleApp1
                             Console.WriteLine("=================================");
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.PesquisarProfissional) //ok
                 {
                     Console.WriteLine("Informe o Nome do Profissional:");
@@ -351,7 +354,7 @@ namespace ConsoleApp1
                             Console.WriteLine("=================================");
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.PesquisarProduto)
                 {
                     Console.WriteLine("Informe a Descrição do Produto:");
@@ -369,7 +372,7 @@ namespace ConsoleApp1
                             Console.WriteLine("=================================");
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.PesquisarServico)
                 {
                     Console.WriteLine("Informe a Descrição do Serviço:");
@@ -387,7 +390,7 @@ namespace ConsoleApp1
                             Console.WriteLine("=================================");
                         }
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.PesquisarOrdemServico)
                 {
                     Console.WriteLine("Informe o ID da Ordem do Serviço:");
@@ -404,7 +407,7 @@ namespace ConsoleApp1
                         Console.WriteLine($"  Valor: " + ordensServico.TotalGeral);
                         Console.WriteLine("=================================");
                     }
-                } //ok
+                } 
                 if (opcoes == Opcoes.PesquisarTodos)
                 {
                     BuscarTodos buscar;
@@ -444,54 +447,36 @@ namespace ConsoleApp1
                         }
                         if (buscar == BuscarTodos.BuscarProdutos)
                         {
-                            var cliente = clientesServices.BuscarTodos();
-                            foreach (var item in cliente)
+                            var produto = produtosServices.BuscarTodos();
+                            foreach (var item in produto)
                             {
                                 Console.WriteLine("=================================");
-                                Console.WriteLine($"      ID: " + item.IdCliente);
-                                Console.WriteLine($"    Nome: " + item.NomeCliente);
-                                Console.WriteLine($"     CPF: " + item.CpfCliente);
-                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
-                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
-                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
-                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
-                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
+                                Console.WriteLine($"       ID: " + item.IdProduto);
+                                Console.WriteLine($"Descrição: " + item.DescricaoPeca);
+                                Console.WriteLine($"    Valor: " + item.ValorPeca);
                                 Console.WriteLine("=================================");
                             }
                         }
                         if (buscar == BuscarTodos.BuscarServiços)
                         {
-                            var cliente = clientesServices.BuscarTodos();
-                            foreach (var item in cliente)
+                            var servicos = servicosServices.BuscarTodos();
+                            foreach (var item in servicos)
                             {
                                 Console.WriteLine("=================================");
-                                Console.WriteLine($"      ID: " + item.IdCliente);
-                                Console.WriteLine($"    Nome: " + item.NomeCliente);
-                                Console.WriteLine($"     CPF: " + item.CpfCliente);
-                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
-                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
-                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
-                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
-                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
+                                Console.WriteLine($"      ID: " + item.IdServico);
+                                Console.WriteLine($"    Nome: " + item.DescricaoServico);
+                                Console.WriteLine($"     CPF: " + item.ValorServico);
                                 Console.WriteLine("=================================");
                             }
                         }
-                        if (buscar == BuscarTodos.BuscartodasOrdensServico)
+                        if (buscar == BuscarTodos.BuscarFaturamentoBruto)
                         {
-                            var cliente = clientesServices.BuscarTodos();
-                            foreach (var item in cliente)
-                            {
-                                Console.WriteLine("=================================");
-                                Console.WriteLine($"      ID: " + item.IdCliente);
-                                Console.WriteLine($"    Nome: " + item.NomeCliente);
-                                Console.WriteLine($"     CPF: " + item.CpfCliente);
-                                Console.WriteLine($"Telefone: " + item.TelefoneCliente);
-                                Console.WriteLine($"Endereço: " + item.EnderecoCliente);
-                                Console.WriteLine($" Veículo: " + item.VeiculoCliente);
-                                Console.WriteLine($"   Placa: " + item.PlacaVeiculoCliente);
-                                Console.WriteLine($"     Cor: " + item.CorVeiculoCliente);
-                                Console.WriteLine("=================================");
-                            }
+                            var ordensServico = ordensServicoServices.Faturamento();
+                         
+                            Console.WriteLine("=================================");
+                            Console.WriteLine($"Faturamento Bruto: R$ " + ordensServico);
+                            Console.WriteLine("=================================");
+                       
                         }
                     } 
                     while (buscar != BuscarTodos.Sair);
@@ -501,7 +486,7 @@ namespace ConsoleApp1
                 Console.WriteLine("Digite a Opção desejada:\n------------------------------>\n0-Sair\n------------------------------>\n1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +
                              "6-Atualizar Cliente\n7-Atualizar Profissional\n8-Atualizar Produto\n9-Atualizar Serviço\n10-Inserir Profissional na Ordem de Serviço\n11-Inserir Produto na Ordem de Serviço\n------------------------------>\n" +
                              "12-Remover Cliente\n13-Remover Profissional\n14-Remover Produto\n15-Remover Serviço\n------------------------------>\n" +
-                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço");
+                             "16-Pesquisar Cliente\n17-Pesquisar Profissional\n18-Pesquisar Produto\n19-Pesquisar Serviço\n20-Pesquisar Ordem de Serviço\n21-Buscas Gerais");
                 opcoes = (Opcoes)Convert.ToInt32(Console.ReadLine());
             }
         }

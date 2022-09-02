@@ -62,6 +62,25 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+        public List<ProdutosDto> BuscarTodos()
+        {
+            List<ProdutosDto> produtosEncontrados;
+            try
+            {
+                var query = @"SELECT IdProduto, descricaoPeca, ValorPeca FROM Produtos";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    produtosEncontrados = connection.Query<ProdutosDto>(query).ToList();
+                }
+                return produtosEncontrados;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
         public void Atualizar(Produtos produtos, int id)
         {
             try

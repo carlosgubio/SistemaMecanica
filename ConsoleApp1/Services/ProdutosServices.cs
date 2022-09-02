@@ -33,7 +33,7 @@ namespace Client.Services
             }
         }
 
-        public List<ProdutosDto> BuscarTodosProdutos()
+        public List<ProdutosDto> BuscarTodos()
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
