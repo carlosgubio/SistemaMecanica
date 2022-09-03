@@ -10,11 +10,11 @@ namespace Client.Services
 {
     public class OrdensServicoServices
     {
-        public void Salvar(OrdensServico ordensServico)
+        public string Salvar(OrdensServico ordensServico)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             var json = JsonConvert.SerializeObject(ordensServico);
 
             try
@@ -23,7 +23,7 @@ namespace Client.Services
                 response = httpClient.PostAsync("https://localhost:44363/ordensServico/Cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
 
@@ -32,6 +32,7 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
 
         public OrdensServicoDto BuscarPorIdOrdemServico(int id)
@@ -104,11 +105,11 @@ namespace Client.Services
             }
         }
 
-        public void AdicionarProfissional(int id, List<int> profissionais)
+        public string AdicionarProfissional(int id, List<int> profissionais)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             var json = JsonConvert.SerializeObject(profissionais);
 
             try
@@ -117,18 +118,19 @@ namespace Client.Services
                 response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionarProfissional?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
-        public void AdicionarProduto(int id, List<int> produtos)
+        public string AdicionarProduto(int id, List<int> produtos)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             var json = JsonConvert.SerializeObject(produtos);
 
             try
@@ -137,7 +139,7 @@ namespace Client.Services
                 response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionarProduto?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
 
@@ -146,6 +148,7 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
     }
 }

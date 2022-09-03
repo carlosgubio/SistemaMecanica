@@ -53,9 +53,9 @@ namespace SistemaMecanica.Controllers
 
             var resultado = _clientesRepository.Salvar(cadastrarClienteViewModel);
 
-            if (resultado) return Ok("Pessoa cadastrada com sucesso.");
+            if (resultado) return Ok("Cliente cadastrado com sucesso!");
 
-            return Ok("Houve um problema ao salvar. Pessoa não cadastrada.");
+            return Ok("Houve um problema ao salvar. Cliente não cadastrado!");
         }
         
         [HttpGet]
@@ -92,7 +92,7 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             _clientesRepository.Atualizar(model.Atualizar, model.Encontrar);
 
-            return Ok();
+            return Ok("Cliente atualizado com sucesso!");
         }
         
         [HttpDelete]
@@ -102,7 +102,7 @@ namespace SistemaMecanica.Controllers
             return Ok ("Ocorreu um erro!");
 
             _clientesRepository.Deletar(id);
-            return Ok ("Removido com sucesso!");
+            return Ok ("Cliente deletado com sucesso!");
         }
     }
 }

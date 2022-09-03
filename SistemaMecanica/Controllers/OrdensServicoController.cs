@@ -39,9 +39,9 @@ namespace SistemaMecanica.Controllers
 
             var resultado = _ordensServicoRepository.Salvar(cadastrarOrdemServicoViewModel);
 
-            if (resultado) return Ok("Ordem de Serviço cadastrada com sucesso.");
+            if (resultado) return Ok("Ordem de Serviço cadastrada com sucesso!");
 
-            return Ok("Houve um problema ao salvar. Ordem de Serviço não cadastrada.");
+            return Ok("Houve um problema ao salvar. Ordem de Serviço não cadastrada!");
         }
         
         [HttpGet]
@@ -65,7 +65,7 @@ namespace SistemaMecanica.Controllers
         {
             var resultado = _ordensServicoRepository.FaturamentoBruto();
 
-            if (resultado == null)
+            if (resultado == 0)
                 return NotFound();
 
             return Ok(resultado);
@@ -78,30 +78,16 @@ namespace SistemaMecanica.Controllers
         }
         
         [HttpPut]
-        public IActionResult Atualizar(AtualizarOrdensServicoViewModel model)
-        {
-            if (model == null)
-                return NoContent();
-            if (model.Atualizar == null)
-                return NoContent();
-            if (model.Encontrar == 0)
-                return NoContent();
-            _ordensServicoRepository.Atualizar(model.Atualizar, model.Encontrar);
-
-            return Ok();
-        }
-        
-        [HttpPut]
         public IActionResult AdicionarProfissional(int id, List<int> profissionais)
         {
             _ordensServicoRepository.InserirProfissionalOS(profissionais, id);
-            return Ok("Adicionado com sucesso!");
+            return Ok("Profissional adicionado com sucesso!");
         }
         [HttpPut]
         public IActionResult AdicionarProduto(int id, List<int> produtos)
         {
             _ordensServicoRepository.InserirProdutoOS(produtos, id);
-            return Ok("Adicionado com sucesso!");
+            return Ok("Peça adicionada com sucesso!");
         }
 
     }

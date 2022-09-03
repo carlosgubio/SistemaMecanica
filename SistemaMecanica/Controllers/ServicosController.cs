@@ -35,9 +35,9 @@ namespace SistemaMecanica.Controllers
 
             var resultado = _servicosRepository.Salvar(cadastrarServicoViewModel);
 
-            if (resultado) return Ok("Serviço cadastrado com sucesso.");
+            if (resultado) return Ok("Serviço cadastrado com sucesso!");
 
-            return Ok("Houve um problema ao salvar. Serviço não cadastrado.");
+            return Ok("Houve um problema ao salvar. Serviço não cadastrado!");
         }
         
         [HttpGet]
@@ -75,7 +75,7 @@ namespace SistemaMecanica.Controllers
 
            _servicosRepository.Atualizar(model.Atualizar, model.Encontrar);
 
-            return Ok();
+            return Ok("Serviço Atualizado com sucesso!");
         }
         
         [HttpDelete]
@@ -85,7 +85,7 @@ namespace SistemaMecanica.Controllers
                 return Ok("Ocorreu um erro!");
 
             _servicosRepository.Deletar(id);
-            return Ok("Removido com sucesso!");
+            return Ok("Serviço Removido com sucesso!");
         }
     }
 }

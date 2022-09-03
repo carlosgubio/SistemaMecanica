@@ -10,11 +10,11 @@ namespace Client.Services
 {
     public class ProdutosServices
     {
-        public void Salvar(Produtos produtos)
+        public string Salvar(Produtos produtos)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             var json = JsonConvert.SerializeObject(produtos);
 
             try
@@ -23,7 +23,7 @@ namespace Client.Services
                 response = httpClient.PostAsync("https://localhost:44363/produtos/cadastrar", new StringContent(json, Encoding.UTF8, "application/json")).Result;
                 response.EnsureSuccessStatusCode();
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
             }
@@ -31,6 +31,7 @@ namespace Client.Services
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
 
         public List<ProdutosDto> BuscarTodos()
@@ -85,36 +86,35 @@ namespace Client.Services
             }
         }
 
-        public void Atualizar(int id, ProdutosDto produtos)
+        public string Atualizar(int id, ProdutosDto produtos)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             var viewModel = new
             {
                 Encontrar = id,
                 Atualizar = produtos
             };
-
             try
             {
                 var json = JsonConvert.SerializeObject(viewModel);
                 //monta a request para a api;
                 response = httpClient.PutAsync($"https://localhost:44363/produtos/atualizar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     Console.WriteLine(resultado);
                 }
-
                 //converte os dados recebidos e retorna eles como objetos do C#;
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
 
         public string Remover(int id)

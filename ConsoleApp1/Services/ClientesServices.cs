@@ -38,7 +38,7 @@ namespace Client.Services
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            
             //Busca todos os clientes dentro da api;
             try
             {
@@ -86,11 +86,11 @@ namespace Client.Services
             }
         }
 
-        public void Atualizar(int id, ClientesDto clientes)
+        public string Atualizar(int id, ClientesDto clientes)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
-
+            var resultado = string.Empty;
             var viewModel = new
             {
                 Encontrar = id,
@@ -103,20 +103,19 @@ namespace Client.Services
                 //monta a request para a api;
                 response = httpClient.PutAsync($"https://localhost:44363/clientes/atualizar?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
 
-                var resultado = response.Content.ReadAsStringAsync().Result;
+                resultado = response.Content.ReadAsStringAsync().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     Console.WriteLine(resultado);
                 }
-
                 //converte os dados recebidos e retorna eles como objetos do C#;
-
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            return resultado;
         }
         
         public string Remover(int id)
