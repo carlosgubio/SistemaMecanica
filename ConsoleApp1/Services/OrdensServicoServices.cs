@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using SistemaMecanica.Dtos;
+﻿using Client.Dtos.OrdensServico;
+using Newtonsoft.Json;
 using SistemaMecanica.Models;
 using System;
 using System.Collections.Generic;

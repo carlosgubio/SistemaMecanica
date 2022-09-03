@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Client.Dtos.Produtos;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace SistemaMecanica.Dtos
+namespace Client.Dtos.OrdensServico
 {
     public class OrdensServicoDto
     {
@@ -13,6 +13,6 @@ namespace SistemaMecanica.Dtos
         public int IdServico { get; set; }
         public int IdProduto { get; set; }
         public float TotalGeral { get; set; }
-        public List<ProdutosDto> Itens { get;set; }
+        public List<ProdutosDto> Itens { get; set; }
     }
 }

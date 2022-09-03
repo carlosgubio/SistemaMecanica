@@ -27,7 +27,7 @@ namespace SistemaMecanica.Repositories
                     SqlCommand command = new SqlCommand(query, sql);
                     command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
                     command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
-                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);    
+                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
                     command.Connection.Open();
                     idOrdemCriada =  (int)command.ExecuteScalar();
                 }
@@ -71,7 +71,8 @@ namespace SistemaMecanica.Repositories
             }
         }
         public OrdensServicoDto BuscarPorIDOrdemServico(int id)
-        {            
+        {
+            OrdensServicoDto ordensServicoDto;
             try
             {
                 var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
@@ -82,8 +83,15 @@ namespace SistemaMecanica.Repositories
                     {
                         id
                     };
-                    return connection.QueryFirst<OrdensServicoDto>(query, parametros);
+                    ordensServicoDto = connection.QueryFirst<OrdensServicoDto>(query, parametros);
                 }
+
+                if(ordensServicoDto != null)
+                {
+                    ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
+                }
+
+                return ordensServicoDto;
             }
             catch (Exception ex)
             {
@@ -254,6 +262,30 @@ namespace SistemaMecanica.Repositories
             {
                 var res = connection.QuerySingle<float>(query);
                 return res;
+            }
+        }
+        private List<ProdutosDto> BuscarProdutosDaOrdem(int id) 
+        {
+            try
+            {
+                var query = @"select i.IdProduto, DescricaoPeca, ValorPeca from Itens i 
+                            inner join Produtos p on i.IdProduto = p.IdProduto
+                            where i.IdOrdemServico = @idOrdensServico";
+
+                var parametros = new 
+                {
+                    idOrdensServico = id
+                };
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    return  connection.Query<ProdutosDto>(query, parametros).ToList();
+                }                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
             }
         }
     }

@@ -439,12 +439,19 @@ namespace ConsoleApp1
                         var ordensServico = ordensServicoServices.BuscarPorIdOrdemServico(id);
                         
                         Console.WriteLine("=================================");
-                        Console.WriteLine($"Serviço: " + ordensServico.IdCliente);
-                        Console.WriteLine($"  Valor: " + ordensServico.IdProfissional);
-                        Console.WriteLine($"  Valor: " + ordensServico.IdProduto);
-                        Console.WriteLine($"  Valor: " + ordensServico.IdServico);
-                        Console.WriteLine($"  Valor: " + ordensServico.TotalGeral);
+                        Console.WriteLine($"     idCliente: " + ordensServico.IdCliente);
+                        Console.WriteLine($"idProfissional: " + ordensServico.IdProfissional);
+                        Console.WriteLine($"     idProduto: " + ordensServico.IdProduto);
+                        Console.WriteLine($"     idServico: " + ordensServico.IdServico);
+                        Console.WriteLine($"    totalGeral: " + ordensServico.TotalGeral);
                         Console.WriteLine("=================================");
+                        Console.WriteLine("     Itens da Ordem     ");
+                        foreach (var item in ordensServico.Itens) 
+                        {
+                            Console.WriteLine("Id Produto");
+                            Console.WriteLine(item.IdProduto);
+                        }
+
                     }
                 } 
                 if (opcoes == Opcoes.PesquisarTodos)
