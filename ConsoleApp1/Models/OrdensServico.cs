@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace SistemaMecanica.Dtos
+namespace Client.Models.OrdensServico
 {
-    public class OrdensServicoDto
+    public class OrdensServico
     {
-        public int IdOrdemServico { get; set; }
+        public List<int> IdItens { get; set; }
         public int IdProfissional { get; set; }
         public int IdCliente { get; set; }
         public int IdServico { get; set; }
         public int IdProduto { get; set; }
         public float TotalGeral { get; set; }
-        public List<ProdutosDto> Itens { get;set; }
-        public List<ProfissionaisDto> execucao { get; set; }
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Client.Dtos.Produtos;
+using Client.Dtos.Profissionais;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Client.Dtos.OrdensServico
         public int IdProduto { get; set; }
         public float TotalGeral { get; set; }
         public List<ProdutosDto> Itens { get; set; }
+        public List<ProfissionaisDto> execucao { get; set; }
     }
 }

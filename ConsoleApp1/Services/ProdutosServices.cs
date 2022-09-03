@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using SistemaMecanica.Dtos;
-using SistemaMecanica.Models;
+﻿using Client.Dtos.Produtos;
+using Client.Models.Produtos;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

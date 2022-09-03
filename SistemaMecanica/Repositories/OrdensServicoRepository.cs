@@ -90,6 +90,10 @@ namespace SistemaMecanica.Repositories
                 {
                     ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
                 }
+                if (ordensServicoDto != null)
+                {
+                    ordensServicoDto.execucao = BuscarProfissionaisDaOrdem(id);
+                }
 
                 return ordensServicoDto;
             }
@@ -288,5 +292,30 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+        private List<ProfissionaisDto> BuscarProfissionaisDaOrdem(int id)
+        {
+            try
+            {
+                var query = @"select i.IdProfissional, NomeProfissional, CargoProfissional from execucao i 
+                            inner join Profissionais p on i.IdProfissional = p.IdProfissional
+                            where i.IdOrdemServico = @idOrdensServico";
+
+                var parametros = new
+                {
+                    idOrdensServico = id
+                };
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    return connection.Query<ProfissionaisDto>(query, parametros).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+
     }
 }

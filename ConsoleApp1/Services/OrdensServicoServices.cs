@@ -1,6 +1,6 @@
 ﻿using Client.Dtos.OrdensServico;
+using Client.Models.OrdensServico;
 using Newtonsoft.Json;
-using SistemaMecanica.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
