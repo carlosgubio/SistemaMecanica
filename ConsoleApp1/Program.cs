@@ -465,7 +465,7 @@ namespace ConsoleApp1
                             Console.WriteLine("***************************************\n");
                         }
                     }
-                } //Verificar a necessidade de manter ou não os itens comentados
+                }
                 if (opcoes == Opcoes.PesquisarTodos)
                 {
                     BuscarTodos buscar;

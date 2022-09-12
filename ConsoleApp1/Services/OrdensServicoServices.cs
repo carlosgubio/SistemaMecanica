@@ -73,10 +73,6 @@ namespace Client.Services
                 response.EnsureSuccessStatusCode();
 
                 resultado = response.Content.ReadAsStringAsync().Result;
-
-
-                //converte os dados recebidos e retorna eles como objetos do C#;
-                //var objetoDesserializado = JsonConvert.DeserializeObject<OrdensServicoDto>(resultado);
             }
             catch (HttpRequestException ex)
             {

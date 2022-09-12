@@ -17,7 +17,7 @@ namespace SistemaMecanica.Repositories
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
-        public bool Salvar(CadastrarClienteViewModel salvarPessoaViewModel)
+        public bool Salvar(CadastrarClienteViewModel cadastrarClienteViewModel)
         {
             try
             {
@@ -27,13 +27,13 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@nomeCliente", salvarPessoaViewModel.NomeCliente);
-                    command.Parameters.AddWithValue("@cpfCliente", salvarPessoaViewModel.CpfCliente);
-                    command.Parameters.AddWithValue("@telefoneCliente", salvarPessoaViewModel.TelefoneCliente);
-                    command.Parameters.AddWithValue("@enderecoCliente", salvarPessoaViewModel.EnderecoCliente);
-                    command.Parameters.AddWithValue("@veiculoCliente", salvarPessoaViewModel.VeiculoCliente);
-                    command.Parameters.AddWithValue("@placaVeiculoCliente", salvarPessoaViewModel.PlacaVeiculoCliente);
-                    command.Parameters.AddWithValue("@corVeiculoCliente", salvarPessoaViewModel.CorVeiculoCliente);
+                    command.Parameters.AddWithValue("@nomeCliente", cadastrarClienteViewModel.NomeCliente);
+                    command.Parameters.AddWithValue("@cpfCliente", cadastrarClienteViewModel.CpfCliente);
+                    command.Parameters.AddWithValue("@telefoneCliente", cadastrarClienteViewModel.TelefoneCliente);
+                    command.Parameters.AddWithValue("@enderecoCliente", cadastrarClienteViewModel.EnderecoCliente);
+                    command.Parameters.AddWithValue("@veiculoCliente", cadastrarClienteViewModel.VeiculoCliente);
+                    command.Parameters.AddWithValue("@placaVeiculoCliente", cadastrarClienteViewModel.PlacaVeiculoCliente);
+                    command.Parameters.AddWithValue("@corVeiculoCliente", cadastrarClienteViewModel.CorVeiculoCliente);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
