@@ -448,22 +448,19 @@ namespace ConsoleApp1
                         var ordensServico = ordensServicoServices.BuscarPorIdOrdemServico(id);
 
                         Console.WriteLine("***************************************");
-                        Console.WriteLine($"     idCliente: " + ordensServico.IdCliente);
-                        //Console.WriteLine($"idProfissional: " + ordensServico.IdProfissional);
-                        //Console.WriteLine($"     idProduto: " + ordensServico.IdProduto);
-                        Console.WriteLine($"     idServico: " + ordensServico.IdServico);
-                        Console.WriteLine($"    totalGeral: " + ordensServico.TotalGeral);
-                        //Console.WriteLine("=======================================");
-                        //Console.WriteLine("     Itens da Ordem     ");
-                        foreach (var item in ordensServico.Itens) 
-                        {
-                            Console.WriteLine($"    Id Produto: " + item.IdProduto);
-                        }
+                        Console.WriteLine($"      idCliente: " + ordensServico.IdCliente);
+                                               
                         foreach (var item in ordensServico.execucao)
                         {
                             Console.WriteLine("Id Profissional: " + item.IdProfissional);
-                            Console.WriteLine("***************************************\n");
                         }
+                        Console.WriteLine($"      idServico: " + ordensServico.IdServico);
+                        foreach (var item in ordensServico.Itens)
+                        {
+                            Console.WriteLine($"     Id Produto: " + item.IdProduto);
+                        }
+                        Console.WriteLine($"     totalGeral: R$ " + ordensServico.TotalGeral);
+                        Console.WriteLine("***************************************\n");
                     }
                 }
                 if (opcoes == Opcoes.PesquisarTodos)
