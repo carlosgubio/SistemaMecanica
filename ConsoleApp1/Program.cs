@@ -8,8 +8,6 @@ using Client.Models.Produtos;
 using Client.Models.Profissionais;
 using Client.Models.Servicos;
 using Client.Services;
-//using SistemaMecanica.Dtos;
-//using SistemaMecanica.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

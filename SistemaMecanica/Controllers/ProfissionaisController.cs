@@ -23,7 +23,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarProfissionalViewModel cadastrarProfissionalViewModel)
+        public IActionResult Cadastrar([FromBody]CadastrarProfissionalViewModel cadastrarProfissionalViewModel)
         {
             if (cadastrarProfissionalViewModel == null)
                 return Ok("Não foram informados dados");

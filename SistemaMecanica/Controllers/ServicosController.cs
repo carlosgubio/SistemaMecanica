@@ -22,7 +22,7 @@ namespace SistemaMecanica.Controllers
             _servicosRepository = new ServicosRepository();
         }
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarServicoViewModel cadastrarServicoViewModel)
+        public IActionResult Cadastrar([FromBody]CadastrarServicoViewModel cadastrarServicoViewModel)
         {
             if (cadastrarServicoViewModel == null)
                 return Ok("Não foram informados dados");
