@@ -60,6 +60,31 @@ namespace Client.Services
                 return new OrdensServicoDto();
             }
         }
+        //public OrdensServicoDto BuscarOrdemServicoPorVeiculo(string veiculo)
+        //{
+        //    HttpClient httpClient = new HttpClient();
+        //    HttpResponseMessage response;
+
+        //    //Busca todos os clientes dentro da api;
+        //    try
+        //    {
+        //        //monta a request para a api;
+        //        response = httpClient.GetAsync($"https://localhost:44363/ordensServico/ConsultarVeiculo?veiculo={veiculo}").Result;
+        //        response.EnsureSuccessStatusCode();
+
+        //        var resultado = response.Content.ReadAsStringAsync().Result;
+
+        //        //converte os dados recebidos e retorna eles como objetos do C#;
+        //        var objetoDesserializado = JsonConvert.DeserializeObject<OrdensServicoDto>(resultado);
+
+        //        return objetoDesserializado;
+        //    }
+        //    catch (HttpRequestException ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return new OrdensServicoDto();
+        //    }
+        //}
         public double Faturamento()
         {
             HttpClient httpClient = new HttpClient();

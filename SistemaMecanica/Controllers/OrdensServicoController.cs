@@ -51,6 +51,12 @@ namespace SistemaMecanica.Controllers
             return Ok(resultado);            
         }
         [HttpGet]
+        //public IActionResult ConsultarVeiculo(string veiculo)
+        //{
+        //    var resultado = _ordensServicoRepository.BuscarOrdemServicoPorVeiculo(veiculo);
+        //    return Ok(resultado);
+        //}
+        //[HttpGet]
         public IActionResult BuscarTodas()
         {
             var resultado = _ordensServicoRepository.BuscarTodos();

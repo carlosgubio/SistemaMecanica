@@ -1,5 +1,6 @@
 ﻿using Client.Dtos.Login;
 using Newtonsoft.Json;
+using SistemaMecanica.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -9,7 +10,7 @@ namespace Client.Services
 {
     class LoginsService
     {
-        public List<LoginDto> BuscarPorNome(string nome)
+        public List<LoginsDto> BuscarPorNome(string nome)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -24,17 +25,17 @@ namespace Client.Services
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
                 //converte os dados recebidos e retorna eles como objetos do C#;
-                var objetoDesserializado = JsonConvert.DeserializeObject<List<LoginDto>>(resultado);
+                var objetoDesserializado = JsonConvert.DeserializeObject<List<LoginsDto>>(resultado);
 
                 return objetoDesserializado;
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new List<LoginDto>();
+                return new List<LoginsDto>();
             }
         }
-        public LoginDto ConfirmarCliente(int id)
+        public LoginsDto ConfirmarCliente(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -45,16 +46,16 @@ namespace Client.Services
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
-                var objetoDesserializado = JsonConvert.DeserializeObject<LoginDto>(resultado);
+                var objetoDesserializado = JsonConvert.DeserializeObject<LoginsDto>(resultado);
                 return objetoDesserializado;
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new LoginDto();
+                return new LoginsDto();
             }
         }
-        public LoginDto ConfirmarProfissional(int id)
+        public LoginsDto ConfirmarProfissional(int id)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;
@@ -65,13 +66,13 @@ namespace Client.Services
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
 
-                var objetoDesserializado = JsonConvert.DeserializeObject<LoginDto>(resultado);
+                var objetoDesserializado = JsonConvert.DeserializeObject<LoginsDto>(resultado);
                 return objetoDesserializado;
             }
             catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
-                return new LoginDto();
+                return new LoginsDto();
             }
         }
     }

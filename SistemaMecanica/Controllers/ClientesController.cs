@@ -42,15 +42,6 @@ namespace SistemaMecanica.Controllers
             if (cadastrarClienteViewModel.EnderecoCliente == null)
                 throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.EnderecoCliente)} vazio ou nulo.");
 
-            if (cadastrarClienteViewModel.VeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.VeiculoCliente)} vazio ou nulo.");
-
-            if (cadastrarClienteViewModel.PlacaVeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
-
-            if (cadastrarClienteViewModel.CorVeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.CorVeiculoCliente)} vazio ou nulo.");
-
             var resultado = _clientesRepository.Salvar(cadastrarClienteViewModel);
 
             if (resultado) return Ok("Cliente cadastrado com sucesso!");

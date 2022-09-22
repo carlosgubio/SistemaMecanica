@@ -21,9 +21,8 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"INSERT INTO Clientes 
-                              (NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente) 
-                              VALUES (@nomeCliente,@cpfCliente,@telefoneCliente,@enderecoCliente,@veiculoCliente,@placaVeiculoCliente,@corVeiculoCliente)";
+                var query = @"INSERT INTO Clientes (NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente,) 
+                              VALUES (@nomeCliente,@cpfCliente,@telefoneCliente,@enderecoCliente)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -31,9 +30,6 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@cpfCliente", cadastrarClienteViewModel.CpfCliente);
                     command.Parameters.AddWithValue("@telefoneCliente", cadastrarClienteViewModel.TelefoneCliente);
                     command.Parameters.AddWithValue("@enderecoCliente", cadastrarClienteViewModel.EnderecoCliente);
-                    command.Parameters.AddWithValue("@veiculoCliente", cadastrarClienteViewModel.VeiculoCliente);
-                    command.Parameters.AddWithValue("@placaVeiculoCliente", cadastrarClienteViewModel.PlacaVeiculoCliente);
-                    command.Parameters.AddWithValue("@corVeiculoCliente", cadastrarClienteViewModel.CorVeiculoCliente);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -51,7 +47,7 @@ namespace SistemaMecanica.Repositories
             List<ClientesDto> ClientesEncontrados;
             try
             {
-                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculocliente FROM Clientes
+                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente FROM Clientes
                                       WHERE NomeCliente = @nome";
 
                 using (var connection = new SqlConnection(_connection))
@@ -76,7 +72,7 @@ namespace SistemaMecanica.Repositories
             List<ClientesDto> clientesEncontrados;
             try
             {
-                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente, VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente FROM Clientes";
+                var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente FROM Clientes";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -95,7 +91,7 @@ namespace SistemaMecanica.Repositories
             try
             {
                 var query = @"UPDATE Clientes SET NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente,
-                            VeiculoCliente = @veiculoCliente, PlacaVeiculoCliente = @placaVeiculoCliente, CorVeiculoCliente = @corVeiculoCliente WHERE IdCliente = @idCliente";
+                             WHERE IdCliente = @idCliente";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
@@ -104,9 +100,6 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@cpfCliente", clientes.CpfCliente);
                     command.Parameters.AddWithValue("@telefoneCliente", clientes.TelefoneCliente);
                     command.Parameters.AddWithValue("@enderecoCliente", clientes.EnderecoCliente);
-                    command.Parameters.AddWithValue("@veiculoCliente", clientes.VeiculoCliente);
-                    command.Parameters.AddWithValue("@placaVeiculoCliente", clientes.PlacaVeiculoCliente);
-                    command.Parameters.AddWithValue("@corVeiculoCliente", clientes.CorVeiculoCliente);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
