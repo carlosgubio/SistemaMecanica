@@ -95,6 +95,11 @@ namespace SistemaMecanica.Controllers
             _ordensServicoRepository.InserirProdutoOS(produtos, id);
             return Ok("Peça adicionada com sucesso!");
         }
-
+        [HttpPut]
+        public IActionResult AdicionarServico(int id, List<int> servicos)
+        {
+            _ordensServicoRepository.InserirServicoOS(servicos, id);
+            return Ok("Serviço adicionado com sucesso!");
+        }
     }
 }

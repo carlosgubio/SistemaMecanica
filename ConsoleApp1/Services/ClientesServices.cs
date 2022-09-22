@@ -1,4 +1,5 @@
 ﻿using Client.Dtos.Clientes;
+using Client.Models;
 using Client.Models.Clientes;
 using Newtonsoft.Json;
 using System;
@@ -161,6 +162,11 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
                 return new ClientesDto();
             }
+        }
+
+        internal object Salvar(Veiculos veiculo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

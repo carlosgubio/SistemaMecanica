@@ -1,16 +1,16 @@
 ﻿using Client.Dtos.Veiculos;
 using Newtonsoft.Json;
-using SistemaMecanica.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 
+
 namespace Client.Services
 {
-    class VeiculosService
+    class VeiculosServices
     {
-        public string Salvar(Veiculos veiculos)
+        public string Salvar(VeiculosDto veiculos)
         {
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response;

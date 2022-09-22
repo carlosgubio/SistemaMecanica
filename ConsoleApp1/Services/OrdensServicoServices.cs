@@ -171,5 +171,29 @@ namespace Client.Services
             }
             return resultado;
         }
+        public string AdicionarServico(int id, List<int> servicos)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response;
+            var resultado = string.Empty;
+            var json = JsonConvert.SerializeObject(servicos);
+
+            try
+            {
+                //monta a request para a api;
+                response = httpClient.PutAsync($"https://localhost:44363/ordensServico/adicionarServico?id={id}", new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                response.EnsureSuccessStatusCode();
+
+                resultado = response.Content.ReadAsStringAsync().Result;
+
+                //converte os dados recebidos e retorna eles como objetos do C#;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return resultado;
+        }
     }
 }

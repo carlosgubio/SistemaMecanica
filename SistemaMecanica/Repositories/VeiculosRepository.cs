@@ -20,8 +20,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"INSERT INTO Veiculos 
-                            (VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente, IdCliente) 
+                var query = @"INSERT INTO Veiculos (VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente, IdCliente) 
                             VALUES (@veiculoCliente,@placaVeiculoCliente,@corVeiculoCliente,@idcliente)";
                 using (var sql = new SqlConnection(_connection))
                 {

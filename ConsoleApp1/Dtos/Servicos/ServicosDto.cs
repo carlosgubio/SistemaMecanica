@@ -9,5 +9,7 @@ namespace Client.Dtos.Servicos
         public int IdServico { get; set; }
         public string DescricaoServico { get; set; }
         public float ValorServico { get; set; }
+        public List<ServicosDto> servicosExecutados { get; set; }
+
     }
 }
