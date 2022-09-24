@@ -28,14 +28,11 @@ namespace SistemaMecanica.Controllers
             if (cadastrarOrdemServicoViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (cadastrarOrdemServicoViewModel.IdProfissional == 0)
-                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdProfissional)} vazio ou nulo.");
-            
             if (cadastrarOrdemServicoViewModel.IdCliente == 0)
                 throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdCliente)} vazio ou nulo.");
 
-            if (cadastrarOrdemServicoViewModel.IdServico == 0)
-                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdServico)} vazio ou nulo.");
+            if (cadastrarOrdemServicoViewModel.IdVeiculo == 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarOrdemServicoViewModel.IdVeiculo)} vazio ou nulo.");
 
             var resultado = _ordensServicoRepository.Salvar(cadastrarOrdemServicoViewModel);
 
@@ -50,13 +47,8 @@ namespace SistemaMecanica.Controllers
             var resultado = _ordensServicoRepository.BuscarPorIDOrdemServico(id);
             return Ok(resultado);            
         }
+        
         [HttpGet]
-        //public IActionResult ConsultarVeiculo(string veiculo)
-        //{
-        //    var resultado = _ordensServicoRepository.BuscarOrdemServicoPorVeiculo(veiculo);
-        //    return Ok(resultado);
-        //}
-        //[HttpGet]
         public IActionResult BuscarTodas()
         {
             var resultado = _ordensServicoRepository.BuscarTodos();

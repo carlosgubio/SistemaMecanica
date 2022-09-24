@@ -90,7 +90,7 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"UPDATE Clientes SET NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente,
+                var query = @"UPDATE Clientes SET NomeCliente = @nomeCliente, CpfCliente = @cpfCliente, TelefoneCliente = @telefoneCliente, EnderecoCliente = @enderecoCliente
                              WHERE IdCliente = @idCliente";
                 using (var sql = new SqlConnection(_connection))
                 {

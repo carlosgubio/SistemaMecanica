@@ -13,6 +13,8 @@ namespace Client.Models.OrdensServico
         public int IdVeiculo { get; set; }
         public float TotalGeral { get; set; }
         public List<int> IdItens { get; set; }
-        
+        public List<int> IdExecucoes { get; set; }
+        public List<int> IdServicosExecutados { get; set; }
+
     }
 }

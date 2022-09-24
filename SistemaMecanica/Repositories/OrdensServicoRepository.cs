@@ -21,18 +21,22 @@ namespace SistemaMecanica.Repositories
             {
                 int idOrdemCriada = -1;
                 var query = @"INSERT INTO OrdensServico 
-                              (IdCliente, IdProfissional, IdServico) OUTPUT INSERTED.IdOrdemServico VALUES (@idCliente,@idProfissional,@idServico)";
+                              (IdCliente, IdProfissional, IdServico, IdVeiculo) OUTPUT INSERTED.IdOrdemServico VALUES (@idCliente,@idProfissional,@idServico,@idVeiculo)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
                     command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
                     command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
                     command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
+                    command.Parameters.AddWithValue("@idVeiculo", cadastrarOrdemServicoViewModel.IdVeiculo);
                     command.Connection.Open();
                     idOrdemCriada =  (int)command.ExecuteScalar();
                 }
 
                 VincularItensOs(cadastrarOrdemServicoViewModel.IdItens, idOrdemCriada);
+                VincularExecucaosOs(cadastrarOrdemServicoViewModel.IdExecucoes, idOrdemCriada);
+                VincularServicosExecutadosOs(cadastrarOrdemServicoViewModel.IdServicosExecutados, idOrdemCriada);
+                
 
                 var os = BuscarPorIDOrdemServico(idOrdemCriada);
 
@@ -103,39 +107,39 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        //public OrdensServicoDto BuscarOrdemServicoPorVeiculo(string veiculo)
-        //{
-        //    OrdensServicoDto ordensServicoDto;
-        //    try
-        //    {
-        //        var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
+        public OrdensServicoDto BuscarOrdemServicoPorId(int id)
+        {
+            OrdensServicoDto ordensServicoDto;
+            try
+            {
+                var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, IdVeiculo, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
 
-        //        using (var connection = new SqlConnection(_connection))
-        //        {
-        //            var parametros = new
-        //            {
-        //                veiculo
-        //            };
-        //            ordensServicoDto = connection.QueryFirst<OrdensServicoDto>(query, parametros);
-        //        }
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        id
+                    };
+                    ordensServicoDto = connection.QueryFirst<OrdensServicoDto>(query, parametros);
+                }
 
-        //        if (ordensServicoDto != null)
-        //        {
-        //            ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
-        //        }
-        //        if (ordensServicoDto != null)
-        //        {
-        //            ordensServicoDto.execucao = BuscarProfissionaisDaOrdem(id);
-        //        }
+                if (ordensServicoDto != null)
+                {
+                    ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
+                }
+                if (ordensServicoDto != null)
+                {
+                    ordensServicoDto.execucao = BuscarProfissionaisDaOrdem(id);
+                }
 
-        //        return ordensServicoDto;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Erro: " + ex.Message);
-        //        return null;
-        //    }
-        //}
+                return ordensServicoDto;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
         public List<OrdensServicoDto> BuscarTodos()
         {
             List<OrdensServicoDto> ordensServicoEncontrados;
@@ -225,14 +229,75 @@ namespace SistemaMecanica.Repositories
                 }
             }
         }
+        public void VincularExecucaosOs(List<int> idExecucoes, int idOrdemServico)
+        {
+            foreach (var item in idExecucoes)
+            {
+                var sql = @"INSERT INTO Execucoes (IdProfissional, IdOrdemServico) VALUES (@idProfissional, @idOrdemServico)";
+
+                var parametros = new
+                {
+                    idProfissional = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao salvar Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
+        public void VincularServicosExecutadosOs(List<int> idServicosExecutados, int idOrdemServico)
+        {
+            foreach (var item in idServicosExecutados)
+            {
+                var sql = @"INSERT INTO ServicosExecutados (IdServico, IdOrdemServico) VALUES (@idServico, @idOrdemServico)";
+
+                var parametros = new
+                {
+                    idServico = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao salvar Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
         public float CalcularTotalOrdemServico (int idOrdemServico)
         {
-            var query = @"SELECT (SELECT SUM(pr.ValorPeca) FROM Servicos s
-                        INNER JOIN OrdensServico os on s.IdServico = os.IdServico
-                        INNER JOIN Itens p on p.IdOrdemServico = os.IdOrdemServico
-                        INNER JOIN Produtos pr on p.IdProduto = pr.IdProduto
-                        WHERE os.IdOrdemServico = @idOrdemServico) + (SELECT s.ValorServico FROM Servicos s
-                        INNER JOIN OrdensServico os on s.IdServico = os.IdServico WHERE IdOrdemServico = @idOrdemServico) as ValorTotalServico";
+            var query = @"SELECT (SELECT SUM(
+	                    CASE 
+		                    WHEN p.ValorPeca IS NULL THEN 0
+		                    ELSE p.ValorPeca
+	                    END) as TotalPecas			
+		                    FROM Produtos p 
+	                    INNER JOIN Itens i on p.IdProduto = i.IdProduto
+	                    INNER JOIN OrdensServico os ON os.IdOrdemServico = i.IdOrdemServico
+		                    WHERE os.IdOrdemServico = @idOrdemServico) 
+	                    +
+	                    (SELECT SUM(
+	                    CASE 
+		                    WHEN s.ValorServico IS NULL THEN 0
+		                    ELSE s.ValorServico
+	                    END) as TotalServico							
+		                    FROM Servicos s
+	                    INNER JOIN ServicosExecutados se on se.IdServico = s.IdServico
+	                    INNER JOIN OrdensServico os on os.IdOrdemServico = se.IdOrdemServico
+		                    WHERE os.IdOrdemServico = @idOrdemServico) as ValorTotalServico";
             var parametros = new
             {
                 idOrdemServico
@@ -247,7 +312,7 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens)
             {
-                var sql = @"INSERT INTO Execucao (IdProfissional, IdOrdemServico) VALUES (@idProfissional, @idOrdemServico)";
+                var sql = @"INSERT INTO Execucoes (IdProfissional, IdOrdemServico) VALUES (@idProfissional, @idOrdemServico)";
                 var parametros = new
                 {
                     idProfissional = item,
@@ -293,10 +358,10 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idServicosExecutados)
             {
-                var sql = @"INSERT INTO Itens (IdServico, IdOrdemServico) VALUES (@idServico, @idOrdemServico)";
+                var sql = @"INSERT INTO ServicosExecutados (IdServico, IdOrdemServico) VALUES (@idServico, @idOrdemServico)";
                 var parametros = new
                 {
-                    idServicosExecutadosto = item,
+                    idServico = item,
                     idOrdemServico
                 };
                 try

@@ -17,7 +17,7 @@ namespace Client.Dtos.OrdensServico
         public int IdVeiculo { get; set; }
         public float TotalGeral { get; set; }
         public List<ProdutosDto> Itens { get; set; }
-        public List<ProfissionaisDto> execucao { get; set; }
-        public List<ServicosDto> servicosExecutados { get; set; }
+        public List<ProfissionaisDto> Execucoes { get; set; }
+        public List<ServicosDto> ServicosExecutados { get; set; }
     }
 }
