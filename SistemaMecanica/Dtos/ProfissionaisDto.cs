@@ -10,6 +10,6 @@ namespace SistemaMecanica.Dtos
         public int IdProfissional { get; set; }
         public string NomeProfissional { get; set; }
         public string CargoProfissional { get; set; }
-        public List<ProfissionaisDto> execucao { get; set; }
+        public List<ProfissionaisDto> Execucao { get; set; }
     }
 }

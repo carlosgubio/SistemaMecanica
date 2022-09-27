@@ -9,5 +9,6 @@ namespace Client.Dtos.Produtos
         public int IdProduto { get; set; }
         public string DescricaoPeca { get; set; }
         public float ValorPeca { get; set; }
+        public List<ProdutosDto> Itens { get; set; }
     }
 }

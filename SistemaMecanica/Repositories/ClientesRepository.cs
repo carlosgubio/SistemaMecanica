@@ -48,7 +48,7 @@ namespace SistemaMecanica.Repositories
             try
             {
                 var query = @"SELECT IdCliente, NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente FROM Clientes
-                                      WHERE NomeCliente = @nome";
+                                      WHERE NomeCliente like CONCAT('%', @nome, '%')";
 
                 using (var connection = new SqlConnection(_connection))
                 {

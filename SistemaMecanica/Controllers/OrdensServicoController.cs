@@ -44,10 +44,16 @@ namespace SistemaMecanica.Controllers
         [HttpGet]
         public IActionResult Consultar(int id)
         {
-            var resultado = _ordensServicoRepository.BuscarPorIDOrdemServico(id);
+            var resultado = _ordensServicoRepository.BuscarOrdemServicoPorId(id);
             return Ok(resultado);            
         }
-        
+        [HttpGet]
+        public IActionResult ConsultarPorVeiculo(string veiculo)
+        {
+            var resultado = _ordensServicoRepository.BuscarOrdemServicoPorVeiculo(veiculo);
+            return Ok(resultado);
+        }
+
         [HttpGet]
         public IActionResult BuscarTodas()
         {
