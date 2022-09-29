@@ -50,7 +50,7 @@ namespace SistemaMecanica.Controllers
         }
         
         [HttpGet]
-        public IActionResult ConsultaNome(string nome )
+        public IActionResult ConsultarNome(string nome )
         {
             var resultado = _clientesRepository.BuscarPorNome(nome);
             return Ok(resultado);

@@ -70,7 +70,7 @@ namespace Client.Services
             try
             {
                 //monta a request para a api;
-                response = httpClient.GetAsync($"https://localhost:44363/clientes/consultaNome?nome={nome}").Result;
+                response = httpClient.GetAsync($"https://localhost:44363/clientes/consultarNome?nome={nome}").Result;
                 response.EnsureSuccessStatusCode();
 
                 var resultado = response.Content.ReadAsStringAsync().Result;
@@ -162,11 +162,6 @@ namespace Client.Services
                 Console.WriteLine(ex.Message);
                 return new ClientesDto();
             }
-        }
-
-        internal object Salvar(Veiculos veiculo)
-        {
-            throw new NotImplementedException();
         }
     }
 }

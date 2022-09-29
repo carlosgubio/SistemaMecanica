@@ -37,10 +37,7 @@ namespace SistemaMecanica.Controllers
 
             if (cadastrarVeiculoViewModel.CorVeiculoCliente == null)
                 throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.CorVeiculoCliente)} vazio ou nulo.");
-            //if (cadastrarVeiculoViewModel.IdCliente == null)
-            //throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.IdCliente)} vazio ou nulo.");
-
-
+            
         var resultado = _veiculosRepository.Salvar(cadastrarVeiculoViewModel);
 
             if (resultado) return Ok("Veículo cadastrado com sucesso!");
