@@ -1,4 +1,5 @@
 ﻿using Client.Dtos.Clientes;
+using Client.Dtos.OrdemServicoDadosDto;
 using Client.Dtos.Produtos;
 using Client.Dtos.Profissionais;
 using Client.Dtos.Servicos;
@@ -67,6 +68,8 @@ namespace ConsoleApp1
             ServicosServices servicosServices = new ServicosServices();
             OrdensServicoServices ordensServicoServices = new OrdensServicoServices();
             VeiculosServices veiculosServices = new VeiculosServices();
+   
+
 
             Opcoes opcoes;
             Console.WriteLine("======================================");
@@ -660,14 +663,14 @@ namespace ConsoleApp1
                         if (buscar == BuscarTodos.PesquisarOrdemServicoVeiculo)
                         {
                             Console.WriteLine("Informe o Veículo:");
-                            string veiculo =Console.ReadLine();
+                            string veiculo = Console.ReadLine();
                             if (veiculo != null)
                             {
                                 var ordensServico = ordensServicoServices.BuscarPorVeiculoOrdemServico(veiculo);
 
                                 Console.WriteLine("***************************************");
-                                Console.WriteLine($"      Cliente: " + ordensServico.Nome);
-                                Console.WriteLine($"      Veículo: " + ordensServico.IdVeiculo);
+                                Console.WriteLine($"      Cliente: " + ordensServico.NomeCliente);
+                                Console.WriteLine($"      Veículo: " + ordensServico.VeiculoCliente);
                                 foreach (var item in ordensServico.Execucoes)
                                 {
                                     Console.WriteLine("Id Profissional: " + item.IdProfissional);
@@ -688,7 +691,7 @@ namespace ConsoleApp1
                     }
                     while (buscar != BuscarTodos.Sair);
                 }
-                
+
                 Console.WriteLine("======================================");
                 Console.WriteLine("DIGITE A OPÇÃO DESEJADA:\n------------------------------>\n0-Sair\n------------------------------>\n" +
                            "1-Cadastrar Cliente\n2-Cadastrar Profissional\n3-Cadastrar Produto\n4-Cadastrar Serviço\n5-Cadastrar Ordem de Serviço\n------------------------------>\n" +

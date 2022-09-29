@@ -12,10 +12,13 @@ namespace SistemaMecanica.Dtos
         public string CpfCliente { get; set; }
         public string TelefoneCliente { get; set; }
         public string EnderecoCliente { get; set; }
+        public string VeiculoCliente { get; set; }
+        public string PlacaVeiculoCliente { get; set; }
+        public string CorVeiculoCliente { get; set; }
         public string NomeProfissional { get; set; }
         public string DescricaoServico { get; set; }
         public string ValorServico { get; set; }
-        public string descricaoPeca { get; set; }
+        public string DescricaoPeca { get; set; }
         public string ValorPeca { get; set; }
         public string TotalGeral { get; set; }
         public List<ProdutosDto> Itens { get; set; }

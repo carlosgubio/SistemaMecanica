@@ -12,6 +12,9 @@ namespace Client.Dtos.OrdemServicoDadosDto
         public string CpfCliente { get; set; }
         public string TelefoneCliente { get; set; }
         public string EnderecoCliente { get; set; }
+        public string VeiculoCliente { get; set; }
+        public string PlacaVeiculoCliente { get; set; }
+        public string CorVeiculoCliente { get; set; }
         public string NomeProfissional { get; set; }
         public string DescricaoServico { get; set; }
         public string ValorServico { get; set; }

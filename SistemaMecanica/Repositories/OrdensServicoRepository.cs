@@ -20,14 +20,13 @@ namespace SistemaMecanica.Repositories
             try
             {
                 int idOrdemCriada = -1;
-                var query = @"INSERT INTO OrdensServico 
-                              (IdCliente, IdProfissional, IdServico, IdVeiculo) OUTPUT INSERTED.IdOrdemServico VALUES (@idCliente,@idProfissional,@idServico,@idVeiculo)";
+                var query = @"INSERT INTO OrdensServico (IdVeiculo) OUTPUT INSERTED.IdOrdemServico VALUES (@idVeiculo)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
-                    command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
-                    command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
+                    //command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
+                    //command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
+                    //command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
                     command.Parameters.AddWithValue("@idVeiculo", cadastrarOrdemServicoViewModel.IdVeiculo);
                     command.Connection.Open();
                     idOrdemCriada =  (int)command.ExecuteScalar();
@@ -74,45 +73,12 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        //public OrdensServicoDto BuscarPorIDOrdemServico(int id)
-        //{
-        //    OrdensServicoDto ordensServicoDto;
-        //    try
-        //    {
-        //        var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
-
-        //        using (var connection = new SqlConnection(_connection))
-        //        {
-        //            var parametros = new
-        //            {
-        //                id
-        //            };
-        //            ordensServicoDto = connection.QueryFirst<OrdensServicoDto>(query, parametros);
-        //        }
-
-        //        if(ordensServicoDto != null)
-        //        {
-        //            ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
-        //        }
-        //        if (ordensServicoDto != null)
-        //        {
-        //            ordensServicoDto.execucao = BuscarProfissionaisDaOrdem(id);
-        //        }
-
-        //        return ordensServicoDto;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Erro: " + ex.Message);
-        //        return null;
-        //    }
-        //}
-        public OrdensServicoDto BuscarOrdemServicoPorId(int id)
+        public OrdensServicoDto BuscarPorIDOrdemServico(int id)
         {
             OrdensServicoDto ordensServicoDto;
             try
             {
-                var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, IdVeiculo, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
+                var query = @"SELECT IdOrdemServico, IdVeiculo TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -125,17 +91,13 @@ namespace SistemaMecanica.Repositories
 
                 if (ordensServicoDto != null)
                 {
-                    ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
+                    ordensServicoDto.Itens = BuscarProdutosDaOrdemId(id);
                 }
                 if (ordensServicoDto != null)
                 {
-                    ordensServicoDto.Execucoes = BuscarProfissionaisDaOrdem(id);
+                    ordensServicoDto.Execucoes = BuscarProfissionaisDaOrdemId(id);
                 }
-                if (ordensServicoDto != null)
-                {
-                    ordensServicoDto.ServicosExecutados = BuscarServicosDaOrdem(id);
-                }
-               
+
                 return ordensServicoDto;
             }
             catch (Exception ex)
@@ -144,46 +106,86 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public OrdensServicoDto BuscarOrdemServicoPorVeiculo(string veiculo)
+        public OrdensServicoDto BuscarOrdemServicoPorId(int id)
         {
             OrdensServicoDto ordensServicoDto;
             try
             {
-                var query = @"SELECT IdOrdemServico, IdCliente, IdProfissional, IdServico, IdVeiculo, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
-                --buscando os dados de uma ordem de um cliente usando o veículo
-                   @"select c.NomeCliente as NomeCliente, c.CpfCliente as CpfCliente, v.VeiculoCliente as VeiculoCliente  from Clientes c
-                    inner join Veiculos v on c.IdCliente = v.IdCliente 
-                    inner join OrdensServico os on v.IdVeiculo = os.IdVeiculo
-                    where v.VeiculoCliente like '%t%'
-
-                    select* from Clientes c
-                    inner join Veiculos v on c.IdCliente = v.IdCliente
-                    inner join OrdensServico os on v.IdVeiculo = os.IdVeiculo
-                    where os.TotalGeral > 300"
+                var query = @"SELECT IdOrdemServico, IdVeiculo, TotalGeral FROM OrdensServico WHERE IdOrdemServico = @id";
 
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        veiculo
+                        id
                     };
                     ordensServicoDto = connection.QueryFirst<OrdensServicoDto>(query, parametros);
                 }
 
                 if (ordensServicoDto != null)
                 {
-                    ordensServicoDto.Itens = BuscarProdutosDaOrdem(id);
+                    ordensServicoDto.Itens = BuscarProdutosDaOrdemId(id);
                 }
                 if (ordensServicoDto != null)
                 {
-                    ordensServicoDto.Execucoes = BuscarProfissionaisDaOrdem(id);
+                    ordensServicoDto.Execucoes = BuscarProfissionaisDaOrdemId(id);
                 }
                 if (ordensServicoDto != null)
                 {
-                    ordensServicoDto.ServicosExecutados = BuscarServicosDaOrdem(id);
+                    ordensServicoDto.ServicosExecutados = BuscarServicosDaOrdemId(id);
                 }
 
                 return ordensServicoDto;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+        public OrdemServicoDadosDto BuscarOrdemServicoPorVeiculo(string veiculo)
+        {
+            OrdemServicoDadosDto ordemServicoDadosDto;
+            try
+            {
+                var query = @"SELECT c.NomeCliente AS NomeCliente, c.CpfCliente AS CpfCliente, c.TelefoneCliente AS TelefoneCliente, c.Enderecocliente AS Enderecocliente,
+                            v.VeiculoCliente AS VeiculoCliente, v.PlacaVeiculoCliente AS PlacaVeiculoCliente, v.CorVeiculoCliente AS CorVeiculoCliente,
+                            pf.NomeProfissional AS NomeProfissional, p.DescricaoPeca AS DescricaoPeca, p.ValorPeca AS ValorPeca, s.DescricaoServico AS DescricaoServico,
+                            s.ValorServico AS ValorServico, os.TotalGeral AS TotalGeral FROM Clientes c 
+                            INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
+                            INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
+                            INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
+                            INNER JOIN Produtos p ON p.IdProduto = i.IdProduto
+                            INNER JOIN ServicosExecutados se ON os.IdOrdemServico = se.IdOrdemServico
+                            INNER JOIN Servicos S ON S.IdServico = SE.IdServico
+                            INNER JOIN Execucoes e ON e.IdOrdemServico = os.IdOrdemServico
+                            INNER JOIN Profissionais pf ON pf.IdProfissional = e.IdProfissional
+                            WHERE v.PlacaVeiculoCliente like CONCAT('%', @placa,'%')";
+
+                   
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        veiculo
+                    };
+                    ordemServicoDadosDto = connection.QueryFirst<OrdemServicoDadosDto>(query, parametros);
+                }
+
+                if (ordemServicoDadosDto != null)
+                {
+                    ordemServicoDadosDto.Itens = BuscarProdutosDaOrdem(veiculo);
+                }
+                if (ordemServicoDadosDto != null)
+                {
+                    ordemServicoDadosDto.Execucoes = BuscarProfissionaisDaOrdem(veiculo);
+                }
+                if (ordemServicoDadosDto != null)
+                {
+                    ordemServicoDadosDto.ServicosExecutados = BuscarServicosDaOrdem(veiculo);
+                }
+
+                return ordemServicoDadosDto;
             }
             catch (Exception ex)
             {
@@ -196,7 +198,7 @@ namespace SistemaMecanica.Repositories
             List<OrdensServicoDto> ordensServicoEncontrados;
             try
             {
-                var query = @"SELECT IdOrdemServico, IdCliente, IDProfissional, IdServico, IdProduto, TotalGeral FROM OrdensServico";
+                var query = @"SELECT IdOrdemServico, IdVeiculo, TotalGeral FROM OrdensServico";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -439,7 +441,7 @@ namespace SistemaMecanica.Repositories
                 return res;
             }
         }
-        private List<ProdutosDto> BuscarProdutosDaOrdem(int id) 
+        private List<ProdutosDto> BuscarProdutosDaOrdem(string nome) 
         {
             try
             {
@@ -449,7 +451,7 @@ namespace SistemaMecanica.Repositories
 
                 var parametros = new 
                 {
-                    idOrdensServico = id
+                    idOrdensServico = nome
                 };
 
                 using (var connection = new SqlConnection(_connection))
@@ -463,7 +465,79 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        private List<ProfissionaisDto> BuscarProfissionaisDaOrdem(int id)
+        private List<ProfissionaisDto> BuscarProfissionaisDaOrdem(string nome)
+        {
+            try
+            {
+                var query = @"SELECT i.IdProfissional, NomeProfissional, CargoProfissional FROM Execucoes i 
+                            INNER JOIN Profissionais p on i.IdProfissional = p.IdProfissional
+                            WHERE i.IdOrdemServico = @idOrdensServico";
+
+                var parametros = new
+                {
+                    idOrdensServico = nome
+                };
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    return connection.Query<ProfissionaisDto>(query, parametros).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+        private List<ServicosDto> BuscarServicosDaOrdem(string nome)
+        {
+            try
+            {
+                var query = @"SELECT i.IdServico, DescricaoServico, ValorServico FROM ServicosExecutados i 
+                            INNER JOIN Servicos s on i.IdServico = s.IdServico
+                            WHERE i.IdOrdemServico = @idOrdensServico";
+
+                var parametros = new
+                {
+                    idOrdensServico = nome
+                };
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    return connection.Query<ServicosDto>(query, parametros).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+        private List<ProdutosDto> BuscarProdutosDaOrdemId(int id)
+        {
+            try
+            {
+                var query = @"select i.IdProduto, DescricaoPeca, ValorPeca from Itens i 
+                            inner join Produtos p on i.IdProduto = p.IdProduto
+                            where i.IdOrdemServico = @idOrdensServico";
+
+                var parametros = new
+                {
+                    idOrdensServico = id
+                };
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    return connection.Query<ProdutosDto>(query, parametros).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                return null;
+            }
+        }
+        private List<ProfissionaisDto> BuscarProfissionaisDaOrdemId(int id)
         {
             try
             {
@@ -487,7 +561,7 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        private List<ServicosDto> BuscarServicosDaOrdem(int id)
+        private List<ServicosDto> BuscarServicosDaOrdemId(int id)
         {
             try
             {
