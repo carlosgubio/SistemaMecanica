@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace SistemaMecanica.ViewModelsAtualizar
 {
     public class AtualizarVeiculoViewModel
-    {
-        public int Encontrar { get; set; }
+    {        
         public Veiculos Atualizar { get; set; }
     }
 }

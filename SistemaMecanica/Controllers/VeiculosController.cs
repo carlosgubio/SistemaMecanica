@@ -29,16 +29,23 @@ namespace SistemaMecanica.Controllers
             if (cadastrarVeiculoViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (cadastrarVeiculoViewModel.VeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.VeiculoCliente)} vazio ou nulo.");
+            if(cadastrarVeiculoViewModel.IdCliente <= 0)
+                throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.IdCliente)} vazio ou nulo.");
+            if(cadastrarVeiculoViewModel.Veiculos == null || !cadastrarVeiculoViewModel.Veiculos.Any())
+                throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.Veiculos)} vazio ou nulo.");
 
-            if (cadastrarVeiculoViewModel.PlacaVeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
 
-            if (cadastrarVeiculoViewModel.CorVeiculoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.CorVeiculoCliente)} vazio ou nulo.");
+
+            //if (cadastrarVeiculoViewModel.VeiculoCliente == null)
+            //    throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.VeiculoCliente)} vazio ou nulo.");
+
+            //if (cadastrarVeiculoViewModel.PlacaVeiculoCliente == null)
+            //    throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
+
+            //if (cadastrarVeiculoViewModel.CorVeiculoCliente == null)
+            //    throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.CorVeiculoCliente)} vazio ou nulo.");
             
-        var resultado = _veiculosRepository.Salvar(cadastrarVeiculoViewModel);
+            var resultado = _veiculosRepository.SalvarVeiculosEVincularCliente(cadastrarVeiculoViewModel.Veiculos, cadastrarVeiculoViewModel.IdCliente);
 
             if (resultado) return Ok("Veículo cadastrado com sucesso!");
 
@@ -74,10 +81,8 @@ namespace SistemaMecanica.Controllers
             if (model == null)
                 return NoContent();
             if (model.Atualizar == null)
-                return NoContent();
-            if (model.Encontrar == 0)
-                return NoContent();
-        _veiculosRepository.Atualizar(model.Atualizar, model.Encontrar);
+                return NoContent();                            
+            _veiculosRepository.Atualizar(model.Atualizar);
 
             return Ok("Veículo atualizado com sucesso!");
         }

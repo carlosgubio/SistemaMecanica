@@ -15,8 +15,23 @@ namespace SistemaMecanica.Repositories
         private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
-
-        public bool Salvar(CadastrarVeiculoViewModel cadastrarVeiculoViewModel)
+        public bool SalvarVeiculosEVincularCliente(List<Veiculos> veiculos, int idCliente) 
+        {
+            foreach (var v in veiculos) 
+            {
+                if(v.IdVeiculo > 0)
+                {
+                    //atualizar
+                    Atualizar(v);
+                }
+                else
+                {
+                    Salvar(v, idCliente);
+                }
+            }
+            return true;
+        }
+        public bool Salvar(Veiculos veiculo, int idCliente)
         {
             try
             {
@@ -25,10 +40,10 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@veiculoCliente", cadastrarVeiculoViewModel.VeiculoCliente);
-                    command.Parameters.AddWithValue("@placaVeiculoCliente", cadastrarVeiculoViewModel.PlacaVeiculoCliente);
-                    command.Parameters.AddWithValue("@corVeiculoCliente", cadastrarVeiculoViewModel.CorVeiculoCliente);
-                    command.Parameters.AddWithValue("@idcliente", cadastrarVeiculoViewModel.IdCliente);
+                    command.Parameters.AddWithValue("@veiculoCliente", veiculo.VeiculoCliente);
+                    command.Parameters.AddWithValue("@placaVeiculoCliente", veiculo.PlacaVeiculoCliente);
+                    command.Parameters.AddWithValue("@corVeiculoCliente", veiculo.CorVeiculoCliente);
+                    command.Parameters.AddWithValue("@idcliente", veiculo.IdCliente);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -85,19 +100,18 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(Veiculos veiculos, int id)
+        public void Atualizar(Veiculos veiculos)
         {
             try
             {
-                var query = @"UPDATE Veiculos SET VeiculoCliente = @veiculoCliente, PlacaVeiculoCliente = @placaVeiculoCliente, CorVeiculoCliente = @corVeiculoCliente,  IdCliente = @idCliente WHERE IdVeiculo = @idVeiculo";
+                var query = @"UPDATE Veiculos SET VeiculoCliente = @veiculoCliente, PlacaVeiculoCliente = @placaVeiculoCliente, CorVeiculoCliente = @corVeiculoCliente  WHERE IdVeiculo = @idVeiculo";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idVeiculo", id);
+                    command.Parameters.AddWithValue("@idVeiculo", veiculos.IdVeiculo);
                     command.Parameters.AddWithValue("@veiculoCliente", veiculos.VeiculoCliente);
                     command.Parameters.AddWithValue("@placaVeiculoCliente", veiculos.PlacaVeiculoCliente);
-                    command.Parameters.AddWithValue("@corVeiculoCliente", veiculos.CorVeiculoCliente);
-                    command.Parameters.AddWithValue("@idCliente", veiculos.IdCliente);
+                    command.Parameters.AddWithValue("@corVeiculoCliente", veiculos.CorVeiculoCliente);                    
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }

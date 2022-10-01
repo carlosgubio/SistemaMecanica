@@ -30,21 +30,24 @@ namespace SistemaMecanica.Controllers
             if (cadastrarClienteViewModel == null)
                 return Ok("Não foram informados dados");
 
-            if (cadastrarClienteViewModel.NomeCliente == null)
+            if(cadastrarClienteViewModel.Cliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.Cliente)} vazio ou nulo.");
+
+            if (cadastrarClienteViewModel.Cliente.NomeCliente == null)
                 return Ok("Dados do Cliente não informados.");
 
-            if (cadastrarClienteViewModel.CpfCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.CpfCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.Cliente.CpfCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.Cliente.CpfCliente)} vazio ou nulo.");
 
-            if (cadastrarClienteViewModel.TelefoneCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.TelefoneCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.Cliente.TelefoneCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.Cliente.TelefoneCliente)} vazio ou nulo.");
 
-            if (cadastrarClienteViewModel.EnderecoCliente == null)
-                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.EnderecoCliente)} vazio ou nulo.");
+            if (cadastrarClienteViewModel.Cliente.EnderecoCliente == null)
+                throw new ArgumentNullException($"campo {nameof(cadastrarClienteViewModel.Cliente.EnderecoCliente)} vazio ou nulo.");
 
             var resultado = _clientesRepository.Salvar(cadastrarClienteViewModel);
 
-            if (resultado) return Ok("Cliente cadastrado com sucesso!");
+            if (resultado > 0) return Ok(resultado);
 
             return Ok("Houve um problema ao salvar. Cliente não cadastrado!");
         }

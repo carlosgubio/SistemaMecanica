@@ -17,29 +17,31 @@ namespace SistemaMecanica.Repositories
         //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
-        public bool Salvar(CadastrarClienteViewModel cadastrarClienteViewModel)
+        public int Salvar(CadastrarClienteViewModel cadastrarClienteViewModel)
         {
+            int IdCliente = -1;
             try
             {
                 var query = @"INSERT INTO Clientes (NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente) 
+                              OUTPUT Inserted.IdCliente
                               VALUES (@nomeCliente,@cpfCliente,@telefoneCliente,@enderecoCliente)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@nomeCliente", cadastrarClienteViewModel.NomeCliente);
-                    command.Parameters.AddWithValue("@cpfCliente", cadastrarClienteViewModel.CpfCliente);
-                    command.Parameters.AddWithValue("@telefoneCliente", cadastrarClienteViewModel.TelefoneCliente);
-                    command.Parameters.AddWithValue("@enderecoCliente", cadastrarClienteViewModel.EnderecoCliente);
+                    command.Parameters.AddWithValue("@nomeCliente", cadastrarClienteViewModel.Cliente.NomeCliente);
+                    command.Parameters.AddWithValue("@cpfCliente", cadastrarClienteViewModel.Cliente.CpfCliente);
+                    command.Parameters.AddWithValue("@telefoneCliente", cadastrarClienteViewModel.Cliente.TelefoneCliente);
+                    command.Parameters.AddWithValue("@enderecoCliente", cadastrarClienteViewModel.Cliente.EnderecoCliente);
                     command.Connection.Open();
-                    command.ExecuteNonQuery();
+                    IdCliente = (int)command.ExecuteScalar();
                 }
                 Console.WriteLine("Cliente cadastrado com sucesso!");
-                return true;
+                return IdCliente;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
-                return false;
+                return IdCliente;
             }
         }
         public List<ClientesDto> BuscarPorNome(string nome)
