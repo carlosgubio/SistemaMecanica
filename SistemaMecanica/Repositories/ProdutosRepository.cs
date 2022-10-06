@@ -67,7 +67,7 @@ namespace SistemaMecanica.Repositories
             List<ProdutosDto> produtosEncontrados;
             try
             {
-                var query = @"SELECT IdProduto, descricaoPeca, ValorPeca FROM Produtos";
+                var query = @"SELECT IdProduto, DescricaoPeca, ValorPeca FROM Produtos";
 
                 using (var connection = new SqlConnection(_connection))
                 {

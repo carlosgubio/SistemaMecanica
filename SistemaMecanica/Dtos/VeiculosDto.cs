@@ -12,7 +12,5 @@ namespace SistemaMecanica.Dtos
         public string PlacaVeiculoCliente { get; set; }
         public string CorVeiculoCliente { get; set; }
         public int IdCliente { get; set; }
-        //public List<VeiculosDto> Veiculos { get; set; }
-
     }
 }

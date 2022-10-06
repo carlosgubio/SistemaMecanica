@@ -21,12 +21,12 @@ namespace SistemaMecanica.Repositories
             {
                 if(v.IdVeiculo > 0)
                 {
-                    //atualizar
-                    Atualizar(v);
+                   return Atualizar(v);
                 }
+                
                 else
                 {
-                    Salvar(v, idCliente);
+                   return Salvar(v, idCliente);
                 }
             }
             return true;
@@ -43,7 +43,7 @@ namespace SistemaMecanica.Repositories
                     command.Parameters.AddWithValue("@veiculoCliente", veiculo.VeiculoCliente);
                     command.Parameters.AddWithValue("@placaVeiculoCliente", veiculo.PlacaVeiculoCliente);
                     command.Parameters.AddWithValue("@corVeiculoCliente", veiculo.CorVeiculoCliente);
-                    command.Parameters.AddWithValue("@idcliente", veiculo.IdCliente);
+                    command.Parameters.AddWithValue("@idcliente", idCliente);
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -86,7 +86,7 @@ namespace SistemaMecanica.Repositories
             List<VeiculosDto> veiculosEncontrados;
             try
             {
-                var query = @"SELECT VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente, IdCliente FROM Veiculos";
+                var query = @"SELECT IdVeiculo, VeiculoCliente, PlacaVeiculoCliente, CorVeiculoCliente, IdCliente FROM Veiculos";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -100,7 +100,7 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(Veiculos veiculos)
+        public bool Atualizar(Veiculos veiculos)
         {
             try
             {
@@ -115,10 +115,12 @@ namespace SistemaMecanica.Repositories
                     command.Connection.Open();
                     command.ExecuteNonQuery();
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erro: " + ex.Message);
+                return false;
             }
         }
         public VeiculosDto Confirmar(int idVeiculo)

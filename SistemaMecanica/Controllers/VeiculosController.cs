@@ -24,7 +24,7 @@ namespace SistemaMecanica.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar([FromBody] CadastrarVeiculoViewModel cadastrarVeiculoViewModel)
+        public IActionResult Cadastrar(CadastrarVeiculoViewModel cadastrarVeiculoViewModel)
         {
             if (cadastrarVeiculoViewModel == null)
                 return Ok("Não foram informados dados");
@@ -34,17 +34,6 @@ namespace SistemaMecanica.Controllers
             if(cadastrarVeiculoViewModel.Veiculos == null || !cadastrarVeiculoViewModel.Veiculos.Any())
                 throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.Veiculos)} vazio ou nulo.");
 
-
-
-            //if (cadastrarVeiculoViewModel.VeiculoCliente == null)
-            //    throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.VeiculoCliente)} vazio ou nulo.");
-
-            //if (cadastrarVeiculoViewModel.PlacaVeiculoCliente == null)
-            //    throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.PlacaVeiculoCliente)} vazio ou nulo.");
-
-            //if (cadastrarVeiculoViewModel.CorVeiculoCliente == null)
-            //    throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.CorVeiculoCliente)} vazio ou nulo.");
-            
             var resultado = _veiculosRepository.SalvarVeiculosEVincularCliente(cadastrarVeiculoViewModel.Veiculos, cadastrarVeiculoViewModel.IdCliente);
 
             if (resultado) return Ok("Veículo cadastrado com sucesso!");
