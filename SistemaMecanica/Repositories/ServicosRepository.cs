@@ -81,7 +81,7 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(Servicos servicos, int id)
+        public void Atualizar(Servicos servicos)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idServico", id);
+                    command.Parameters.AddWithValue("@idServico", servicos.IdServico);
                     command.Parameters.AddWithValue("@descricaoServico", servicos.DescricaoServico);
                     command.Parameters.AddWithValue("@valorServico", servicos.ValorServico);
                     command.Connection.Open();

@@ -80,7 +80,7 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(Profissionais profissionais, int id)
+        public void Atualizar(Profissionais profissionais)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idProfissional", id);
+                    command.Parameters.AddWithValue("@idProfissional", profissionais.IdProfissional);
                     command.Parameters.AddWithValue("@nomeProfissional", profissionais.NomeProfissional);
                     command.Parameters.AddWithValue("@cargoProfissional", profissionais.CargoProfissional);
                     command.Connection.Open();
