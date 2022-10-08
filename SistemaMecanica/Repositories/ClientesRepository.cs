@@ -13,8 +13,8 @@ namespace SistemaMecanica.Repositories
 {
     public class ClientesRepository
     {
-        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
 
         public int Salvar(CadastrarClienteViewModel cadastrarClienteViewModel)
@@ -22,9 +22,8 @@ namespace SistemaMecanica.Repositories
             int IdCliente = -1;
             try
             {
-                var query = @"INSERT INTO Clientes (NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente) 
-                              OUTPUT Inserted.IdCliente
-                              VALUES (@nomeCliente,@cpfCliente,@telefoneCliente,@enderecoCliente)";
+                var query = @"INSERT INTO Clientes (NomeCliente, CpfCliente, TelefoneCliente, EnderecoCliente) OUTPUT Inserted.IdCliente
+                            VALUES (@nomeCliente,@cpfCliente,@telefoneCliente,@enderecoCliente)";
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
