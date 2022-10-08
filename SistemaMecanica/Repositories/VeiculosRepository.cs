@@ -146,6 +146,31 @@ namespace SistemaMecanica.Repositories
             }
             return veiculo;
         }
+
+        public VeiculosDto BuscarDoCliente(int idCliente)
+        {
+            var veiculo = new VeiculosDto();
+            try
+            {
+                var query = "SELECT * FROM Veiculos WHERE IdCliente = @idCliente";
+
+                using (var connection = new SqlConnection(_connection))
+                {
+                    var parametros = new
+                    {
+                        idCliente
+                    };
+                    veiculo = connection.QueryFirstOrDefault<VeiculosDto>(query, parametros);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+                veiculo = null;
+            }
+            return veiculo;
+        }
+
         public void Deletar(int id)
         {
             try

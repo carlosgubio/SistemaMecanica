@@ -88,7 +88,7 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(Clientes clientes, int id)
+        public void Atualizar(Clientes clientes)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idCliente", id);
+                    command.Parameters.AddWithValue("@idCliente", clientes.IdCliente);
                     command.Parameters.AddWithValue("@nomeCliente", clientes.NomeCliente);
                     command.Parameters.AddWithValue("@cpfCliente", clientes.CpfCliente);
                     command.Parameters.AddWithValue("@telefoneCliente", clientes.TelefoneCliente);

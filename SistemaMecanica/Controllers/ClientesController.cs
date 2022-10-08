@@ -17,11 +17,13 @@ namespace SistemaMecanica.Controllers
     {
         public static readonly List<Clientes> clientes = new List<Clientes>();
         private readonly ClientesRepository _clientesRepository;
+        private readonly VeiculosRepository _veiculosRepository;
         
 
         public ClientesController()
         {
             _clientesRepository = new ClientesRepository();
+            _veiculosRepository = new VeiculosRepository();
         }
 
         [HttpPost]
@@ -72,6 +74,7 @@ namespace SistemaMecanica.Controllers
         public IActionResult Confirmar(int id)
         {
             var resultado = _clientesRepository.Confirmar(id);
+            resultado.VeiculosDto = _veiculosRepository.BuscarDoCliente(id);
             return Ok(resultado);
         }
         
@@ -82,9 +85,7 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             if (model.Atualizar == null)
                 return NoContent();
-            if (model.Encontrar == 0)
-                return NoContent();
-            _clientesRepository.Atualizar(model.Atualizar, model.Encontrar);
+            _clientesRepository.Atualizar(model.Atualizar);
 
             return Ok("Cliente atualizado com sucesso!");
         }

@@ -70,12 +70,8 @@ namespace SistemaMecanica.Controllers
         public IActionResult Atualizar(AtualizarProdutoViewModel model)
         {
             if (model == null)
-                return NoContent();
-            if (model.Atualizar == null)
-                return NoContent();
-            if (model.Encontrar == 0)
-                return NoContent();
-            _produtosRepository.Atualizar(model.Atualizar, model.Encontrar);
+                return NoContent();         
+            _produtosRepository.Atualizar(model.Atualizar);
 
             return Ok("Peça atualizada com sucesso!");
         }

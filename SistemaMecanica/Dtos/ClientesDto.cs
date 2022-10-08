@@ -12,6 +12,7 @@ namespace SistemaMecanica.Dtos
         public string CpfCliente { get; set; }
         public string TelefoneCliente { get; set; }
         public string EnderecoCliente { get; set; }
+        public VeiculosDto VeiculosDto { get; set; }
 
     }
 }
