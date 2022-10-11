@@ -68,9 +68,6 @@ namespace SistemaMecanica.Controllers
         {
             if (model == null)
                 return NoContent();
-            if (model.Encontrar == 0)
-                return NoContent();
-
            _servicosRepository.Atualizar(model.Atualizar);
 
             return Ok("Serviço Atualizado com sucesso!");

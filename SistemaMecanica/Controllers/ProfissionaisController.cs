@@ -69,9 +69,6 @@ namespace SistemaMecanica.Controllers
         {
             if (model == null)
                 return NoContent();
-            if (model.Encontrar == 0)
-                return NoContent();
-
             _profissionaisRepository.Atualizar(model.Atualizar);
 
             return Ok("Profissional Atualizado com sucesso!");
