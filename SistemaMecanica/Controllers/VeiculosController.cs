@@ -31,10 +31,10 @@ namespace SistemaMecanica.Controllers
 
             if(cadastrarVeiculoViewModel.IdCliente <= 0)
                 throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.IdCliente)} vazio ou nulo.");
-            if(cadastrarVeiculoViewModel.Veiculos == null || !cadastrarVeiculoViewModel.Veiculos.Any())
+            if(cadastrarVeiculoViewModel.Veiculos == null)
                 throw new ArgumentNullException($"campo {nameof(cadastrarVeiculoViewModel.Veiculos)} vazio ou nulo.");
 
-            var resultado = _veiculosRepository.SalvarVeiculosEVincularCliente(cadastrarVeiculoViewModel.Veiculos, cadastrarVeiculoViewModel.IdCliente);
+            var resultado = _veiculosRepository.Salvar(cadastrarVeiculoViewModel.Veiculos, cadastrarVeiculoViewModel.IdCliente);
 
             if (resultado) return Ok("Veículo cadastrado com sucesso!");
 

@@ -9,7 +9,8 @@ namespace SistemaMecanica.ViewModelsCadastrar
     public class CadastrarVeiculoViewModel
     {
         public int IdCliente { get; set; }
-        public List<Veiculos> Veiculos { get; set; }
+        //public List<Veiculos> Veiculos { get; set; }
+        public Veiculos Veiculos {get;set;}
 
         //public int IdVeiculo { get; set; }
         //public string VeiculoCliente { get; set; }
