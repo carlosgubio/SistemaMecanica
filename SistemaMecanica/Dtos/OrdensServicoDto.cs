@@ -19,4 +19,15 @@ namespace SistemaMecanica.Dtos
         public List<ServicosDto> ServicosExecutados { get; set; }
 
     }
+    public class OrdensServicoListagemDto
+    {
+        public int IdOrdemServico { get; set; }
+        public string NomeCliente { get; set; }
+        public string VeiculoCliente { get; set; }
+        public string NomeProfissional { get; set; }
+        public string DescricaoServico { get; set; }
+        public string DescricaoPeca { get; set; }
+        public string TotalGeral { get; set; }
+       
+    }
 }

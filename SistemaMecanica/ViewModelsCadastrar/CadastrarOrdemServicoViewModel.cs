@@ -8,7 +8,7 @@ namespace SistemaMecanica.ViewModels
     public class CadastrarOrdemServicoViewModel
     {
         public List<int> IdItens { get; set; }
-        public List<int> IdExecucoes { get; set; }
+        public List<int> IdProfissionais { get; set; }
         public List<int> IdServicosExecutados { get; set; }
         public int IdOrdemServico { get; set; }
         public int IdProfissional { get; set; }

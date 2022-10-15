@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class VeiculosRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
         public bool SalvarVeiculosEVincularCliente(List<Veiculos> veiculos, int idCliente) 
         {

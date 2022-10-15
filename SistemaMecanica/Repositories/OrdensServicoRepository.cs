@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class OrdensServicoRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
         public bool Salvar(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
@@ -33,7 +33,7 @@ namespace SistemaMecanica.Repositories
                 }
 
                 VincularItensOs(cadastrarOrdemServicoViewModel.IdItens, idOrdemCriada);
-                VincularExecucaosOs(cadastrarOrdemServicoViewModel.IdExecucoes, idOrdemCriada);
+                VincularExecucaosOs(cadastrarOrdemServicoViewModel.IdProfissionais, idOrdemCriada);
                 VincularServicosExecutadosOs(cadastrarOrdemServicoViewModel.IdServicosExecutados, idOrdemCriada);
                 
 
@@ -193,18 +193,28 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public List<OrdensServicoDto> BuscarTodos()
+        public List<OrdensServicoListagemDto> BuscarTodos()
         {
-            List<OrdensServicoDto> ordensServicoEncontrados;
+            List<OrdensServicoListagemDto> ordensServicoListagemDtos;
             try
             {
-                var query = @"SELECT IdOrdemServico, IdVeiculo, TotalGeral FROM OrdensServico";
+                var query = @"SELECT os.IdOrdemServico As IdOrdemServico, c.NomeCliente AS NomeCliente, v.VeiculoCliente AS VeiculoCliente, 
+                            pf.NomeProfissional AS NomeProfissional, p.DescricaoPeca AS DescricaoPeca, s.DescricaoServico AS DescricaoServico,
+                            os.TotalGeral AS TotalGeral FROM Clientes c 
+                            INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
+                            INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
+                            INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
+                            INNER JOIN Produtos p ON p.IdProduto = i.IdProduto
+                            INNER JOIN ServicosExecutados se ON os.IdOrdemServico = se.IdOrdemServico
+                            INNER JOIN Servicos S ON S.IdServico = SE.IdServico
+                            INNER JOIN Execucoes e ON e.IdOrdemServico = os.IdOrdemServico
+                            INNER JOIN Profissionais pf ON pf.IdProfissional = e.IdProfissional";
 
                 using (var connection = new SqlConnection(_connection))
                 {
-                    ordensServicoEncontrados = connection.Query<OrdensServicoDto>(query).ToList();
+                    ordensServicoListagemDtos = connection.Query<OrdensServicoListagemDto>(query).ToList();
                 }
-                return ordensServicoEncontrados;
+                return ordensServicoListagemDtos;
             }
             catch (Exception ex)
             {
@@ -250,6 +260,9 @@ namespace SistemaMecanica.Repositories
                     };
                     ordemServico = connection.QueryFirstOrDefault<OrdensServicoDto>(query, parametros);
                 }
+                ordemServico.Execucoes = BuscarProfissionaisDaOrdemId(idOrdemServico);
+                ordemServico.Itens = BuscarProdutosDaOrdemId(idOrdemServico);
+                ordemServico.ServicosExecutados = BuscarServicosDaOrdemId(idOrdemServico);
             }
             catch (Exception ex)
             {
@@ -258,6 +271,7 @@ namespace SistemaMecanica.Repositories
             }
             return ordemServico;
         }
+
         public void VincularItensOs(List<int> idItens, int idOrdemServico)  
         {
             foreach (var item in idItens) 
@@ -489,6 +503,7 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+
         private List<ServicosDto> BuscarServicosDaOrdem(string nome)
         {
             try
