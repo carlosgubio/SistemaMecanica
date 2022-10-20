@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class OrdensServicoRepository
     {
-        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
         public bool Salvar(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
@@ -53,7 +53,7 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
                 return false;
             }
-        }
+        }        
         public void AtualizarTotalGeralOs(OrdensServicoDto ordensServicoDto)
         {
             try
@@ -222,23 +222,49 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(OrdensServico ordensServico, int id)
+        public void Atualizar(OrdensServico ordensServico)
         {
             try
             {
-                var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral
-                            WHERE IdOrdemServico = @idOrdemServico";
-                using (var sql = new SqlConnection(_connection))
+                //var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral
+                //            WHERE IdOrdemServico = @idOrdemServico";
+                //using (var sql = new SqlConnection(_connection))
+                //{
+                //    SqlCommand command = new SqlCommand(query, sql);
+                //    command.Parameters.AddWithValue("@idCliente", id);
+                //    command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
+                //    command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
+                //    command.Parameters.AddWithValue("@idProduto", ordensServico.IdProduto);
+                //    command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
+                //    command.Connection.Open();
+                //    command.ExecuteNonQuery();
+                //}
+
+                //busca a ordem e os dados do jeito que está atualmente;
+
+                var ordemAtual = BuscarOrdemServicoPorId(ordensServico.IdOrdemServico);
+
+                //compara os dados entre ambas para saber o que precisa remover ou atualizar.
+
+                //primeiro: identificar os registros que precisamos remover
+
+                if(ordemAtual != null)
                 {
-                    SqlCommand command = new SqlCommand(query, sql);
-                    command.Parameters.AddWithValue("@idCliente", id);
-                    command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
-                    command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
-                    command.Parameters.AddWithValue("@idProduto", ordensServico.IdProduto);
-                    command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
-                    command.Connection.Open();
-                    command.ExecuteNonQuery();
+                    var itensRemover = ordemAtual.Itens.Where(x=> !ordensServico.IdItens.Contains(x.IdProduto));
+
+                    var servicosExecutadosRemover = ordemAtual.ServicosExecutados.Where(x=> !ordensServico.IdServicosExecutados.Contains(x.IdServico));
+
+                    var profissionaisRemover = ordemAtual.Execucoes.Where(x=> !ordensServico.IdProfissionais.Contains(x.IdProfissional));
+
+
                 }
+
+
+
+
+                
+
+
             }
             catch (Exception ex)
             {
@@ -250,7 +276,10 @@ namespace SistemaMecanica.Repositories
             var ordemServico = new OrdensServicoDto();
             try
             {
-                var query = "SELECT * FROM OrdensServico WHERE IdOrdemServico = @idOrdemServico";
+                var query = @"select c.IdCliente, v.IdVeiculo, os.TotalGeral from OrdensServico os
+                            inner join Veiculos v on os.IdVeiculo = v.IdVeiculo
+                            inner join Clientes c on v.IdCliente = c.IdCliente
+                            where os.IdOrdemServico = @idOrdemServico";
 
                 using (var connection = new SqlConnection(_connection))
                 {
@@ -271,7 +300,6 @@ namespace SistemaMecanica.Repositories
             }
             return ordemServico;
         }
-
         public void VincularItensOs(List<int> idItens, int idOrdemServico)  
         {
             foreach (var item in idItens) 
@@ -398,6 +426,31 @@ namespace SistemaMecanica.Repositories
                 }
             }
         }
+
+        public void RemoverProfissionaisOS(IEnumerable<int> idItens, int idOrdemServico)
+        {
+            foreach (var item in idItens)
+            {
+                var sql = @"DELETE FROM Execucoes WHERE IdProfissional = @idProfissional AND IdOrdemServico = @idOrdemServico";
+                var parametros = new
+                {
+                    idProfissional = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao remover Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
+
         public void InserirProdutoOS(List<int> idItens, int idOrdemServico)
         {
             foreach (var item in idItens)
@@ -421,6 +474,29 @@ namespace SistemaMecanica.Repositories
                 }
             }
         }
+        public void RemoverItensOS(IEnumerable<int> idItens, int idOrdemServico)
+        {
+            foreach (var item in idItens)
+            {
+                var sql = @"DELETE FROM Itens WHERE idProduto = @idItem AND IdOrdemServico = @idOrdemServico";
+                var parametros = new
+                {
+                    idProduto = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao remover Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
         public void InserirServicoOS(List<int> idServicosExecutados, int idOrdemServico)
         {
             foreach (var item in idServicosExecutados)
@@ -441,6 +517,29 @@ namespace SistemaMecanica.Repositories
                 catch (SqlException ex)
                 {
                     Console.WriteLine($"Erro ao salvar Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
+                }
+            }
+        }
+        public void RemoverServicosExecutadosOs(IEnumerable<int> idServicosExecutados, int idOrdemServico)
+        {
+            foreach (var item in idServicosExecutados)
+            {
+                var sql = @"DELETE FROM ServicosExecutados WHERE IdServico = @idServico and IdOrdemServico = @idOrdemServico";
+                var parametros = new
+                {
+                    idServico = item,
+                    idOrdemServico
+                };
+                try
+                {
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(sql, parametros);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Erro ao remover Item {item}, para a OS {idOrdemServico}. Erro: {ex.Message}");
                 }
             }
         }
@@ -503,7 +602,6 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-
         private List<ServicosDto> BuscarServicosDaOrdem(string nome)
         {
             try

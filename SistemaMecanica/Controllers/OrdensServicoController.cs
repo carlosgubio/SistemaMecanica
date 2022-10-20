@@ -40,6 +40,45 @@ namespace SistemaMecanica.Controllers
 
             return Ok("Houve um problema ao salvar. Ordem de Serviço não cadastrada!");
         }
+        [HttpPut]
+        public IActionResult Atualizar(AtualizarOrdensServicoViewModel atualizarOrdensServicoViewModel)
+        {
+            if(atualizarOrdensServicoViewModel?.Atualizar?.IdOrdemServico<=0)
+                throw new ArgumentNullException($"campo {nameof(atualizarOrdensServicoViewModel.Atualizar.IdOrdemServico)} com valor inválido.");
+
+            var ordensServico = atualizarOrdensServicoViewModel.Atualizar;
+
+            var ordemAtual = _ordensServicoRepository.BuscarOrdemServicoPorId(ordensServico.IdOrdemServico);
+
+            //compara os dados entre ambas para saber o que precisa remover ou atualizar.
+
+            //primeiro: identificar os registros que precisamos remover
+
+            if (ordemAtual != null)
+            {
+                var itensRemover = ordemAtual.Itens.Where(x => !ordensServico.IdItens.Contains(x.IdProduto)).Select(y=>  y.IdProduto );
+
+                var servicosExecutadosRemover = ordemAtual.ServicosExecutados.Where(x => !ordensServico.IdServicosExecutados.Contains(x.IdServico)).Select(y =>y.IdServico);
+
+                var profissionaisRemover = ordemAtual.Execucoes.Where(x => !ordensServico.IdProfissionais.Contains(x.IdProfissional)).Select(y => y.IdProfissional);
+
+                if(itensRemover!= null && itensRemover.Any())
+                {
+                    _ordensServicoRepository.RemoverItensOS(itensRemover, ordensServico.IdOrdemServico);
+                }
+                if(servicosExecutadosRemover != null && servicosExecutadosRemover.Any())
+                {
+                    _ordensServicoRepository.RemoverServicosExecutadosOs(servicosExecutadosRemover, ordensServico.IdOrdemServico);
+                }
+                if (profissionaisRemover != null && profissionaisRemover.Any())
+                {
+                    _ordensServicoRepository.RemoverProfissionaisOS(profissionaisRemover, ordensServico.IdOrdemServico);
+                }
+            }
+
+            return Ok("Atualizado com sucesso!");
+        }
+
         
         [HttpGet]
         public IActionResult Consultar(int id)
