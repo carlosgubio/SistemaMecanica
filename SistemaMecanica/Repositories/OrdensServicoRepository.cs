@@ -73,6 +73,26 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
+
+        public void AtualizarTotalGeralOs(int idOrdemServico, float totalGeral)
+        {
+            try
+            {
+                var query = @"UPDATE OrdensServico SET TotalGeral = @totalGeral WHERE IdOrdemServico = @idOrdemServico";
+                using (var sql = new SqlConnection(_connection))
+                {
+                    SqlCommand command = new SqlCommand(query, sql);
+                    command.Parameters.AddWithValue("@idOrdemServico", idOrdemServico);
+                    command.Parameters.AddWithValue("@totalGeral", totalGeral);
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro: " + ex.Message);
+            }
+        }
         public OrdensServicoDto BuscarPorIDOrdemServico(int id)
         {
             OrdensServicoDto ordensServicoDto;
@@ -222,42 +242,42 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public void Atualizar(OrdensServico ordensServico)
-        {
-            try
-            {
-                //var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral
-                //            WHERE IdOrdemServico = @idOrdemServico";
-                //using (var sql = new SqlConnection(_connection))
-                //{
-                //    SqlCommand command = new SqlCommand(query, sql);
-                //    command.Parameters.AddWithValue("@idCliente", id);
-                //    command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
-                //    command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
-                //    command.Parameters.AddWithValue("@idProduto", ordensServico.IdProduto);
-                //    command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
-                //    command.Connection.Open();
-                //    command.ExecuteNonQuery();
-                //}
+        //public void Atualizar(OrdensServico ordensServico)
+        //{
+        //    try
+        //    {
+        //        //var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral
+        //        //            WHERE IdOrdemServico = @idOrdemServico";
+        //        //using (var sql = new SqlConnection(_connection))
+        //        //{
+        //        //    SqlCommand command = new SqlCommand(query, sql);
+        //        //    command.Parameters.AddWithValue("@idCliente", id);
+        //        //    command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
+        //        //    command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
+        //        //    command.Parameters.AddWithValue("@idProduto", ordensServico.IdProduto);
+        //        //    command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
+        //        //    command.Connection.Open();
+        //        //    command.ExecuteNonQuery();
+        //        //}
 
-                //busca a ordem e os dados do jeito que está atualmente;
+        //        //busca a ordem e os dados do jeito que está atualmente;
 
-                var ordemAtual = BuscarOrdemServicoPorId(ordensServico.IdOrdemServico);
+        //        var ordemAtual = BuscarOrdemServicoPorId(ordensServico.IdOrdemServico);
 
-                //compara os dados entre ambas para saber o que precisa remover ou atualizar.
+        //        //compara os dados entre ambas para saber o que precisa remover ou atualizar.
 
-                //primeiro: identificar os registros que precisamos remover
+        //        //primeiro: identificar os registros que precisamos remover
 
-                if(ordemAtual != null)
-                {
-                    var itensRemover = ordemAtual.Itens.Where(x=> !ordensServico.IdItens.Contains(x.IdProduto));
+        //        if(ordemAtual != null)
+        //        {
+        //            var itensRemover = ordemAtual.Itens.Where(x=> !ordensServico.IdItens.Contains(x.IdProduto));
 
-                    var servicosExecutadosRemover = ordemAtual.ServicosExecutados.Where(x=> !ordensServico.IdServicosExecutados.Contains(x.IdServico));
+        //            var servicosExecutadosRemover = ordemAtual.ServicosExecutados.Where(x=> !ordensServico.IdServicosExecutados.Contains(x.IdServico));
 
-                    var profissionaisRemover = ordemAtual.Execucoes.Where(x=> !ordensServico.IdProfissionais.Contains(x.IdProfissional));
+        //            var profissionaisRemover = ordemAtual.Execucoes.Where(x=> !ordensServico.IdProfissionais.Contains(x.IdProfissional));
 
 
-                }
+        //        }
 
 
 
@@ -265,12 +285,12 @@ namespace SistemaMecanica.Repositories
                 
 
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro: " + ex.Message);
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Erro: " + ex.Message);
+        //    }
+        //}
         public OrdensServicoDto Confirmar(int idOrdemServico)
         {
             var ordemServico = new OrdensServicoDto();
@@ -478,7 +498,7 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens)
             {
-                var sql = @"DELETE FROM Itens WHERE idProduto = @idItem AND IdOrdemServico = @idOrdemServico";
+                var sql = @"DELETE FROM Itens WHERE idProduto = @idProduto AND IdOrdemServico = @idOrdemServico";
                 var parametros = new
                 {
                     idProduto = item,

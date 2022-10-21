@@ -56,6 +56,7 @@ namespace SistemaMecanica.Controllers
 
             if (ordemAtual != null)
             {
+                //localiza os registros que foram removidos em comparação à ordem de serviço atualizada.
                 var itensRemover = ordemAtual.Itens.Where(x => !ordensServico.IdItens.Contains(x.IdProduto)).Select(y=>  y.IdProduto );
 
                 var servicosExecutadosRemover = ordemAtual.ServicosExecutados.Where(x => !ordensServico.IdServicosExecutados.Contains(x.IdServico)).Select(y =>y.IdServico);
@@ -74,6 +75,31 @@ namespace SistemaMecanica.Controllers
                 {
                     _ordensServicoRepository.RemoverProfissionaisOS(profissionaisRemover, ordensServico.IdOrdemServico);
                 }
+
+                //localiza os registros que foram adicionados na ordem em relação à ordem atual.
+
+                var itensAdicionar = ordensServico.IdItens.Where(x=> !ordemAtual.Itens.Select(y=> y.IdProduto).Contains(x)).ToList();
+
+                var servicosExecutadosAdd = ordensServico.IdServicosExecutados.Where(x=> !ordemAtual.ServicosExecutados.Select(y=> y.IdServico).Contains(x)).ToList();
+
+                var profissionaisAdd = ordensServico.IdProfissionais.Where(x => !ordemAtual.Execucoes.Select(y => y.IdProfissional).Contains(x)).ToList();
+
+                if(itensAdicionar != null && itensAdicionar.Any())
+                {
+                    _ordensServicoRepository.InserirProdutoOS(itensAdicionar, ordensServico.IdOrdemServico);
+                }
+                if(servicosExecutadosAdd != null && servicosExecutadosAdd.Any())
+                {
+                    _ordensServicoRepository.InserirServicoOS(servicosExecutadosAdd, ordensServico.IdOrdemServico);
+                }
+                if(profissionaisAdd != null && profissionaisAdd.Any())
+                {
+                    _ordensServicoRepository.InserirProfissionalOS(profissionaisAdd, ordensServico.IdOrdemServico);
+                }
+
+                ordensServico.TotalGeral = _ordensServicoRepository.CalcularTotalOrdemServico(ordensServico.IdOrdemServico);
+
+                _ordensServicoRepository.AtualizarTotalGeralOs(ordensServico.IdOrdemServico, ordensServico.TotalGeral);
             }
 
             return Ok("Atualizado com sucesso!");
