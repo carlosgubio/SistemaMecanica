@@ -151,32 +151,5 @@ namespace SistemaMecanica.Repositories
                 Console.WriteLine("Erro: " + ex.Message);
             }
         }
-        //bool VerificaLogin()
-        //{
-        //    bool result = false;
-        //    //string StringDeConexao = @”Data Source = localhost; Initial Catalog = tempdb; User Id = sa; Password = minhasenha;”;
-        //    //using (SqlConnection cn = new SqlConnection())
-        //    {
-        //        //cn.ConnectionString = StringDeConexao;
-        //        List<ClientesDto> clientesEncontrados;
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand(“select * from login where usuario = ‘” +txtUsuario.Text + “‘ and senha = ‘” +txtSenha.Text + “‘;”, cn);
-        //            cn.Open();
-        //            SqlDataReader dados = cmd.ExecuteReader();
-        //            result = dados.HasRows;
-
-        //        }
-        //        catch (SqlException e)
-        //        {
-        //            throw new Exception(e.Message);
-        //        }
-        //        finally
-        //        {
-        //            cn.Close();
-        //        }
-        //    }
-        //    return result;
-        //}
     }
 }
