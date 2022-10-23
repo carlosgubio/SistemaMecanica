@@ -164,5 +164,16 @@ namespace SistemaMecanica.Controllers
             _ordensServicoRepository.InserirServicoOS(servicos, id);
             return Ok("Serviço adicionado com sucesso!");
         }
+
+        //[HttpGet]
+        //public IActionResult BuscarPorNome(string nome)
+        //{
+        //    var resultado = osRep.BuscarPorNome(nome);
+
+        //    if (resultado == null || !resultado.Any())
+        //        return NotFound();
+
+        //    return Ok(resultado);
+        //}
     }
 }

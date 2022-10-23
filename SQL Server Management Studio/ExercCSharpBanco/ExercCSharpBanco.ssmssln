@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# SQL Server Management Studio Solution File, Format Version 18.00
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "ExercCSharpBanco", "ExercCSharpBanco\ExercCSharpBanco.ssmssqlproj", "{916B9C10-C0E0-4007-86A5-2ECD8CE67FE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{916B9C10-C0E0-4007-86A5-2ECD8CE67FE0}.Default|Default.ActiveCfg = Default
+		{51AC6B47-ED6D-4B1C-8F6D-61C3FCE0BB96}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE6F9EE1-0244-4B5B-9638-3212590F2237}
+	EndGlobalSection
+EndGlobal

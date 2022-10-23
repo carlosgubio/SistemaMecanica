@@ -12,8 +12,8 @@ namespace SistemaMecanica.Repositories
 {
     public class OrdensServicoRepository
     {
-        private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
-        //private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        //private readonly string _connection = @"Data Source=ITELABD02\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
+        private readonly string _connection = @"Data Source=Gubio\SQLEXPRESS;Initial Catalog=SistemaMecanica;Integrated Security=True;";
 
         public bool Salvar(CadastrarOrdemServicoViewModel cadastrarOrdemServicoViewModel)
         {
@@ -224,7 +224,7 @@ namespace SistemaMecanica.Repositories
                             INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
                             INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
                             INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
-                            INNER JOIN Produtos p ON p.IdProduto = i.IdProduto
+                            INNER JOIN Produtos p ON p.IdProduto = i.IdPeca
                             INNER JOIN ServicosExecutados se ON os.IdOrdemServico = se.IdOrdemServico
                             INNER JOIN Servicos S ON S.IdServico = SE.IdServico
                             INNER JOIN Execucoes e ON e.IdOrdemServico = os.IdOrdemServico
@@ -242,55 +242,6 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        //public void Atualizar(OrdensServico ordensServico)
-        //{
-        //    try
-        //    {
-        //        //var query = @"UPDATE OrdensServico SET IdCliente = @idCliente, IdProfissional = @idProfissional, IdServico = @idServico, IdProduto = @idProduto, TotalGeral = @totalGeral
-        //        //            WHERE IdOrdemServico = @idOrdemServico";
-        //        //using (var sql = new SqlConnection(_connection))
-        //        //{
-        //        //    SqlCommand command = new SqlCommand(query, sql);
-        //        //    command.Parameters.AddWithValue("@idCliente", id);
-        //        //    command.Parameters.AddWithValue("@idProfissional", ordensServico.IdProfissional);
-        //        //    command.Parameters.AddWithValue("@idServico", ordensServico.IdServico);
-        //        //    command.Parameters.AddWithValue("@idProduto", ordensServico.IdProduto);
-        //        //    command.Parameters.AddWithValue("@totalGeral", ordensServico.TotalGeral);
-        //        //    command.Connection.Open();
-        //        //    command.ExecuteNonQuery();
-        //        //}
-
-        //        //busca a ordem e os dados do jeito que está atualmente;
-
-        //        var ordemAtual = BuscarOrdemServicoPorId(ordensServico.IdOrdemServico);
-
-        //        //compara os dados entre ambas para saber o que precisa remover ou atualizar.
-
-        //        //primeiro: identificar os registros que precisamos remover
-
-        //        if(ordemAtual != null)
-        //        {
-        //            var itensRemover = ordemAtual.Itens.Where(x=> !ordensServico.IdItens.Contains(x.IdProduto));
-
-        //            var servicosExecutadosRemover = ordemAtual.ServicosExecutados.Where(x=> !ordensServico.IdServicosExecutados.Contains(x.IdServico));
-
-        //            var profissionaisRemover = ordemAtual.Execucoes.Where(x=> !ordensServico.IdProfissionais.Contains(x.IdProfissional));
-
-
-        //        }
-
-
-
-
-                
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Erro: " + ex.Message);
-        //    }
-        //}
         public OrdensServicoDto Confirmar(int idOrdemServico)
         {
             var ordemServico = new OrdensServicoDto();
@@ -324,11 +275,11 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens) 
             {
-                var sql = @"INSERT INTO Itens (IdProduto, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
+                var sql = @"INSERT INTO Itens (IdPeca, IdOrdemServico) VALUES (@idPeca, @idOrdemServico)";
 
                 var parametros = new 
                 {
-                    idProduto = item,
+                    idPeca = item,
                     idOrdemServico
                 };
                 try 
@@ -400,7 +351,7 @@ namespace SistemaMecanica.Repositories
 		                    ELSE p.ValorPeca
 	                    END) as TotalPecas			
 		                    FROM Produtos p 
-	                    INNER JOIN Itens i on p.IdProduto = i.IdProduto
+	                    INNER JOIN Itens i on p.IdProduto = i.IdPeca
 	                    INNER JOIN OrdensServico os ON os.IdOrdemServico = i.IdOrdemServico
 		                    WHERE os.IdOrdemServico = @idOrdemServico) 
 	                    +
@@ -475,7 +426,7 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens)
             {
-                var sql = @"INSERT INTO Itens (IdProduto, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
+                var sql = @"INSERT INTO Itens (IdPeca, IdOrdemServico) VALUES (@idProduto, @idOrdemServico)";
                 var parametros = new
                 {
                     idProduto = item,
@@ -498,7 +449,7 @@ namespace SistemaMecanica.Repositories
         {
             foreach (var item in idItens)
             {
-                var sql = @"DELETE FROM Itens WHERE idProduto = @idProduto AND IdOrdemServico = @idOrdemServico";
+                var sql = @"DELETE FROM Itens WHERE IdPeca = @idProduto AND IdOrdemServico = @idOrdemServico";
                 var parametros = new
                 {
                     idProduto = item,
@@ -650,8 +601,8 @@ namespace SistemaMecanica.Repositories
         {
             try
             {
-                var query = @"select i.IdProduto, DescricaoPeca, ValorPeca from Itens i 
-                            inner join Produtos p on i.IdProduto = p.IdProduto
+                var query = @"select i.IdPeca as IdProduto, DescricaoPeca, ValorPeca from Itens i 
+                            inner join Produtos p on i.IdPeca = p.IdProduto
                             where i.IdOrdemServico = @idOrdensServico";
 
                 var parametros = new
@@ -718,6 +669,35 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
+
+        //public List<OSDTO> BuscarPorNome(string nome)
+        //{
+        //    List<OSDTO> OsEncontrados;
+        //    try
+        //    {
+        //        var query = @"SELECT o.Id AS OrdemDeServico,o.ValorDaObra,c.Nome AS NomeCliente,f.Nome AS NomeFuncionario,a.Descricao AS DescricaoDaObra,a.DatadeInicio,a.PrevisaodeTermino
+        //                      FROM OS o
+        //                      INNER JOIN Cliente c ON  c.Id = o.IdCliente 
+        //                      INNER JOIN Funcionarios f ON  f.Id = o.IdFuncionario
+        //                      INNER JOIN Obras a  ON a.Id = o.IdObra
+        //                      WHERE c.Nome like CONCAT('%',@nome,'%')";
+
+        //        using (var connection = new SqlConnection(_connection))
+        //        {
+        //            var parametros = new
+        //            {
+        //                nome
+        //            };
+        //            OsEncontrados = connection.Query<OSDTO>(query, parametros).ToList();
+        //        }
+        //        return OsEncontrados;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
 
     }
 }
