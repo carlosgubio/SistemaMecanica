@@ -670,34 +670,5 @@ namespace SistemaMecanica.Repositories
             }
         }
 
-        //public List<OSDTO> BuscarPorNome(string nome)
-        //{
-        //    List<OSDTO> OsEncontrados;
-        //    try
-        //    {
-        //        var query = @"SELECT o.Id AS OrdemDeServico,o.ValorDaObra,c.Nome AS NomeCliente,f.Nome AS NomeFuncionario,a.Descricao AS DescricaoDaObra,a.DatadeInicio,a.PrevisaodeTermino
-        //                      FROM OS o
-        //                      INNER JOIN Cliente c ON  c.Id = o.IdCliente 
-        //                      INNER JOIN Funcionarios f ON  f.Id = o.IdFuncionario
-        //                      INNER JOIN Obras a  ON a.Id = o.IdObra
-        //                      WHERE c.Nome like CONCAT('%',@nome,'%')";
-
-        //        using (var connection = new SqlConnection(_connection))
-        //        {
-        //            var parametros = new
-        //            {
-        //                nome
-        //            };
-        //            OsEncontrados = connection.Query<OSDTO>(query, parametros).ToList();
-        //        }
-        //        return OsEncontrados;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        throw new Exception(ex.Message);
-        //    }
-        //}
-
     }
 }
