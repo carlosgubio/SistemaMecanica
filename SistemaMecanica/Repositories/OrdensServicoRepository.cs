@@ -24,9 +24,7 @@ namespace SistemaMecanica.Repositories
                 using (var sql = new SqlConnection(_connection))
                 {
                     SqlCommand command = new SqlCommand(query, sql);
-                    //command.Parameters.AddWithValue("@idCliente", cadastrarOrdemServicoViewModel.IdCliente);
-                    //command.Parameters.AddWithValue("@idProfissional", cadastrarOrdemServicoViewModel.IdProfissional);
-                    //command.Parameters.AddWithValue("@idServico", cadastrarOrdemServicoViewModel.IdServico);
+                   
                     command.Parameters.AddWithValue("@idVeiculo", cadastrarOrdemServicoViewModel.IdVeiculo);
                     command.Connection.Open();
                     idOrdemCriada =  (int)command.ExecuteScalar();
