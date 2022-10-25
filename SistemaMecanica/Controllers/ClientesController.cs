@@ -72,7 +72,7 @@ namespace SistemaMecanica.Controllers
         }
         [HttpGet]
         public IActionResult Confirmar(int id)
-        {
+         {
             var resultado = _clientesRepository.Confirmar(id);
             resultado.VeiculosDto = _veiculosRepository.BuscarDoCliente(id);
             return Ok(resultado);
@@ -87,7 +87,7 @@ namespace SistemaMecanica.Controllers
                 return NoContent();
             _clientesRepository.Atualizar(model.Atualizar);
 
-            return Ok("Cliente atualizado com sucesso!");
+            return Ok("Cliente Atualizado com Sucesso!");
         }
         
         [HttpDelete]
