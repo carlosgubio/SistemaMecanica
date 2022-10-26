@@ -168,8 +168,11 @@ namespace SistemaMecanica.Repositories
             {
                 var query = @"SELECT c.NomeCliente AS NomeCliente, c.CpfCliente AS CpfCliente, c.TelefoneCliente AS TelefoneCliente, c.Enderecocliente AS Enderecocliente,
                             v.VeiculoCliente AS VeiculoCliente, v.PlacaVeiculoCliente AS PlacaVeiculoCliente, v.CorVeiculoCliente AS CorVeiculoCliente,
-                            pf.NomeProfissional AS NomeProfissional, p.DescricaoPeca AS DescricaoPeca, p.ValorPeca AS ValorPeca, s.DescricaoServico AS DescricaoServico,
-                            s.ValorServico AS ValorServico, os.TotalGeral AS TotalGeral FROM Clientes c 
+                            pf.NomeProfissional AS NomeProfissional,
+                            p.DescricaoPeca AS DescricaoPeca, p.ValorPeca AS ValorPeca,
+                            s.DescricaoServico AS DescricaoServico,
+                            s.ValorServico AS ValorServico,
+                            os.TotalGeral AS TotalGeral FROM Clientes c 
                             INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
                             INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
                             INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
