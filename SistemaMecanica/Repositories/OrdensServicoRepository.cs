@@ -161,51 +161,46 @@ namespace SistemaMecanica.Repositories
                 return null;
             }
         }
-        public OrdemServicoDadosDto BuscarOrdemServicoPorVeiculo(string veiculo)
+        public List<OrdemServicoDadosDto> BuscarOrdemServicoPorVeiculo(string criterio)
         {
-            OrdemServicoDadosDto ordemServicoDadosDto;
+            List<OrdemServicoDadosDto> ordemServicoDadosDto;
             try
             {
                 var query = @"SELECT c.NomeCliente AS NomeCliente, c.CpfCliente AS CpfCliente, c.TelefoneCliente AS TelefoneCliente, c.Enderecocliente AS Enderecocliente,
-                            v.VeiculoCliente AS VeiculoCliente, v.PlacaVeiculoCliente AS PlacaVeiculoCliente, v.CorVeiculoCliente AS CorVeiculoCliente,
-                            pf.NomeProfissional AS NomeProfissional,
-                            p.DescricaoPeca AS DescricaoPeca, p.ValorPeca AS ValorPeca,
-                            s.DescricaoServico AS DescricaoServico,
-                            s.ValorServico AS ValorServico,
-                            os.TotalGeral AS TotalGeral FROM Clientes c 
-                            INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
-                            INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
-                            INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
-                            INNER JOIN Produtos p ON p.IdProduto = i.IdProduto
-                            INNER JOIN ServicosExecutados se ON os.IdOrdemServico = se.IdOrdemServico
-                            INNER JOIN Servicos S ON S.IdServico = SE.IdServico
-                            INNER JOIN Execucoes e ON e.IdOrdemServico = os.IdOrdemServico
-                            INNER JOIN Profissionais pf ON pf.IdProfissional = e.IdProfissional
-                            WHERE v.PlacaVeiculoCliente like CONCAT('%', @placa,'%')";
+                                    v.VeiculoCliente AS VeiculoCliente, v.PlacaVeiculoCliente AS PlacaVeiculoCliente, v.CorVeiculoCliente AS CorVeiculoCliente,
+                                    pf.NomeProfissional AS NomeProfissional, p.DescricaoPeca AS DescricaoPeca, p.ValorPeca AS ValorPeca,
+                                    s.DescricaoServico AS DescricaoServico, s.ValorServico AS ValorServico, os.TotalGeral AS TotalGeral FROM Clientes c 
+                                    INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
+                                    INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
+                                    INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
+                                    INNER JOIN Produtos p ON p.IdProduto = i.IdProduto
+                                    INNER JOIN ServicosExecutados se ON os.IdOrdemServico = se.IdOrdemServico
+                                    INNER JOIN Servicos S ON S.IdServico = SE.IdServico
+                                    INNER JOIN Execucoes e ON e.IdOrdemServico = os.IdOrdemServico
+                                    INNER JOIN Profissionais pf ON pf.IdProfissional = e.IdProfissional
+                                    WHERE v.PlacaVeiculoCliente like CONCAT('%', @criterio,'%')";
 
-                   
+
                 using (var connection = new SqlConnection(_connection))
                 {
                     var parametros = new
                     {
-                        veiculo
+                        criterio
                     };
-                    ordemServicoDadosDto = connection.QueryFirst<OrdemServicoDadosDto>(query, parametros);
-                }
-
-                if (ordemServicoDadosDto != null)
-                {
-                    ordemServicoDadosDto.Itens = BuscarProdutosDaOrdem(veiculo);
+                    ordemServicoDadosDto = connection.Query<OrdemServicoDadosDto>(query, parametros).ToList();
                 }
                 if (ordemServicoDadosDto != null)
                 {
-                    ordemServicoDadosDto.Execucoes = BuscarProfissionaisDaOrdem(veiculo);
+                    ordemServicoDadosDto.Itens = BuscarProdutosDaOrdem(criterio);
                 }
                 if (ordemServicoDadosDto != null)
                 {
-                    ordemServicoDadosDto.ServicosExecutados = BuscarServicosDaOrdem(veiculo);
+                    ordemServicoDadosDto.Execucoes = BuscarProfissionaisDaOrdem(criterio);
                 }
-
+                if (ordemServicoDadosDto != null)
+                {
+                    ordemServicoDadosDto.ServicosExecutados = BuscarServicosDaOrdem(criterio);
+                }
                 return ordemServicoDadosDto;
             }
             catch (Exception ex)
@@ -225,7 +220,7 @@ namespace SistemaMecanica.Repositories
                             INNER JOIN Veiculos v ON c.IdCliente = v.IdCliente
                             INNER JOIN OrdensServico os ON os.IdVeiculo = v.IdVeiculo
                             INNER JOIN Itens i ON i.IdOrdemServico = os.IdOrdemServico
-                            INNER JOIN Produtos p ON p.IdProduto = i.IdPeca
+                            INNER JOIN Produtos p ON p.IdProduto = i.IdProduto
                             INNER JOIN ServicosExecutados se ON os.IdOrdemServico = se.IdOrdemServico
                             INNER JOIN Servicos S ON S.IdServico = SE.IdServico
                             INNER JOIN Execucoes e ON e.IdOrdemServico = os.IdOrdemServico

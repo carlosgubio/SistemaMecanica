@@ -118,6 +118,15 @@ namespace SistemaMecanica.Controllers
             var resultado = _ordensServicoRepository.BuscarOrdemServicoPorVeiculo(veiculo);
             return Ok(resultado);
         }
+        [HttpGet]
+        public IActionResult ListarPorCriterio(string criterio)
+        {
+            var resultado = _ordensServicoRepository.BuscarOrdemServicoPorVeiculo(criterio);
+
+            if (resultado == null || !resultado.Any())
+                return Ok(new { sucesso = true, resultado, mensagem = "Não foram encontrados registros." });
+            return Ok(new { sucesso = true, resultado });
+        }
 
         [HttpGet]
         public IActionResult BuscarTodas()
