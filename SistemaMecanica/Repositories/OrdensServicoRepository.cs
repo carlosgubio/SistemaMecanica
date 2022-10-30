@@ -163,7 +163,7 @@ namespace SistemaMecanica.Repositories
         }
         public List<OrdemServicoDadosDto> BuscarOrdemServicoPorVeiculo(string criterio)
         {
-            List<OrdemServicoDadosDto> ordemServicoDadosDto;
+            List<OrdemServicoDadosDto> veiculosEncontrados;
             try
             {
                 var query = @"SELECT c.NomeCliente AS NomeCliente, c.CpfCliente AS CpfCliente, c.TelefoneCliente AS TelefoneCliente, c.Enderecocliente AS Enderecocliente,
@@ -187,21 +187,21 @@ namespace SistemaMecanica.Repositories
                     {
                         criterio
                     };
-                    ordemServicoDadosDto = connection.Query<OrdemServicoDadosDto>(query, parametros).ToList();
+                    veiculosEncontrados = connection.Query<OrdemServicoDadosDto>(query, parametros).ToList();
                 }
-                if (ordemServicoDadosDto != null)
-                {
-                    ordemServicoDadosDto.Itens = BuscarProdutosDaOrdem(criterio);
-                }
-                if (ordemServicoDadosDto != null)
-                {
-                    ordemServicoDadosDto.Execucoes = BuscarProfissionaisDaOrdem(criterio);
-                }
-                if (ordemServicoDadosDto != null)
-                {
-                    ordemServicoDadosDto.ServicosExecutados = BuscarServicosDaOrdem(criterio);
-                }
-                return ordemServicoDadosDto;
+                //if (veiculosEncontrados != null)
+                //{
+                //    veiculosEncontrados.Itens = BuscarProdutosDaOrdem(criterio);
+                //}
+                //if (veiculosEncontrados != null)
+                //{
+                //    veiculosEncontrados.Execucoes = BuscarProfissionaisDaOrdem(criterio);
+                //}
+                //if (veiculosEncontrados != null)
+                //{
+                //    veiculosEncontrados.ServicosExecutados = BuscarServicosDaOrdem(criterio);
+                //}
+                return veiculosEncontrados;
             }
             catch (Exception ex)
             {
@@ -521,30 +521,57 @@ namespace SistemaMecanica.Repositories
                 return res;
             }
         }
-        private List<ProdutosDto> BuscarProdutosDaOrdem(string nome) 
+
+        public void BuscarProdutosDaOrdem(List<int> idProduto, int idOrdemServico)
         {
-            try
+            foreach (var item in idProduto)
             {
                 var query = @"select i.IdProduto, DescricaoPeca, ValorPeca from Itens i 
                             inner join Produtos p on i.IdProduto = p.IdProduto
                             where i.IdOrdemServico = @idOrdensServico";
 
-                var parametros = new 
+                var parametros = new
                 {
-                    idOrdensServico = nome
+                    idProduto = item,
+                    idOrdemServico
                 };
-
-                using (var connection = new SqlConnection(_connection))
+                try
                 {
-                    return  connection.Query<ProdutosDto>(query, parametros).ToList();
-                }                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro: " + ex.Message);
-                return null;
+                    using (var connection = new SqlConnection(_connection))
+                    {
+                        connection.Execute(query, parametros);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro: " + ex.Message);
+                }
             }
         }
+        //private List<ProdutosDto> BuscarProdutosDaOrdem(string nome) 
+        //{
+        //    try
+        //    {
+        //        var query = @"select i.IdProduto, DescricaoPeca, ValorPeca from Itens i 
+        //                    inner join Produtos p on i.IdProduto = p.IdProduto
+        //                    where i.IdOrdemServico = @idOrdensServico";
+
+        //        var parametros = new 
+        //        {
+        //            idOrdensServico = nome
+        //        };
+
+        //        using (var connection = new SqlConnection(_connection))
+        //        {
+        //            return  connection.Query<ProdutosDto>(query, parametros).ToList();
+        //        }                
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Erro: " + ex.Message);
+        //        return null;
+        //    }
+        //}
         private List<ProfissionaisDto> BuscarProfissionaisDaOrdem(string nome)
         {
             try
